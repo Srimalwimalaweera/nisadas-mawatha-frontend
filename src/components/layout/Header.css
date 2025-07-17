@@ -1,0 +1,31 @@
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #5A2D82; /* A nice purple color */
+}
+
+.main-nav a {
+  margin: 0 1rem;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+}
+
+.login-btn {
+  padding: 0.5rem 1rem;
+  background-color: #5A2D82;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
