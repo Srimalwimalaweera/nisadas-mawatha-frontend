@@ -12,13 +12,73 @@
   margin-bottom: 1.5rem;
 }
 
-.profile-details p {
+.profile-details p { /* <-- මේක පොදු style එකක් විදිහට තියමු */
   font-size: 1.1rem;
   margin-bottom: 1rem;
   border-bottom: 1px solid #eee;
   padding-bottom: 1rem;
 }
 
-.profile-details p:last-child {
+.profile-field { /* <-- අලුත් class එක */
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* ලේබලය සහ අගය අතර පරතරය */
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+}
+
+.profile-field:last-of-type {
   border-bottom: none;
 }
+
+.profile-field span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-field input {
+  font-size: 1rem;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.pencil-icon {
+  cursor: pointer;
+  opacity: 0.4; /* <-- Transparency එක */
+  transition: opacity 0.2s;
+  font-size: 1.2rem; /* <-- Icon එකේ ප්‍රමාණය */
+}
+
+.pencil-icon:hover {
+  opacity: 1;
+}
+
+/* Email එකට විශේෂ style එකක් */
+.email-field {
+  color: #888; /* <-- අළු පාට */
+  font-style: italic;
+  font-size: 1.1rem;
+}
+
+/* Save Bar එකට අදාළ styles කලින් වගේමයි */
+.save-bar {
+  position: sticky;
+  top: 80px;
+  background-color: #333;
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 10;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+.save-bar button { margin-left: 1rem; padding: 0.5rem 1rem; border: none; border-radius: 5px; cursor: pointer; }
+.save-btn { background-color: #28a745; color: white; }
+.cancel-btn { background-color: #6c757d; color: white; }

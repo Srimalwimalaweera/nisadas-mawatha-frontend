@@ -6,15 +6,17 @@ import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
-  signInWithEmailAndPassword // <-- අලුතෙන් import කරනවා
+  signInWithEmailAndPassword,
+  updateProfile // <-- අලුතෙන් import කරනවා
 } from 'firebase/auth';
 
 const AuthContext = createContext();
-// ... (useAuth function එක කලින් වගේමයි)
-export function useAuth() { return useContext(AuthContext); }
+
+export function useAuth() {
+  return useContext(AuthContext);
+}
 
 export function AuthProvider({ children }) {
-  // ... (useState and auth ටික කලින් වගේමයි)
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const auth = getAuth();
@@ -23,7 +25,6 @@ export function AuthProvider({ children }) {
     return createUserWithEmailAndPassword(auth, email, password);
   }
   
-  // Login function එක
   function login(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
   }
@@ -36,8 +37,12 @@ export function AuthProvider({ children }) {
   function logout() {
     return signOut(auth);
   }
+  
+  // User profile එකේ නම වගේ දේවල් Auth system එකේ update කරන function එක
+  function updateUserProfile(profileData) { // <-- අලුත් function එක
+    return updateProfile(auth.currentUser, profileData);
+  }
 
-  // ... (useEffect එක කලින් වගේමයි)
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
       setCurrentUser(user);
@@ -51,7 +56,8 @@ export function AuthProvider({ children }) {
     logout,
     signup,
     signInWithGoogle,
-    login // <-- අලුත් function එක export කරනවා
+    login,
+    updateUserProfile // <-- අලුත් function එක export කරනවා
   };
 
   return (
