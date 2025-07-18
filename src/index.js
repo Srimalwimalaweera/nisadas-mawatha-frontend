@@ -1,14 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles/main.css';
-import App from './App';
-import { BrowserRouter } from 'react-router-dom'; // <-- මේ අලුත් import එක
+import App from './App.jsx';
+import { BrowserRouter } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext.jsx'; // <-- අලුත් import එක
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>  {/* <-- අපේ App එක මේකෙන් wrap කරනවා */}
-      <App />
+    <BrowserRouter>
+      <AuthProvider> {/* <-- අපේ App එක AuthProvider එකෙන් wrap කරනවා */}
+        <App />
+      </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

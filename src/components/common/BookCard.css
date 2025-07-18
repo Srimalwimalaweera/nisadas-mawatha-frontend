@@ -23,3 +23,8 @@
 .book-card-author {
   color: #666;
 }
+
+.book-card-link {
+  text-decoration: none;
+  color: inherit;
+}
