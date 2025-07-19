@@ -5,6 +5,8 @@ import BookDetailsPage from './pages/BookDetailsPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import SignupPage from './pages/SignupPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
+import ForgotPasswordPage from './pages/ForgotPasswordPage.jsx';
+import PurchasePage from './pages/PurchasePage.jsx';
 
 function App() {
   return (
@@ -14,7 +16,9 @@ function App() {
         <Route path="/books/:bookId" element={<BookDetailsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/purchase/:bookId" element={<PurchasePage />} />
       </Routes>
     </Layout>
   );

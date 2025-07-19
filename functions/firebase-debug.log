@@ -1,0 +1,71 @@
+[debug] [2025-07-19T15:08:10.934Z] ----------------------------------------------------------------------
+[debug] [2025-07-19T15:08:10.937Z] Command:       C:\nvm4w\nodejs\node.exe C:\nvm4w\nodejs\node_modules\firebase-tools\lib\bin\firebase.js functions:shell
+[debug] [2025-07-19T15:08:10.938Z] CLI Version:   14.11.0
+[debug] [2025-07-19T15:08:10.938Z] Platform:      win32
+[debug] [2025-07-19T15:08:10.938Z] Node Version:  v20.19.4
+[debug] [2025-07-19T15:08:10.938Z] Time:          Sat Jul 19 2025 20:38:10 GMT+0530 (India Standard Time)
+[debug] [2025-07-19T15:08:10.938Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-07-19T15:08:11.238Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-07-19T15:08:11.238Z] > authorizing via signed-in user (srimalwimalaweera@gmail.com)
+[debug] [2025-07-19T15:08:11.238Z] [iam] checking project nisadas-mawatha for permissions ["firebase.projects.get"]
+[debug] [2025-07-19T15:08:11.240Z] Checked if tokens are valid: true, expires at: 1752941100964
+[debug] [2025-07-19T15:08:11.240Z] Checked if tokens are valid: true, expires at: 1752941100964
+[debug] [2025-07-19T15:08:11.242Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/nisadas-mawatha:testIamPermissions [none]
+[debug] [2025-07-19T15:08:11.242Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/nisadas-mawatha:testIamPermissions x-goog-quota-user=projects/nisadas-mawatha
+[debug] [2025-07-19T15:08:11.242Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/nisadas-mawatha:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2025-07-19T15:08:12.688Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/nisadas-mawatha:testIamPermissions 200
+[debug] [2025-07-19T15:08:12.688Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/nisadas-mawatha:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2025-07-19T15:08:12.693Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-07-19T15:08:12.736Z] defaultcredentials: writing to file C:\Users\Dsw\AppData\Roaming\firebase\srimalwimalaweera_gmail_com_application_default_credentials.json
+[debug] [2025-07-19T15:08:12.738Z] DEBUG: Setting GAC to C:\Users\Dsw\AppData\Roaming\firebase\srimalwimalaweera_gmail_com_application_default_credentials.json
+[debug] [2025-07-19T15:08:12.738Z] Checked if tokens are valid: true, expires at: 1752941100964
+[debug] [2025-07-19T15:08:12.738Z] Checked if tokens are valid: true, expires at: 1752941100964
+[debug] [2025-07-19T15:08:12.738Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/nisadas-mawatha/adminSdkConfig [none]
+[debug] [2025-07-19T15:08:13.258Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/nisadas-mawatha/adminSdkConfig 200
+[debug] [2025-07-19T15:08:13.258Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/nisadas-mawatha/adminSdkConfig {"projectId":"nisadas-mawatha","storageBucket":"nisadas-mawatha.firebasestorage.app"}
+[debug] [2025-07-19T15:08:13.268Z] [functions] Watching "C:\Users\Dsw\Desktop\Nisadas Mawatha\nisadas-mawatha-frontend\functions" for Cloud Functions...
+[debug] [2025-07-19T15:08:13.275Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] !  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2025-07-19T15:08:14.321Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^12.1.0",
+    "firebase-functions": "^5.0.1",
+    "googleapis": "^153.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2025-07-19T15:08:14.322Z] Building nodejs source
+[debug] [2025-07-19T15:08:14.322Z] Failed to find version of module node: reached end of search path C:\Users\Dsw\Desktop\Nisadas Mawatha\nisadas-mawatha-frontend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2025-07-19T15:08:14.325Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-07-19T15:08:14.331Z] Found firebase-functions binary at 'C:\Users\Dsw\Desktop\Nisadas Mawatha\nisadas-mawatha-frontend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8771
+
+[debug] [2025-07-19T15:08:16.380Z] Got response from /__/functions.yaml {"endpoints":{"createNewUserProfile":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"eventTrigger":{"eventType":"providers/firebase.auth/eventTypes/user.create","eventFilters":{"resource":"projects/nisadas-mawatha"},"retry":false},"labels":{},"entryPoint":"createNewUserProfile"},"submitPurchaseRequest":{"platform":"gcfv1","labels":{},"availableMemoryMb":512,"timeoutSeconds":120,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"callableTrigger":{},"entryPoint":"submitPurchaseRequest"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[debug] [2025-07-19T15:08:20.421Z] [functions] Loaded functions definitions from source: createNewUserProfile, submitPurchaseRequest.
+[debug] [2025-07-19T15:08:20.422Z] addAuthTrigger {"eventTrigger":{"eventType":"providers/firebase.auth/eventTypes/user.create","resource":"projects/nisadas-mawatha"}}
+[debug] [2025-07-19T15:08:20.422Z] [functions[us-central1-createNewUserProfile]] auth function initialized.
+[debug] [2025-07-19T15:08:20.422Z] [functions[us-central1-submitPurchaseRequest]] http function initialized (http://127.0.0.1:5000/nisadas-mawatha/us-central1/submitPurchaseRequest).
+[info] i  functions: Loaded functions: createNewUserProfile, submitPurchaseRequest 
+[warn] !  functions: The following emulators are not running, calls to these services will affect production: firestore, database, pubsub, storage, eventarc, tasks 

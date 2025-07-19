@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'; // URL එකෙන් parameter ගන්න hook එක
+import { useParams, Link } from 'react-router-dom'; // URL එකෙන් parameter ගන්න hook එක
 import { doc, getDoc } from 'firebase/firestore'; // Firebase එකෙන් එක document එකක් ගන්න functions
 import { db } from '../firebase'; // අපේ Firebase config
 import './BookDetailsPage.css'; // මේ CSS file එක ඊළඟට හදමු
@@ -48,7 +48,9 @@ function BookDetailsPage() {
         <h2 className="book-details-author">by {book.author}</h2>
         <p className="book-details-price">Price: LKR {book.price}</p>
         <p className="book-details-description">{book.description}</p>
-        <button className="buy-now-btn">Buy Now</button>
+        <Link to={`/purchase/${book.id}`}>
+  <button className="buy-now-btn">Buy Now</button>
+</Link>
       </div>
     </div>
   );

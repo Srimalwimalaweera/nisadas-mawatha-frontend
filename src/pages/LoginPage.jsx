@@ -20,7 +20,12 @@ function LoginPage() {
       await login(email, password);
       navigate('/'); // සාර්ථක නම්, homepage එකට redirect කරනවා
     } catch (err) {
-      setError('Failed to log in. Please check your email and password.');
+      // Firebase වලින් එන error codes බලලා, userට තේරෙන message එකක් දෙමු
+      if (err.code === 'auth/invalid-credential') {
+         setError('Failed to log in. Please check your email and password.');
+      } else {
+         setError('Failed to log in. Please try again later.');
+      }
     }
     setLoading(false);
   };
@@ -38,16 +43,29 @@ function LoginPage() {
   return (
     <div className="form-container">
       <form onSubmit={handleSubmit}>
-        <h2>Login</h2>
+        <h2>Login to Your Account</h2>
         {error && <p className="error-message">{error}</p>}
         <div className="form-group">
           <label>Email</label>
-          <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input 
+            type="email" 
+            required 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
         <div className="form-group">
           <label>Password</label>
-          <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input 
+            type="password" 
+            required 
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
+        <div className="form-link" style={{textAlign: 'right', marginTop: '-0.5rem', marginBottom: '1rem'}}>
+            <Link to="/forgot-password">Forgot Password?</Link>
+          </div>
         <button disabled={loading} type="submit" className="form-button">
           {loading ? 'Logging In...' : 'Login'}
         </button>
@@ -57,7 +75,7 @@ function LoginPage() {
         Sign In with Google
       </button>
       <div className="form-link">
-        Need an account? <Link to="/signup">Sign Up</Link>
+        Don't have an account? <Link to="/signup">Sign Up</Link>
       </div>
     </div>
   );

@@ -7,7 +7,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signInWithEmailAndPassword,
-  updateProfile // <-- අලුතෙන් import කරනවා
+  updateProfile,
+  sendPasswordResetEmail // <-- අලුතෙන් එකතු වෙන import එක
 } from 'firebase/auth';
 
 const AuthContext = createContext();
@@ -38,9 +39,13 @@ export function AuthProvider({ children }) {
     return signOut(auth);
   }
   
-  // User profile එකේ නම වගේ දේවල් Auth system එකේ update කරන function එක
-  function updateUserProfile(profileData) { // <-- අලුත් function එක
+  function updateUserProfile(profileData) {
     return updateProfile(auth.currentUser, profileData);
+  }
+
+  // අලුතෙන් එකතු කරන function එක
+  function resetPassword(email) {
+    return sendPasswordResetEmail(auth, email);
   }
 
   useEffect(() => {
@@ -57,7 +62,8 @@ export function AuthProvider({ children }) {
     signup,
     signInWithGoogle,
     login,
-    updateUserProfile // <-- අලුත් function එක export කරනවා
+    updateUserProfile,
+    resetPassword // <-- අලුත් function එක export කරනවා
   };
 
   return (
