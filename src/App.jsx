@@ -7,6 +7,8 @@ import SignupPage from './pages/SignupPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
 import ForgotPasswordPage from './pages/ForgotPasswordPage.jsx';
 import PurchasePage from './pages/PurchasePage.jsx';
+import AdminPage from './pages/AdminPage.jsx';
+import AdminRoute from './components/common/AdminRoute.jsx';
 
 function App() {
   return (
@@ -19,6 +21,14 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/purchase/:bookId" element={<PurchasePage />} />
+        <Route 
+          path="/admin" 
+          element={
+            <AdminRoute>
+              <AdminPage />
+            </AdminRoute>
+          } 
+        />
       </Routes>
     </Layout>
   );

@@ -8,8 +8,10 @@ import {
   signInWithPopup,
   signInWithEmailAndPassword,
   updateProfile,
-  sendPasswordResetEmail // <-- අලුතෙන් එකතු වෙන import එක
+  sendPasswordResetEmail
 } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore'; // <-- Firestore functions
+import { db } from '../firebase'; // <-- අපේ db config
 
 const AuthContext = createContext();
 
@@ -21,6 +23,28 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const auth = getAuth();
+
+  // User log වුණාම හෝ log out වුණාම මේක දුවනවා
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        // User කෙනෙක් ඉන්නවා නම්, එයාගේ UID එකෙන් Firestore එකේ profile එක හොයනවා
+        const userDocRef = doc(db, 'users', user.uid);
+        const docSnap = await getDoc(userDocRef);
+        if (docSnap.exists()) {
+          // Auth data ටිකයි, Firestore data (role එක වගේ) ටිකයි එකතු කරලා user object එක හදනවා
+          setCurrentUser({ ...user, ...docSnap.data() });
+        } else {
+          // Firestore එකේ profile එකක් නැත්නම්, Auth data විතරක් තියනවා
+          setCurrentUser(user);
+        }
+      } else {
+        setCurrentUser(null);
+      }
+      setLoading(false);
+    });
+    return unsubscribe;
+  }, [auth]);
 
   function signup(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -43,18 +67,9 @@ export function AuthProvider({ children }) {
     return updateProfile(auth.currentUser, profileData);
   }
 
-  // අලුතෙන් එකතු කරන function එක
   function resetPassword(email) {
     return sendPasswordResetEmail(auth, email);
   }
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, user => {
-      setCurrentUser(user);
-      setLoading(false);
-    });
-    return unsubscribe;
-  }, [auth]);
 
   const value = {
     currentUser,
@@ -63,7 +78,7 @@ export function AuthProvider({ children }) {
     signInWithGoogle,
     login,
     updateUserProfile,
-    resetPassword // <-- අලුත් function එක export කරනවා
+    resetPassword
   };
 
   return (

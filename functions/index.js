@@ -1,20 +1,17 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-// const {google} = require("googleapis"); // <-- අනවශ්‍ය නිසා මෙම පේළිය ඉවත් කළා
-const {getStorage} = require("firebase-admin/storage");
+
+// getStorage import එක මෙතනින් ඉවත් කළා
+// googleapis import එකත් කලින් ඉවත් කළා
 
 admin.initializeApp();
-
-// const TARGET_DRIVE_FOLDER_ID = "..."; // <-- අනවශ්‍ය නිසා මෙම පේළිය ඉවත් කළා
 
 // === Function 1: Create User Profile (v1 Syntax) ===
 exports.createNewUserProfile = functions.auth.user()
     .onCreate((user) => {
       const {uid, email, displayName, photoURL} = user;
-
       functions.logger
           .info(`v1: Creating profile for ${displayName || email} (${uid})`);
-
       const profileData = {
         email: email,
         displayName: displayName || null,
@@ -25,7 +22,6 @@ exports.createNewUserProfile = functions.auth.user()
         ebook_slots_total: 0,
         pdf_slots_total: 0,
       };
-
       return admin.firestore().collection("users").doc(uid).set(profileData)
           .then(() => {
             functions.logger.info(`v1: Profile created for ${uid}`);
@@ -44,28 +40,20 @@ exports.submitPurchaseRequest = functions.runWith({
 }).https.onCall(async (data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError(
-        "unauthenticated",
-        "You must be logged in to make a purchase.",
+        "unauthenticated", "You must be logged in to make a purchase.",
     );
   }
-
   const {bookId, fileData, fileName, fileType} = data;
   const userId = context.auth.uid;
-
-  const bucket = getStorage().bucket();
+  const bucket = admin.storage().bucket();
   const filePath = `payment_slips/${userId}_${bookId}_${fileName}`;
   const file = bucket.file(filePath);
-
   const buffer = Buffer.from(fileData, "base64");
-
   try {
     await file.save(buffer, {
-      metadata: {
-        contentType: fileType,
-      },
+      metadata: {contentType: fileType},
     });
-    functions.logger.info(`File uploaded to Firebase Storage at: ${filePath}`);
-
+    functions.logger.info(`File uploaded to Storage at: ${filePath}`);
     const purchaseData = {
       userId: userId,
       bookId: bookId,
@@ -73,16 +61,48 @@ exports.submitPurchaseRequest = functions.runWith({
       submittedAt: admin.firestore.FieldValue.serverTimestamp(),
       slipStoragePath: filePath,
     };
-
     const docRef = await admin.firestore().collection("purchases").add(purchaseData);
     functions.logger.info(`Purchase record created: ${docRef.id}`);
-
     return {success: true, message: "Purchase request submitted!"};
   } catch (error) {
     functions.logger.error("Error in purchase flow:", error);
     throw new functions.https.HttpsError(
-        "internal",
-        "An error occurred while submitting your request.",
+        "internal", "An error occurred while submitting your request.",
+    );
+  }
+});
+
+// === Function 3: Get Secure Download URL for a Slip (v1 Syntax) ===
+exports.getSlipUrl = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+        "unauthenticated", "You must be logged in.",
+    );
+  }
+  const userDoc = await admin.firestore().collection("users").doc(context.auth.uid).get();
+  if (userDoc.data().role !== "admin") {
+    throw new functions.https.HttpsError(
+        "permission-denied", "You must be an admin to perform this action.",
+    );
+  }
+  const {slipStoragePath} = data;
+  if (!slipStoragePath) {
+    throw new functions.https.HttpsError(
+        "invalid-argument", "The function must be called with a slipStoragePath.",
+    );
+  }
+  const options = {
+    version: "v4",
+    action: "read",
+    expires: Date.now() + 15 * 60 * 1000, // 15 minutes
+  };
+  try {
+    const [url] = await admin.storage().bucket().file(slipStoragePath).getSignedUrl(options);
+    return {url: url};
+  } catch (error) {
+    functions.logger.error("Error generating signed URL:", error);
+    throw new functions.https.HttpsError(
+        "internal", "Could not get the slip URL.",
     );
   }
 });
