@@ -7,53 +7,45 @@ import './AdminPage.css';
 function AdminPage() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchPendingRequests = async () => {
       try {
         const q = query(collection(db, "purchases"), where("status", "==", "pending"));
         const purchaseSnapshot = await getDocs(q);
-
+        
         const getRequestDetails = async (purchaseDoc) => {
           const purchaseData = purchaseDoc.data();
           const userRef = doc(db, 'users', purchaseData.userId);
           const userSnap = await getDoc(userRef);
           const userData = userSnap.exists() ? userSnap.data() : { displayName: 'Unknown User' };
-
           const bookRef = doc(db, 'books', purchaseData.bookId);
           const bookSnap = await getDoc(bookRef);
           const bookData = bookSnap.exists() ? bookSnap.data() : { title: 'Unknown Book' };
-
           return {
-            id: purchaseDoc.id,
-            ...purchaseData,
-            user: userData,
-            book: bookData,
+            id: purchaseDoc.id, ...purchaseData, user: userData, book: bookData,
           };
         };
-
         const detailedRequests = await Promise.all(purchaseSnapshot.docs.map(doc => getRequestDetails(doc)));
         setRequests(detailedRequests);
-
       } catch (error) {
         console.error("Error fetching pending requests: ", error);
+        setError("Could not fetch requests.");
       } finally {
         setLoading(false);
       }
     };
-
     fetchPendingRequests();
   }, []);
 
-  // "View Slip" click කළාම දුවන අලුත් function එක
   const handleViewSlip = async (slipPath) => {
     try {
       const functions = getFunctions();
       const getSlipUrl = httpsCallable(functions, 'getSlipUrl');
       const result = await getSlipUrl({ slipStoragePath: slipPath });
-
       if (result.data.url) {
-        window.open(result.data.url, '_blank'); // අලුත් tab එකකින් URL එක open කරනවා
+        window.open(result.data.url, '_blank');
       }
     } catch (error) {
       console.error("Error getting slip URL:", error);
@@ -61,18 +53,33 @@ function AdminPage() {
     }
   };
 
-  if (loading) {
-    return <p>Loading pending requests...</p>;
-  }
+  const handleProcessRequest = async (purchaseId, action) => {
+    const confirmationMessage = `Are you sure you want to ${action} this purchase?`;
+    if (!window.confirm(confirmationMessage)) return;
+    
+    try {
+      setError('');
+      const functions = getFunctions();
+      const processPurchaseRequest = httpsCallable(functions, 'processPurchaseRequest');
+      await processPurchaseRequest({ purchaseId: purchaseId, action: action });
+      setRequests(prevRequests => prevRequests.filter(req => req.id !== purchaseId));
+      alert(`Purchase ${action}ed successfully!`);
+    } catch (error) {
+      console.error(`Error ${action}ing purchase:`, error);
+      setError(`Failed to ${action} purchase. ` + error.message);
+    }
+  };
+
+  if (loading) return <p>Loading pending requests...</p>;
 
   return (
     <div className="admin-container">
       <h1>Pending Purchase Requests</h1>
+      {error && <p className="error-message">{error}</p>}
       {requests.length === 0 ? (
         <p>No pending requests found.</p>
       ) : (
         <table className="requests-table">
-          {/* ... thead ... */}
           <thead>
             <tr>
               <th>Submitted At</th>
@@ -88,10 +95,9 @@ function AdminPage() {
                 <td>{req.user.displayName || req.user.email}</td>
                 <td>{req.book.title}</td>
                 <td className="actions-cell">
-                  {/* "View Slip" දැන් button එකක්, link එකක් නෙවෙයි */}
                   <button onClick={() => handleViewSlip(req.slipStoragePath)} className="action-btn view-btn">View Slip</button>
-                  <button className="action-btn approve-btn">Approve</button>
-                  <button className="action-btn reject-btn">Reject</button>
+                  <button onClick={() => handleProcessRequest(req.id, 'approve')} className="action-btn approve-btn">Approve</button>
+                  <button onClick={() => handleProcessRequest(req.id, 'reject')} className="action-btn reject-btn">Reject</button>
                 </td>
               </tr>
             ))}
