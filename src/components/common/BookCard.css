@@ -3,6 +3,7 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background-color: #ffffff; /* Static white background */
   transition: transform 0.2s;
 }
 .book-card:hover {
@@ -19,11 +20,11 @@
 .book-card-title {
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
+  color: #333; /* Static dark text color */
 }
 .book-card-author {
-  color: #666;
+  color: #666; /* Static grey text color */
 }
-
 .book-card-link {
   text-decoration: none;
   color: inherit;

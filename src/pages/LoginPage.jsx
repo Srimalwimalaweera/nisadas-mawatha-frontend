@@ -41,41 +41,45 @@ function LoginPage() {
   };
 
   return (
-    <div className="form-container">
-      <form onSubmit={handleSubmit}>
-        <h2>Login to Your Account</h2>
-        {error && <p className="error-message">{error}</p>}
-        <div className="form-group">
-          <label>Email</label>
-          <input 
-            type="email" 
-            required 
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label>Password</label>
-          <input 
-            type="password" 
-            required 
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div className="form-link" style={{textAlign: 'right', marginTop: '-0.5rem', marginBottom: '1rem'}}>
-            <Link to="/forgot-password">Forgot Password?</Link>
+    <div className="page-form-wrapper login-layout"> {/* <-- ප්‍රධාන wrapper එකට අලුත් class එකක් දුන්නා */}
+      <h2>Login to Your Account</h2>
+
+      {/* ඉතුරු ඔක්කොම ටික මේ අලුත් div එක ඇතුළට දැම්මා */}
+      <div className="form-content-bottom">
+        <form onSubmit={handleSubmit}>
+          {error && <p className="error-message">{error}</p>}
+          <div className="form-group">
+            <label>Email</label>
+            <input 
+              type="email" 
+              required 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
-        <button disabled={loading} type="submit" className="form-button">
-          {loading ? 'Logging In...' : 'Login'}
+          <div className="form-group">
+            <label>Password</label>
+            <input 
+              type="password" 
+              required 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="form-link" style={{textAlign: 'right', marginTop: '-0.5rem', marginBottom: '1rem'}}>
+              <Link to="/forgot-password">Forgot Password?</Link>
+          </div>
+          <button disabled={loading} type="submit" className="form-button">
+            {loading ? 'Logging In...' : 'Login'}
+          </button>
+        </form>
+        <div className="form-divider"><span>OR</span></div>
+        <button disabled={loading} onClick={handleGoogleSignIn} className="google-signin-button">
+          Sign In with Google
         </button>
-      </form>
-      <div className="form-divider"><span>OR</span></div>
-      <button disabled={loading} onClick={handleGoogleSignIn} className="google-signin-button">
-        Sign In with Google
-      </button>
-      <div className="form-link">
-        Don't have an account? <Link to="/signup">Sign Up</Link>
+        <div className="form-link">
+          Don't have an account? <Link to="/signup">Sign Up</Link>
+        </div>
       </div>
     </div>
   );

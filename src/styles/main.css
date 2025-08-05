@@ -1,15 +1,56 @@
-/* A simple CSS Reset and some good defaults */
+:root {
+  /* --- Light Mode Colors (Default) --- */
+  --page-bg: #ffffff;
+  --text-color: #333333;
+  --primary-color: #5A2D82; /* Purple */
+  --accent-color: #08A012; /* Green */
+  --header-bg: rgba(42, 70, 74, 0.85); /* <-- Dark Transparent Header for Both Themes */
+  --header-text: #f1f1f1;
+  --header-hover-bg: #f0f2f5;
+  --logo-color: #FFFFFF;
+  --footer-bg: #333333;
+  --card-bg: #ffffff;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+  --border-color: rgba(128, 128, 128, 0.2);
+}
+
+.dark {
+  /* --- Dark Mode Colors --- */
+  --page-bg: #121c1b;
+  --text-color: #f1f1f1;
+  --primary-color: #9267c2; /* Lighter Purple for dark mode */
+  --accent-color: #08A012; /* Green can stay the same */
+  --header-bg: rgba(42, 70, 74, 0.7);
+  --header-text: #f1f1f1;
+  --header-hover-bg: rgba(255, 255, 255, 0.1);
+  --logo-color: #FFFFFF;
+  --footer-bg: #1a1a1a;
+  --card-bg: #2a3a38;
+  --card-shadow: rgba(0, 0, 0, 0.4);
+  --border-color: rgba(128, 128, 128, 0.4);
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* --- අලුතෙන් එකතු කරන කොටස --- */
+html, body, #root, .app-layout {
+  height: 100%;
+  width: 100%;
+}
+
+html {
+  overflow-x: hidden; /* අනවශ්‍ය horizontal scrollbars වළක්වාගන්න */
+}
+/* --- අලුත් කොටස මෙතනින් අවසන් --- */
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #f0f2f5; /* A light grey background like Facebook's */
+  margin: 0; /* <-- මේ පේළිය අනිවාර්යයෙන්ම එකතු කරන්න */
+  font-family: sans-serif;
+  background-color: var(--page-bg);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
