@@ -38,7 +38,9 @@
 
 /* === NEW Black Leather Book Cover === */
 .book-cover {
-    background: #121d1a; /* Dark charcoal/black color */
+    background-image: url('https://firebasestorage.googleapis.com/v0/b/nisadas-mawatha.firebasestorage.app/o/webapp%2FCover%20img.png?alt=media&token=22f6dc23-e636-4293-9677-54f154a13323');
+    background-size: cover;
+    background-position: center;
     border: 1px solid #000;
     box-shadow: inset 0 0 25px rgba(0,0,0,0.8);
 }
@@ -58,7 +60,7 @@
     width: 80%;
     max-width: 300px;
     margin-bottom: 20px;
-    margin-top: 85px;
+    margin-top: 100px;
 }
 
 .cover-subtitle {
@@ -68,7 +70,7 @@
     margin-bottom: 10px;
     letter-spacing: 1px;
     position: absolute;
-    bottom: 65px;
+    bottom: 80px;
     background-image: linear-gradient(
     to right,
     rgba(255, 255, 255, 0.6) 0%,
@@ -87,7 +89,7 @@
 .cover-open-prompt {
   /* Positioning styles ටික කලින් වගේමයි */
   position: absolute;
-  bottom: 40px;
+  bottom: 60px;
   
 
   /* Font styles ටික කලින් වගේමයි */
