@@ -15,7 +15,7 @@ import SearchBox from '../ui/SearchBox.jsx';
 // අලුත් CSS file එක import කරගන්න
 import './Header.css';
 
-function Header() {
+function Header({ showSearchBox = true }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { currentUser } = useAuth();
   const { theme, toggleTheme } = useTheme();
@@ -66,7 +66,7 @@ function Header() {
             />
           </Link>
           <div className="desktop-only desktop-nav-container">
-            <SearchBox />{/* SearchBox එක පසුවට එකතු කරගත හැක. දැනට Navigation එක දාමු. */}
+            {showSearchBox && <SearchBox />}{/* SearchBox එක පසුවට එකතු කරගත හැක. දැනට Navigation එක දාමු. */}
             <nav>
               <ul className="desktop-nav-list">
                 {navLinks.map(link => (

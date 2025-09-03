@@ -3,8 +3,9 @@ import Header from './Header.jsx';
 import Footer from './Footer.jsx';
 import './Layout.css';
 import { useTheme } from '../../context/ThemeContext.jsx';
-// --- 1. අලුතෙන් import කළ යුතු දේවල් ---
 import { useLocation, Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext.jsx';
+import LoadingScreen from '../common/LoadingScreen.jsx';
 
 function Layout({ children }) {
   const { theme } = useTheme();
@@ -12,7 +13,7 @@ function Layout({ children }) {
   // --- 2. දැනට සිටින page path එක ලබාගැනීම ---
   const location = useLocation();
   const isAuthPage = location.pathname === '/auth';
-
+const { loading } = useAuth();
   // --- 3. Auth Page එකට විශේෂිත Logo component එකක් ---
   const AuthHeader = () => (
     <header className="auth-header-logo-only">
@@ -22,12 +23,23 @@ function Layout({ children }) {
     </header>
   );
 
-  return (
-    // --- 4. Auth Page එකේදී Footer එකත් hide කිරීම ---
-    <div className={`app-layout ${theme} ${isAuthPage ? 'auth-page-layout' : ''}`}>
-      {isAuthPage ? <AuthHeader /> : <Header />}
-      <main className="main-content">{children}</main>
-      {!isAuthPage && <Footer />}
+  if (isAuthPage) {
+    return (
+      <div className={`app-layout ${theme} auth-page-layout`}>
+        <AuthHeader />
+        <main className="main-content">{children}</main>
+      </div>
+    );
+}
+return (
+    <div className={`app-layout ${theme}`}>
+      {/* loading වෙද්දී showSearchBox={false} ලෙස යෙදීම */}
+      <Header showSearchBox={!loading} />
+      <main className="main-content">
+        {/* loading නම් LoadingScreen එකත්, නැත්නම් page content එකත් පෙන්වීම */}
+        {loading ? <LoadingScreen /> : children}
+      </main>
+      <Footer />
     </div>
   );
 }

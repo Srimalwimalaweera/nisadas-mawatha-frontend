@@ -1,0 +1,114 @@
+/* --- Glass Effect, Blur, and Theme Colors --- */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease;
+
+  /* Glass Effect */
+  background-color: rgba(255, 255, 255, 0.5); /* Light mode background */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.dark .loading-overlay {
+  background-color: rgba(18, 28, 27, 0.5); /* Dark mode background (#121c1b) */
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.loading-text {
+  font-size: 1.1rem;
+  color: var(--text-color);
+  font-weight: 500;
+  opacity: 0.9;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.dark .loading-text {
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Auto-Looping SVG Animation --- */
+.book-shelf-loader {
+  width: 100px; /* SVG එකේ ප්‍රමාණය සකස් කිරීම */
+  height: auto;
+  /* Animation එක කෙලින්ම SVG එකට යෙදීම */
+  animation: start-loader-animation 2s infinite ease-in-out;
+}
+
+@keyframes book-bounce {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  80% { transform: translateY(0); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes shelf-lift {
+  0% { transform: translateY(0) rotate(0); }
+  20% { transform: translateY(-4px) rotate(10deg); }
+  40% { transform: translateY(-4px) rotate(0); }
+  60% { transform: translateY(-4px) rotate(-10deg); }
+  80% { transform: translateY(0); }
+  100% { transform: translateY(0); }
+}
+
+/* Main animation trigger */
+@keyframes start-loader-animation {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+.book-shelf-loader .book-shelf__book {
+  animation: book-bounce 1.2s ease infinite;
+}
+
+.book-shelf-loader .book-shelf__book--two {
+  animation-delay: 0.1s;
+}
+
+.book-shelf-loader .book-shelf__book--three {
+  animation-delay: 0.2s;
+}
+
+.book-shelf-loader .book-shelf__shelf {
+  animation: shelf-lift 1.2s ease infinite;
+  transform-origin: 50% 50%;
+}
+
+.loading-top-logo {
+  position: absolute;
+  top: 3rem;
+  left: 50%;
+  height: 65px;
+  width: auto;
+  
+  /* Animation එක සඳහා මූලික settings */
+  opacity: 0; /* මුලින්ම hide කර තැබීම */
+  transform: translateX(-50%) scale(0.95); /* තරමක් කුඩාවට තැබීම */
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; /* Smooth effect එක */
+}
+
+/* --- 2. Logo එක load වුණාම 'visible' class එකෙන් animation එක ක්‍රියාත්මක කිරීම --- */
+.loading-top-logo.visible {
+  opacity: 1; /* Fade-in වීම */
+  transform: translateX(-50%) scale(1); /* Zoom-in වීම */
+}
+
+
+
