@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useNavigate, Link } from 'react-router-dom';
 import './Form.css'; // අපි Signup එකට හදපු CSS එකම පාවිච්චි කරනවා!
+import { FcGoogle } from "react-icons/fc";
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -75,7 +76,7 @@ function LoginPage() {
         </form>
         <div className="form-divider"><span>OR</span></div>
         <button disabled={loading} onClick={handleGoogleSignIn} className="google-signin-button">
-          Sign In with Google
+          <FcGoogle size={22} /> Sign In with Google
         </button>
         <div className="form-link">
           Don't have an account? <Link to="/signup">Sign Up</Link>

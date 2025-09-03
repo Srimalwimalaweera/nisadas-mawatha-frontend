@@ -1,0 +1,45 @@
+.carousel-container {
+  padding: 1rem 0;
+}
+
+.carousel-title {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: bold;
+  letter-spacing: -0.025em; /* tracking-tight */
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
+}
+
+.carousel-wrapper {
+  position: relative;
+}
+
+.carousel-track {
+  display: flex;
+  overflow-x: auto;
+  gap: 1.5rem; /* space-x-6 */
+  padding-bottom: 1rem; /* pb-4 */
+  
+  /* Custom Scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) transparent;
+}
+
+.carousel-track::-webkit-scrollbar {
+  height: 5px;
+}
+
+.carousel-track::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.carousel-track::-webkit-scrollbar-thumb {
+  background-color: rgba(var(--primary-color-rgb, 8), 160, 18, 0.5);
+  border-radius: 10px;
+}
+
+.carousel-item {
+  /* --- පළල වෙනස් කළ තැන --- */
+  min-width: 190px; /* எல்லா screen size වලටම එකම පළල */
+}
+

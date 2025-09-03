@@ -1,31 +1,121 @@
-.book-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  background-color: #ffffff; /* Static white background */
-  transition: transform 0.2s;
-}
-.book-card:hover {
-  transform: translateY(-5px);
-}
-.book-card-image {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-}
-.book-card-content {
-  padding: 1rem;
-}
-.book-card-title {
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-  color: #333; /* Static dark text color */
-}
-.book-card-author {
-  color: #666; /* Static grey text color */
-}
-.book-card-link {
+.book-card-link-wrapper {
+  display: block;
+  height: 100%;
   text-decoration: none;
   color: inherit;
+}
+
+.book-card-container {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease-in-out;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--card-bg);
+  box-shadow: 0 1px 3px 0 var(--card-shadow);
+  
+  /* --- 1. සම්පූර්ණ card එකට ස්ථිර උසක් ලබා දීම --- */
+  height: 370px; /* ඔබට අවශ්‍ය සම්පූර්ණ උස මෙතන දෙන්න */
+}
+
+.book-card-link-wrapper:hover .book-card-container {
+  box-shadow: 0 10px 15px -3px var(--card-shadow), 0 4px 6px -4px var(--card-shadow);
+  border-color: var(--primary-color);
+  transform: translateY(-4px) scale(1.02);
+}
+
+.book-card-image-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  /* --- 2. aspect-ratio ඉවත් කර, image කොටසට ස්ථිර උසක් ලබා දීම --- */
+  height: 260px; /* ඔබට අවශ්‍ය පින්තූරයේ උස මෙතන දෙන්න */
+  flex-shrink: 0; /* content එක වැඩි වුණත් මේ කොටස හැකිලෙන්නේ නෑ */
+}
+
+.book-card-image {
+  object-fit: cover; /* --- 3. පින්තූරය ඇදීමකට ලක් නොවී, කොටුවට fill වීම --- */
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s ease-in-out;
+}
+
+.book-card-link-wrapper:hover .book-card-image {
+  transform: scale(1.05);
+}
+
+.book-card-content {
+  padding: 0.75rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.book-card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.25;
+  margin-bottom: 0.25rem;
+  transition: color 0.3s;
+  
+  /* දිගු தலைப்பு නම් ... ලෙස පෙන්වීමට */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; 
+  -webkit-box-orient: vertical;
+}
+
+.book-card-link-wrapper:hover .book-card-title {
+  color: var(--primary-color);
+}
+
+.book-card-author {
+  font-size: 0.875rem;
+  color: #888;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: auto; /* කතෘගේ නම පහළට තල්ලු කරයි */
+}
+
+.book-card-footer {
+  padding: 0 0.75rem 0.75rem 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+}
+
+.book-card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.book-card-badge-secondary {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  border: 1px solid var(--border-color);
+  padding: 0.125rem 0.625rem;
+  font-weight: 600;
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.dark .book-card-badge-secondary {
+  background-color: #374151;
+  color: #f3f4f6;
+}
+
+.book-card-rating {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: #f59e0b;
 }

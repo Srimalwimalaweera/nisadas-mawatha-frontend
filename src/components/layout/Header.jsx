@@ -1,55 +1,111 @@
-import React from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import './Header.css';
+import React, { useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+
+// Context Hooks
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useTheme } from '../../context/ThemeContext.jsx';
-import { BsSunFill, BsMoonFill } from "react-icons/bs"; // System icon එක දැන් අවශ්‍ය නෑ
+
+// UI Components
+import DarkModeToggle from '../ui/DarkModeToggle.jsx';
+import AnimatedMenuIcon from '../ui/AnimatedMenuIcon.jsx';
+import SidePanel from '../ui/SidePanel.jsx';
 import ProfileDropdown from '../common/ProfileDropdown.jsx';
+import SearchBox from '../ui/SearchBox.jsx';
+
+// අලුත් CSS file එක import කරගන්න
+import './Header.css';
 
 function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { currentUser } = useAuth();
-  const { theme, toggleTheme } = useTheme(); // <-- සරල theme සහ toggleTheme
-  const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
+  const isDarkMode = theme === 'dark';
 
-  
+  const headerClass = isDarkMode ? 'header-dark' : 'header-light';
+
+  // Navigation link styles
+  const navLinkClass = ({ isActive }) =>
+    `desktop-nav-link ${isActive ? 'active' : ''}`;
+
+  // Reusable navigation links
+  const navLinks = [
+    { to: "/", text: "මුල් පිටුව" },
+    { to: "/books", text: "පොත්" },
+    { to: "/writers", text: "ලේඛකයින්" },
+    ...(currentUser ? [{ to: "/my-library", text: "My Library" }] : []),
+    ...(currentUser && currentUser.role === 'admin' 
+        ? [{ to: "/admin", text: "Admin Panel", className: "admin-link" }] 
+        : [])
+  ];
 
   return (
-    <header className="main-header">
-      <Link to="/" className="logo-link">
-        <img src="https://firebasestorage.googleapis.com/v0/b/nisadas-mawatha.firebasestorage.app/o/webapp%2FNisadas%20Mawatha%20Logo.png?alt=media&token=bba44519-77de-48fb-a048-941625ac3e93" alt="Nisadas Mawatha Logo" className="header-logo" />
-      </Link>
-      <nav className="main-nav">
-        <NavLink to="/">මුල් පිටුව</NavLink>
-        <NavLink to="/books">පොත්</NavLink>
-        <NavLink to="/writers">ලේඛකයින්</NavLink>
+    <>
+      <header className={`new-main-header ${headerClass}`}>
+        
+        {/* Left Section */}
+        <div className="header-left-section">
+          <div className="mobile-only" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <AnimatedMenuIcon isOpen={isMenuOpen} />
+          </div>
+          <Link to="/" className="desktop-only">
+            <img 
+              src="https://firebasestorage.googleapis.com/v0/b/nisadas-mawatha.firebasestorage.app/o/webapp%2FNisadas%20Mawatha%20Logo.png?alt=media&token=bba44519-77de-48fb-a048-941625ac3e93" 
+              alt="Nisadas Mawatha Logo"
+              className="header-logo"
+            />
+          </Link>
+        </div>
 
-        {currentUser && (
-          <NavLink to="/my-library">My Library</NavLink>
-        )}
+        {/* Center Section */}
+        <div className="header-center-section">
+          <Link to="/" className="mobile-only">
+             <img 
+              src="https://firebasestorage.googleapis.com/v0/b/nisadas-mawatha.firebasestorage.app/o/webapp%2FNisadas%20Mawatha%20Logo.png?alt=media&token=bba44519-77de-48fb-a048-941625ac3e93" 
+              alt="Nisadas Mawatha Logo"
+              className="header-logo"
+            />
+          </Link>
+          <div className="desktop-only desktop-nav-container">
+            <SearchBox />{/* SearchBox එක පසුවට එකතු කරගත හැක. දැනට Navigation එක දාමු. */}
+            <nav>
+              <ul className="desktop-nav-list">
+                {navLinks.map(link => (
+                  <li key={link.to}>
+                    <NavLink to={link.to} className={link.className ? `${navLinkClass({isActive:false})} ${link.className}` : navLinkClass}>
+                      {link.text}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+        </div>
 
-        {currentUser && currentUser.role === 'admin' && (
-          <NavLink to="/admin" style={{color: 'red', fontWeight: 'bold'}}>Admin Panel</NavLink>
-        )}
-      </nav>
-      <div className="user-actions">
-        <button onClick={toggleTheme} className="theme-toggle-btn" title="Toggle Theme">
-          {/* Icon එක සරලව මාරු කරනවා */}
-          {theme === 'light' ? <BsMoonFill /> : <BsSunFill />}
-        </button>
+        {/* Right Section */}
+        <div className="header-right-section">
+          <div className="desktop-only">
+            <DarkModeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+          </div>
+          
+          {currentUser ? (
+            <ProfileDropdown />
+          ) : (
+            <Link to="/auth">
+              <button className="header-login-btn">Login</button>
+            </Link>
+          )}
+        </div>
+      </header>
 
-        {currentUser ? (
-          // User log වෙලා නම්, Profile Dropdown එක විතරක් පෙන්නනවා
-          <ProfileDropdown />
-        ) : (
-          // User log වෙලා නැත්නම්, Login/Signup buttons පෙන්නනවා
-          <>
-            <Link to="/auth" className="login-btn-link">
-    <button className="login-btn">Login / Sign Up</button>
-  </Link>
-          </>
-        )}
-      </div>
-    </header>
+      {/* Side Panel for Mobile */}
+      <SidePanel 
+        isOpen={isMenuOpen} 
+        isDarkMode={isDarkMode} 
+        toggleTheme={toggleTheme}
+        navLinks={navLinks}
+        onClose={() => setIsMenuOpen(false)}
+      />
+    </>
   );
 }
 

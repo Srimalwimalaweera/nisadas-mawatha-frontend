@@ -1,114 +1,124 @@
-.main-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  
-  /* --- Blur & Transparency Effect --- */
-  background-color: var(--header-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); /* For Safari */
-  
-  /* --- Sticky Header --- */
-  position: sticky;
+/* Main Header Styling */
+.new-main-header {
+  position: fixed;
   top: 0;
-  z-index: 1000;
+  left: 0;
   width: 100%;
-  border-bottom: 1px solid var(--border-color);
-  transition: background-color 0.3s ease;
-}
-
-.logo-link {
-  display: flex; /* Centers the image vertically */
+  padding: 0.75rem 1rem; /* p-4 */
+  z-index: 50;
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+  
+  /* Mobile First: Grid Layout */
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  height: 50px; /* Adjust height of the logo container */
 }
 
-.header-logo {
-  height: 85%; /* Make the image fill the container's height */
-  width: auto;
+.header-light {
+  background-color: #2a3b39;
+}
+.header-dark {
+  background-color: rgba(42, 59, 57, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.main-nav {
-  display: flex;
-  gap: 1.5rem;
+/* Section Alignments */
+.header-left-section {
+  justify-self: start;
 }
-.main-nav a {
-  text-decoration: none;
-  color: var(--header-text);
-  font-weight: 500;
-  padding-bottom: 5px;
-  border-bottom: 2px solid transparent;
-  transition: color 0.3s ease, border-color 0.3s ease;
+.header-center-section {
+  justify-self: center;
 }
-.main-nav a.active {
-  border-bottom-color: var(--accent-color);
-}
-.main-nav a:hover {
-  color: var(--accent-color);
-}
-
-.user-actions {
+.header-right-section {
+  justify-self: end;
   display: flex;
   align-items: center;
   gap: 1rem;
 }
-.user-actions span {
-  font-weight: 500;
-  color: var(--header-text);
+
+/* Logo */
+.header-logo {
+  height: 40px; /* h-10 */
+  width: auto;
 }
 
-.login-btn, .logout-btn {
-  padding: 0.5rem 1rem;
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-.login-btn:hover, .logout-btn:hover {
-  opacity: 0.9;
+/* Navigation for Desktop */
+.desktop-nav-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.signup-btn {
-  padding: 0.5rem 1rem;
-  background-color: transparent;
-  color: var(--primary-color);
-  border: 1px solid var(--primary-color);
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-.signup-btn:hover {
-  background-color: var(--primary-color);
-  color: white;
-}
-
-.user-profile-link {
-  text-decoration: none;
-  font-weight: 500;
-  padding: 0.5rem;
-  border-radius: 5px;
-  transition: background-color 0.2s;
-}
-.user-profile-link:hover {
-  background-color: var(--header-hover-bg);
-}
-
-.theme-toggle-btn {
-  background: none;
-  border: none;
-  color: var(--header-text);
-  font-size: 1.3rem;
-  cursor: pointer;
+.desktop-nav-list {
   display: flex;
   align-items: center;
-  padding: 5px;
+  gap: 2rem; /* gap-8 */
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
-.theme-toggle-btn svg {
-  transition: transform 0.5s ease;
+
+.desktop-nav-link {
+  color: white;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s;
 }
-.theme-toggle-btn:hover svg {
-  transform: rotate(360deg);
+.desktop-nav-link:hover {
+  color: #d1d5db; /* text-gray-300 */
+}
+.desktop-nav-link.active {
+  color: white;
+  font-weight: bold;
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 2px;
+}
+.admin-link {
+  color: #f87171 !important; /* text-red-400 */
+  font-weight: bold;
+}
+.admin-link:hover {
+  color: #ef4444 !important; /* text-red-500 */
+}
+
+/* Login Button */
+.header-login-btn {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem; /* py-2 px-4 */
+  border-radius: 0.5rem; /* rounded-lg */
+  font-weight: bold;
+  font-size: 0.875rem; /* text-sm */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.header-login-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive utilities */
+.mobile-only {
+  display: block;
+}
+.desktop-only {
+  display: none;
+}
+
+/* Desktop Styles (md breakpoint: 768px) */
+@media (min-width: 768px) {
+  .new-main-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+  }
+  .mobile-only {
+    display: none;
+  }
+  .desktop-only {
+    display: flex;
+  }
 }

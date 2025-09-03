@@ -3,16 +3,16 @@ import { getFunctions, httpsCallable } from "firebase/functions";
 import { useAuth } from '../context/AuthContext.jsx';
 import { useNavigate, Link } from 'react-router-dom';
 import './Form.css';
-import { FcGoogle } from "react-icons/fc"; // Google Icon
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Eye Icons
+import { FcGoogle } from "react-icons/fc";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('reader');
-  const [termsAccepted, setTermsAccepted] = useState(true); // Default tick කරලා
-  const [showPassword, setShowPassword] = useState(false); // Password පේනවද නැද්ද බලන්න
+  const [termsAccepted, setTermsAccepted] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
@@ -31,7 +31,6 @@ function SignupPage() {
       const registerUser = httpsCallable(functions, 'registerUser');
       await registerUser({ email: email, password: password, role: role });
       
-      // සාර්ථකව හැදුවම, login page එකට message එකක් එක්ක යවනවා
       navigate('/login', { state: { message: 'Account created successfully! Please log in.' } });
     } catch (err) {
       setError(err.message);
@@ -39,10 +38,22 @@ function SignupPage() {
     setLoading(false);
   };
 
-  const handleGoogleSignIn = async () => { /* ... කලින් වගේම ... */ };
+  // --- 1. Google Sign-In Function එක සම්පූර්ණ කිරීම ---
+  const handleGoogleSignIn = async () => {
+    try {
+      setError('');
+      setLoading(true);
+      await signInWithGoogle();
+      navigate('/'); // සාර්ථක නම්, homepage එකට redirect කරනවා
+    } catch (err) {
+      setError('Failed to sign in with Google. Please try again.');
+      console.error(err);
+    }
+    setLoading(false);
+  };
 
   return (
-    <div className="page-form-wrapper"> {/* <-- අලුත් div එක */}
+    <div className="page-form-wrapper">
       <form onSubmit={handleSubmit}>
         <h2>Create an Account</h2>
         {error && <p className="error-message">{error}</p>}
