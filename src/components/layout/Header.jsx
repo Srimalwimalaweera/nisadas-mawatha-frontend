@@ -11,7 +11,7 @@ import AnimatedMenuIcon from '../ui/AnimatedMenuIcon.jsx';
 import SidePanel from '../ui/SidePanel.jsx';
 import ProfileDropdown from '../common/ProfileDropdown.jsx';
 import SearchBox from '../ui/SearchBox.jsx';
-
+import ThemeToggleButton from '../ui/ThemeToggleButton.jsx'; 
 // අලුත් CSS file එක import කරගන්න
 import './Header.css';
 
@@ -84,15 +84,21 @@ function Header({ showSearchBox = true }) {
         {/* Right Section */}
         <div className="header-right-section">
           <div className="desktop-only">
-            <DarkModeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+            {/* පැරණි toggle එක වෙනුවට අලුත් එක යෙදීම */}
+            <ThemeToggleButton isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
           </div>
           
           {currentUser ? (
             <ProfileDropdown />
           ) : (
-            <Link to="/auth">
-              <button className="header-login-btn">Login</button>
-            </Link>
+            <div className="auth-buttons">
+              <Link to="/signup">
+                <button className="header-action-btn signup-btn">Signup</button>
+              </Link>
+              <Link to="/login">
+                <button className="header-action-btn login-btn">Login</button>
+              </Link>
+            </div>
           )}
         </div>
       </header>

@@ -27,7 +27,7 @@ const SidePanel = ({ isOpen, isDarkMode, toggleTheme, navLinks, onClose }) => {
             ))}
           </ul>
         </nav>
-        <DarkModeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+        
       </div>
     </div>
   );

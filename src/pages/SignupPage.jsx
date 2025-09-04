@@ -6,7 +6,7 @@ import './Form.css';
 import { FcGoogle } from "react-icons/fc";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-function SignupPage() {
+function SignupPage({ onNavigateToLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -108,6 +108,10 @@ function SignupPage() {
         <FcGoogle size={22} />
         <span>Sign Up with Google</span>
       </button>
+      <div className="form-link">
+        Already registered? 
+        <a onClick={onNavigateToLogin} style={{cursor: 'pointer'}}> Login now.</a>
+      </div>
     </div>
   );
 }

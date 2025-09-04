@@ -1,6 +1,6 @@
-/* --- Layout.jsx එකේදී යෙදූ class සඳහා styles --- */
+/* Layout.jsx එකේදී යෙදූ class සඳහා styles */
 .auth-page-layout .main-content {
-    padding-top: 0; /* Header එකේ padding එක ඉවත් කිරීම */
+    padding-top: 0;
 }
 .auth-header-logo-only {
     position: absolute;
@@ -15,10 +15,10 @@
     width: auto;
 }
 
-/* --- AuthBook Container එක Responsive කිරීම --- */
+/* AuthBook Container එක Responsive කිරීම */
 .auth-book-container {
     width: 100%;
-    height: 100%; /* Layout එකෙන් එන සම්පූර්ණ උස ගැනීම */
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,66 +28,52 @@
     background-position: center;
     overflow: hidden;
     position: relative;
-    padding-top: 60px; /* Logo එකට ඉඩ තැබීම */
+    padding-top: 60px;
     padding-bottom: 20px;
     box-sizing: border-box;
 }
 
 .book-wrapper {
     width: 90%;
-    max-width: 500px; /* පොතේ උපරිම පළල */
-    height: auto; /* උස, පළලට අනුව සකස් වීම */
+    max-width: 500px;
+    height: auto;
     perspective: 2500px;
-    filter: drop-shadow(10px 10px 20px rgba(0,0,0,0.4));
+    filter: drop-shadow(5px 15px 15px rgba(0,0,0,0.3));
 }
-/* කුඩා තිර සඳහා */
-@media (max-width: 768px) {
-    .book-wrapper {
-        max-width: 400px;
-    }
-}
-@media (max-width: 480px) {
-    .book-wrapper {
-        width: 95%;
-        max-width: 320px;
-    }
-    .auth-header-logo-only {
-        padding: 0.5rem 1rem;
-    }
-}
+@media (max-width: 768px) { .book-wrapper { max-width: 400px; } }
+@media (max-width: 480px) { .book-wrapper { width: 95%; max-width: 320px; } .auth-header-logo-only { padding: 0.5rem 1rem; } }
 
-
-/* --- Page Scrolling Logic --- */
-.page-content-wrapper {
-    padding: 1rem 1.5rem;
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box;
-    overflow-y: hidden; /* Default: no scroll */
-}
-.page-content-wrapper.scrollable {
-    overflow-y: auto; /* Scrollable class එක ඇති විට scrollbar පෙන්වීම */
-}
-
-/* Scrollbar styles (from old code) */
-.page-content-wrapper.scrollable::-webkit-scrollbar { width: 3px; }
+/* Page Scrolling Logic */
+.page-content-wrapper { padding: 1rem 1.5rem; height: 100%; width: 100%; box-sizing: border-box; overflow-y: hidden; }
+.page-content-wrapper.scrollable { overflow-y: auto; }
+.page-content-wrapper.scrollable::-webkit-scrollbar { width: 5px; }
 .page-content-wrapper.scrollable::-webkit-scrollbar-track { background: transparent; }
-.page-content-wrapper.scrollable::-webkit-scrollbar-thumb { background: #739964; border-radius: 5px; }
-.page-content-wrapper.scrollable::-webkit-scrollbar-thumb:hover { background: hsl(106, 56%, 61%); }
+.page-content-wrapper.scrollable::-webkit-scrollbar-thumb { background: #888; border-radius: 5px; }
+.page-content-wrapper.scrollable::-webkit-scrollbar-thumb:hover { background: #555; }
 
-
-/* --- ඉතිරි styles (පෙර තිබූ ඒවා) --- */
-.auth-page {
+/* Text Selection නැවැත්වීම */
+.auth-page, .book-cover {
     background-color: var(--card-bg, #fdfaf7);
     color: var(--text-color, #333);
     border: 1px solid var(--border-color, #c2b5a3);
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
+.auth-page input, .auth-page textarea { user-select: text; -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; }
 
+/* පොතට Rounded Corners සහ 3D පෙනුම */
+.auth-book {
+    border-radius: 0 1rem 1rem 0;
+    overflow: hidden;
+}
 .book-cover {
     background-image: url('https://firebasestorage.googleapis.com/v0/b/nisadas-mawatha.firebasestorage.app/o/webapp%2FCover%20img.png?alt=media&token=22f6dc23-e636-4293-9677-54f154a13323');
     background-size: cover;
     background-position: center;
     border: 1px solid #000;
+    cursor: pointer;
 }
 .cover-design-new {
     display: flex;
@@ -98,12 +84,16 @@
     padding: 40px;
     box-sizing: border-box;
 }
+
+/* --- Logo Animation එකට අදාළ Styles --- */
 .cover-title-image {
     width: 80%;
     max-width: 300px;
     margin-bottom: 20px;
     margin-top: 100px;
+    
 }
+
 .cover-subtitle, .cover-open-prompt {
     font-family: 'Georgia', 'Times New Roman', serif;
     background-image: linear-gradient( to right, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 1) 20%, rgba(255, 255, 255, 0.6) 40%, rgba(255, 255, 255, 0.6) 100% );
@@ -112,59 +102,30 @@
     -webkit-background-clip: text;
     background-clip: text;
 }
-.cover-subtitle {
-    font-size: 1.5rem;
-    position: absolute;
-    bottom: 80px;
-    animation: shimmer 2s linear infinite;
-}
-.cover-open-prompt {
-    position: absolute;
-    bottom: 60px;
-    font-size: 1rem;
-    animation: shimmer 3s linear infinite;
-}
-.book-navigation {
-    /* position: absolute වෙනුවට fixed යොදා screen එකටම අදාළව සකස් කිරීම */
-    position: fixed;
-    bottom: 20px; /* පහළ සිට ඉඩ */
-    left: 50%;
-    transform: translateX(-50%); /* හරියටම මැදට ගැනීම */
-    z-index: 9999; /* හැමදේටම උඩින් පෙන්වීමට */
+.cover-subtitle { font-size: 1.5rem; position: absolute; bottom: 80px; animation: shimmer 2s linear infinite; }
+.cover-open-prompt { position: absolute; bottom: 60px; font-size: 1rem; animation: shimmer 3s linear infinite; }
 
+/* Navigation Buttons (Prev/Next) */
+.book-navigation {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    z-index: 100;
+    opacity: 0;
+    transform: translate(-50%, 20px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
     display: flex;
     align-items: center;
     gap: 20px;
-    background-color: rgba(0, 0, 0, 0.4); /* පසුබිමක් ලබා දීම */
-    padding: 8px 20px; /* Padding එකක් ලබා දීම */
-    border-radius: 50px; /* වටකුරු කිරීම */
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 8px 20px;
+    border-radius: 50px;
     color: rgba(255, 255, 255, 0.9);
     text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-    transition: opacity 0.3s ease;
 }
+.book-navigation.visible { opacity: 1; transform: translate(-50%, 0); }
+.book-navigation button { background: none; border: none; font-size: 2rem; color: rgba(255, 255, 255, 0.8); cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+.book-navigation button:hover { transform: scale(1.1); }
+.book-navigation button:disabled { color: rgba(255, 255, 255, 0.3); cursor: not-allowed; transform: scale(1); }
 
-.book-navigation button {
-    background: none;
-    border: none;
-    font-size: 2rem; /* Button size එක පොඩි කළා */
-    color: rgba(255, 255, 255, 0.8);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex; /* Icon එක හරියටම මැදට ගැනීමට */
-    align-items: center;
-    justify-content: center;
-}
-.book-navigation button:hover {
-    color: #fff;
-    transform: scale(1.1);
-}
-
-.book-navigation button:disabled {
-    color: rgba(255, 255, 255, 0.3);
-    cursor: not-allowed;
-    transform: scale(1); /* disabled විට scale effect එක නැති කිරීම */
-}
-
-@keyframes shimmer {
-  to { background-position: -200% center; }
-}
+@keyframes shimmer { to { background-position: -200% center; } }

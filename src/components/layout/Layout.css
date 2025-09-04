@@ -10,3 +10,38 @@
   flex: 1;
   padding-top: 90px; /* <-- header එකට ඉඩ තැබීමට මෙම පේළිය එකතු කරන්න */
 }
+
+@media (max-width: 768px) {
+  .main-content {
+    /* BottomNav එකේ උසට (60px) වඩා වැඩි ඉඩක් තැබීම */
+    padding-bottom: 80px;
+  }
+}
+
+/* --- Auth Page එකට අදාළ අලුත් Header එක සඳහා Styles --- */
+.auth-special-header {
+  position: fixed; /* පිටුව scroll කළත් උඩින්ම තියෙන්න */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  padding: 0.75rem 0; /* උඩ සහ යට padding */
+  display: flex;
+  justify-content: center; /* Logo එක මැදට ගන්න */
+  align-items: center;
+
+  /* ඔබ ඉල්ලූ styles */
+  background-color: rgba(39, 53, 50, 0.85); /* #273532 වර්ණය සහ transparency */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Safari browser එකට */
+}
+
+/* పాత header එකේ class එක ඉවත් කරන නිසා, මේ class එක තවදුරටත් අවශ්‍ය නැහැ */
+.auth-header-logo-only {
+  display: none;
+}
+
+/* අලුත් header එක නිසා පොතේ උඩින් තියෙන ඉඩ සකස් කිරීම */
+.auth-book-container {
+  padding-top: 90px; /* Header එකේ උසට ඉඩ තැබීම */
+}

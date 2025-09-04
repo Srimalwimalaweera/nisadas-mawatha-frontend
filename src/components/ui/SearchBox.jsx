@@ -52,7 +52,7 @@ const SearchBox = () => {
         type="search" 
         name="q" 
         aria-label="Search for books or authors"
-        placeholder="නිර්මාණ හෝ නිර්මාණකරුවන් සොයන්න..."
+        placeholder="Search..."
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />

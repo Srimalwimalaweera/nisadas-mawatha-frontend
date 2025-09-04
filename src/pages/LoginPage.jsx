@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import './Form.css'; // අපි Signup එකට හදපු CSS එකම පාවිච්චි කරනවා!
 import { FcGoogle } from "react-icons/fc";
 
-function LoginPage() {
+function LoginPage({ onNavigateToSignup }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -79,7 +79,9 @@ function LoginPage() {
           <FcGoogle size={22} /> Sign In with Google
         </button>
         <div className="form-link">
-          Don't have an account? <Link to="/signup">Sign Up</Link>
+          Don't have an account? 
+          {/* react-router Link එක වෙනුවට <a> tag එකක් යොදා onClick එකට function එක දෙන්න */}
+          <a onClick={onNavigateToSignup} style={{cursor: 'pointer'}}> Sign Up</a>
         </div>
       </div>
     </div>

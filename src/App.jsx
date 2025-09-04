@@ -2,44 +2,54 @@ import { Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout.jsx';
 import Homepage from './pages/Homepage.jsx';
 import BookDetailsPage from './pages/BookDetailsPage.jsx';
-import LoginPage from './pages/LoginPage.jsx';
-import SignupPage from './pages/SignupPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
-import ForgotPasswordPage from './pages/ForgotPasswordPage.jsx';
 import PurchasePage from './pages/PurchasePage.jsx';
 import AdminPage from './pages/AdminPage.jsx';
 import AdminRoute from './components/common/AdminRoute.jsx';
 import MyLibraryPage from './pages/MyLibraryPage.jsx';
 import ProtectedRoute from './components/common/ProtectedRoute.jsx';
-import TermsPage from './pages/TermsPage.jsx';
-import PrivacyPolicyPage from './pages/PrivacyPolicyPage.jsx';
 import AuthBook from './pages/AuthBook.jsx';
-import AboutPage from './pages/AboutPage.jsx';
+import WritersPage from './pages/WritersPage.jsx';
+import CreatorPanelRouter from './pages/creator/CreatorPanelRouter.jsx';
+import ReaderPanelPage from './pages/creator/ReaderPanelPage.jsx';
+import WriterPanelPage from './pages/creator/WriterPanelPage.jsx';
+import PhotographerPanelPage from './pages/creator/PhotographerPanelPage.jsx';
+import StudentPanelPage from './pages/creator/StudentPanelPage.jsx';
+
+// LoginPage, SignupPage වැනි pages මෙතනට import කිරීම අවශ්‍ය නැහැ.
 
 function App() {
   return (
     <Layout>
       <Routes>
-        <Route path="/" element={<Homepage />} />
+        {/* --- 1. AuthBook එකට සම්බන්ධ සියලුම paths, AuthBook component එකට යොමු කිරීම --- */}
         <Route path="/auth" element={<AuthBook />} />
+        <Route path="/login" element={<AuthBook />} />
+        <Route path="/signup" element={<AuthBook />} />
+        <Route path="/terms" element={<AuthBook />} />
+        <Route path="/privacy-policy" element={<AuthBook />} />
+        <Route path="/about" element={<AuthBook />} />
+        
+        <Route path="/Auth" element={<AuthBook />} />
+<Route path="/Login" element={<AuthBook />} />
+        <Route path="/Signup" element={<AuthBook />} />
+        <Route path="/Terms" element={<AuthBook />} />
+        <Route path="/Privacy-policy" element={<AuthBook />} />
+        <Route path="/About" element={<AuthBook />} />
+
+        {/* --- ඉතිරි routes පෙර පරිදිම --- */}
+        <Route path="/" element={<Homepage />} />
         <Route path="/books/:bookId" element={<BookDetailsPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         <Route path="/purchase/:bookId" element={<PurchasePage />} />
-        <Route 
-          path="/admin" 
-          element={
-            <AdminRoute>
-              <AdminPage />
-            </AdminRoute>
-          } 
-        />
+        <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
         <Route path="/my-library" element={ <ProtectedRoute><MyLibraryPage /></ProtectedRoute> } />
-        <Route path="/terms" element={<TermsPage />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-        <Route path="/about" element={<AboutPage />} />
+        <Route path="/writers" element={<WritersPage />} />
+        <Route path="/creator" element={<CreatorPanelRouter />} />
+        <Route path="/creator/reader" element={<ProtectedRoute><ReaderPanelPage /></ProtectedRoute>} />
+        <Route path="/creator/writer" element={<ProtectedRoute><WriterPanelPage /></ProtectedRoute>} />
+        <Route path="/creator/photographer" element={<ProtectedRoute><PhotographerPanelPage /></ProtectedRoute>} />
+        <Route path="/creator/student" element={<ProtectedRoute><StudentPanelPage /></ProtectedRoute>} />
       </Routes>
     </Layout>
   );
