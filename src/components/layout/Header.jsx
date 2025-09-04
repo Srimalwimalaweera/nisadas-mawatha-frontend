@@ -6,7 +6,7 @@ import { useAuth } from '../../context/AuthContext.jsx';
 import { useTheme } from '../../context/ThemeContext.jsx';
 
 // UI Components
-import DarkModeToggle from '../ui/DarkModeToggle.jsx';
+
 import AnimatedMenuIcon from '../ui/AnimatedMenuIcon.jsx';
 import SidePanel from '../ui/SidePanel.jsx';
 import ProfileDropdown from '../common/ProfileDropdown.jsx';

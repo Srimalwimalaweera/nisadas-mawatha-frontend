@@ -81,7 +81,7 @@ function LoginPage({ onNavigateToSignup }) {
         <div className="form-link">
           Don't have an account? 
           {/* react-router Link එක වෙනුවට <a> tag එකක් යොදා onClick එකට function එක දෙන්න */}
-          <a onClick={onNavigateToSignup} style={{cursor: 'pointer'}}> Sign Up</a>
+          <href onClick={onNavigateToSignup} style={{cursor: 'pointer'}}> Sign Up</href>
         </div>
       </div>
     </div>

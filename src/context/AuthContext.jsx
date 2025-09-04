@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, createContext, useRef } from 'react';
+import React, { useContext, useState, useEffect, createContext, } from 'react';
 import { getAuth, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, updateProfile, sendPasswordResetEmail } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { getFunctions, httpsCallable } from "firebase/functions";

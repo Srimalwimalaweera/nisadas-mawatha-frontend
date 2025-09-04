@@ -11,6 +11,12 @@ import AboutPage from './AboutPage';
 
 import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from "react-icons/bs";
 
+const pageRoutes = {
+  '/signup': 0, '/login': 1, '/terms': 2,
+  '/privacy-policy': 3, '/about': 4, '/Signup': 0, '/Login': 1, '/Terms': 2,
+  '/Privacy-policy': 3, '/About': 4
+};
+
 const Page = React.forwardRef(({ children, allowScroll = false }, ref) => {
     return (
         <div className="auth-page" ref={ref}>
@@ -40,12 +46,7 @@ function AuthBook() {
     const totalPages = 6;
     const location = useLocation();
     const initialFlipDone = useRef(false);
-
-    const pageRoutes = {
-      '/signup': 0, '/login': 1, '/terms': 2,
-      '/privacy-policy': 3, '/about': 4, '/Signup': 0, '/Login': 1, '/Terms': 2,
-      '/Privacy-policy': 3, '/About': 4
-    };
+    
 
     // --- 1. දෝෂ සහිත function එක ඉවත් කර, නව, වඩාත් නිවැරදි function එකක් යෙදීම ---
     const flipToPage = (targetPage) => {
@@ -73,22 +74,21 @@ function AuthBook() {
         const path = location.pathname;
         const targetPage = pageRoutes[path];
 
-        if (targetPage && bookRef.current && !initialFlipDone.current) {
-            // --- 2. ඔබ ඉල්ලූ පරිදි ප්‍රමාදය තත්පර 3ක් ලෙස වෙනස් කිරීම ---
+        if (targetPage !== undefined && bookRef.current && !initialFlipDone.current) {
             const timer = setTimeout(() => {
                 flipToPage(targetPage);
                 initialFlipDone.current = true;
             }, 3000); // 3000ms = 3 seconds
             return () => clearTimeout(timer);
-        } else if (path === '/auth','signup','Signup','Auth' && !initialFlipDone.current) {
-             const autoOpenTimer = setTimeout(() => {
+        } else if (['/auth', '/signup', '/Signup', '/Auth'].includes(path) && !initialFlipDone.current) {
+            const autoOpenTimer = setTimeout(() => {
                 if (bookRef.current && bookRef.current.pageFlip().getCurrentPageIndex() === 0) {
                     bookRef.current.pageFlip().flipNext();
                 }
             }, 5000);
             return () => clearTimeout(autoOpenTimer);
         }
-    }, [location.pathname]); // location.pathname යනු dependency එකයි
+    }, [location.pathname]); // නිවැරදි කරන ලද dependency array // location.pathname යනු dependency එකයි
 
     const onPage = (e) => {
         setCurrentPage(e.data);

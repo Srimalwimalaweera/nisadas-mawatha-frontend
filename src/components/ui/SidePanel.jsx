@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import DarkModeToggle from './DarkModeToggle';
+
 import './SidePanel.css';
 
 const SidePanel = ({ isOpen, isDarkMode, toggleTheme, navLinks, onClose }) => {
