@@ -28,12 +28,13 @@ function SignupPage({ onNavigateToLogin }) {
       setError('');
       setLoading(true);
       const functions = getFunctions();
+      // 'registerUser' cloud function එකට role එකත් යැවීම
       const registerUser = httpsCallable(functions, 'registerUser');
       await registerUser({ email: email, password: password, role: role });
       
       navigate('/login', { state: { message: 'Account created successfully! Please log in.' } });
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'Failed to create an account.');
     }
     setLoading(false);
   };

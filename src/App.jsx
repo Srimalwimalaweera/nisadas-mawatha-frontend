@@ -15,7 +15,8 @@ import ReaderPanelPage from './pages/creator/ReaderPanelPage.jsx';
 import WriterPanelPage from './pages/creator/WriterPanelPage.jsx';
 import PhotographerPanelPage from './pages/creator/PhotographerPanelPage.jsx';
 import StudentPanelPage from './pages/creator/StudentPanelPage.jsx';
-
+import CreatorRoute from './components/common/CreatorRoute';
+import PdfReaderPage from './pages/PdfReaderPage';
 // LoginPage, SignupPage වැනි pages මෙතනට import කිරීම අවශ්‍ය නැහැ.
 
 function App() {
@@ -45,11 +46,14 @@ function App() {
         <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
         <Route path="/my-library" element={ <ProtectedRoute><MyLibraryPage /></ProtectedRoute> } />
         <Route path="/writers" element={<WritersPage />} />
-        <Route path="/creator" element={<CreatorPanelRouter />} />
-        <Route path="/creator/reader" element={<ProtectedRoute><ReaderPanelPage /></ProtectedRoute>} />
-        <Route path="/creator/writer" element={<ProtectedRoute><WriterPanelPage /></ProtectedRoute>} />
-        <Route path="/creator/photographer" element={<ProtectedRoute><PhotographerPanelPage /></ProtectedRoute>} />
-        <Route path="/creator/student" element={<ProtectedRoute><StudentPanelPage /></ProtectedRoute>} />
+       <Route path="/creator" element={<CreatorPanelRouter />} />
+
+        {/* Specific creator panel routes are now all protected by our new intelligent CreatorRoute */}
+        <Route path="/creator/writer" element={<CreatorRoute><WriterPanelPage /></CreatorRoute>} />
+        <Route path="/creator/photographer" element={<CreatorRoute><PhotographerPanelPage /></CreatorRoute>} />
+        <Route path="/creator/student" element={<CreatorRoute><StudentPanelPage /></CreatorRoute>} />
+        <Route path="/creator/reader" element={<CreatorRoute><ReaderPanelPage /></CreatorRoute>} />
+        <Route path="/read/:bookId" element={<PdfReaderPage />} />
       </Routes>
     </Layout>
   );

@@ -1,0 +1,36 @@
+.fab-container {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  text-decoration: none;
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.fab-container:hover {
+  transform: scale(1.1);
+  background-color: var(--accent-color);
+}
+
+.fab-icon {
+  color: white;
+  font-size: 36px;
+  font-weight: 300;
+  line-height: 1;
+  padding-bottom: 4px; /* '+' ලකුණ මැදින් තැබීමට */
+}
+
+/* Mobile view එකේදී මෙම button එක සඟවන්න */
+@media (max-width: 768px) {
+  .fab-container {
+    display: none;
+  }
+}

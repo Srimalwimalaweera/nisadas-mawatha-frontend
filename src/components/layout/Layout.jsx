@@ -1,3 +1,5 @@
+// src/components/layout/Layout.jsx (Corrected Version)
+
 import React, { useState, useEffect, useRef } from 'react';
 import Header from './Header.jsx';
 import Footer from './Footer.jsx';
@@ -7,11 +9,11 @@ import { useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.jsx';
 import LoadingScreen from '../common/LoadingScreen.jsx';
 import BottomNav from '../common/BottomNav.jsx';
+import FloatingActionButton from '../ui/FloatingActionButton.jsx';
 
 function Layout({ children }) {
   const { theme } = useTheme();
   const location = useLocation();
-  // මෙතනදී අපි 'loading' -> 'initialAuthLoading' ලෙස නම වෙනස් කළා
   const { loading: initialAuthLoading } = useAuth();
 
   const [isRouting, setIsRouting] = useState(false);
@@ -28,11 +30,13 @@ function Layout({ children }) {
     }
   }, [location.pathname]);
 
+  // --- Define paths that need a special or minimal layout ---
   const authPaths = [
     '/auth', '/login', '/signup', '/terms', '/privacy-policy', '/about',
     '/Auth', '/Login', '/Signup', '/Terms', '/Privacy-policy', '/About'
   ];
   const isAuthPage = authPaths.includes(location.pathname);
+  const isReaderPage = location.pathname.startsWith('/read/');
 
   const AuthHeader = () => (
     <header className="auth-special-header">
@@ -42,6 +46,14 @@ function Layout({ children }) {
     </header>
   );
 
+  // --- Logic to handle special layouts ---
+
+  // If it's the reader page, render ONLY the children (the page itself)
+  if (isReaderPage) {
+    return <>{children}</>;
+  }
+
+  // If it's an authentication page, render the special auth layout
   if (isAuthPage) {
     return (
       <div className={`app-layout ${theme} auth-page-layout`}>
@@ -51,21 +63,18 @@ function Layout({ children }) {
     );
   }
 
-  // --- නිවැරදි කිරීම් සිදුකළ කොටස ---
-
-  // 1. Loading අවස්ථා දෙකම එකතු කර 'showLoadingScreen' ලෙස හඳුන්වමු
+  // --- Default layout for all other pages ---
   const showLoadingScreen = initialAuthLoading || isRouting;
 
   return (
     <div className={`app-layout ${theme}`}>
-      {/* 2. මෙතනදී 'showLoadingScreen' variable එක භාවිතා කරන්න */}
       <Header showSearchBox={!showLoadingScreen} />
       <main className="main-content">
-        {/* 3. මෙතනදීත් 'showLoadingScreen' variable එකම භාවිතා කරන්න */}
         {showLoadingScreen ? <LoadingScreen /> : children}
       </main>
       <Footer />
       <BottomNav />
+      <FloatingActionButton />
     </div>
   );
 }

@@ -1,58 +1,101 @@
+// src/pages/BookDetailsPage.jsx
+
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom'; // URL එකෙන් parameter ගන්න hook එක
-import { doc, getDoc } from 'firebase/firestore'; // Firebase එකෙන් එක document එකක් ගන්න functions
-import { db } from '../firebase'; // අපේ Firebase config
-import './BookDetailsPage.css'; // මේ CSS file එක ඊළඟට හදමු
+import { useParams, Link } from 'react-router-dom';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase';
+import './BookDetailsPage.css'; // New CSS file will be used
+import PdfViewer from '../components/common/PdfViewer'; // Import our new PDF viewer
+import { FaStar } from 'react-icons/fa';
 
 function BookDetailsPage() {
-  const { bookId } = useParams(); // URL එකෙන් :bookId කියන කොටස ගන්නවා
+  const { bookId } = useParams();
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showPdfViewer, setShowPdfViewer] = useState(false);
 
   useEffect(() => {
-    // මේ function එකෙන් තමයි අදාළ පොතේ දත්ත ගන්නේ
     const fetchBook = async () => {
       setLoading(true);
-      // 'books' collection එකේ, 'bookId' එකට අදාළ document එකට reference එක හදාගන්නවා
       const bookRef = doc(db, 'books', bookId);
-      const bookSnap = await getDoc(bookRef); // ඒ document එකේ දත්ත ගන්නවා
+      const bookSnap = await getDoc(bookRef);
 
       if (bookSnap.exists()) {
         setBook({ id: bookSnap.id, ...bookSnap.data() });
       } else {
         console.log("No such document!");
-        setBook(null); // පොතක් හම්බවුනේ නැත්නම් state එක null කරනවා
+        setBook(null);
       }
       setLoading(false);
     };
 
     fetchBook();
-  }, [bookId]); // bookId එක වෙනස් වෙන හැම වෙලාවකම මේ useEffect එක ආයෙත් දුවනවා
+  }, [bookId]);
 
-  // දත්ත load වෙනකම් මේක පෙන්නනවා
   if (loading) {
-    return <p>Loading book details...</p>;
+    return <div className="bd-loading">Loading book details...</div>;
   }
 
-  // පොතක් හම්බවුනේ නැත්නම් මේක පෙන්නනවා
   if (!book) {
-    return <h1>Book not found!</h1>;
+    return <h1 className="bd-not-found">Book not found!</h1>;
   }
 
-  // පොත හම්බවුණාම, විස්තර ටික පෙන්නනවා
+  const coverImage = book.coverImageUrl || `https://placehold.co/400x600/2a3a38/ffffff?text=${encodeURIComponent(book.title)}`;
+
   return (
-    <div className="book-details-container">
-      <img src={book.coverImageUrl} alt={book.title} className="book-details-cover" />
-      <div className="book-details-info">
-        <h1 className="book-details-title">{book.title}</h1>
-        <h2 className="book-details-author">by {book.author}</h2>
-        <p className="book-details-price">Price: LKR {book.price}</p>
-        <p className="book-details-description">{book.description}</p>
-        <Link to={`/purchase/${book.id}`}>
-  <button className="buy-now-btn">Buy Now</button>
-</Link>
+    <>
+      <div className="bd-container">
+        <div className="bd-hero-section" style={{ backgroundImage: `url(${coverImage})` }}>
+          <div className="bd-hero-overlay">
+            <div className="bd-hero-content">
+              <div className="bd-cover-container">
+                <img src={coverImage} alt={book.title} className="bd-cover-image" />
+              </div>
+              <div className="bd-main-info">
+                <div className="bd-meta">
+                  <span>{book.category}</span>
+                  <span>&bull;</span>
+                  <span>{book.language}</span>
+                </div>
+                <h1 className="bd-title">{book.title}</h1>
+                <h2 className="bd-author">by {book.authorName}</h2>
+                
+                <div className="bd-ratings-placeholder">
+                    <FaStar color="#f5c518" size={24} />
+                    <span><strong className="bd-rating-value">N/A</strong> / 10</span>
+                </div>
+
+                {book.isForSale ? (
+  <Link to={`/purchase/${book.id}`} className="bd-action-btn buy-btn">
+    Buy Now (LKR {book.price})
+  </Link>
+) : (
+  <Link to={`/read/${book.id}`} className="bd-action-btn read-btn">
+    Read Now
+  </Link>
+)}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bd-details-section">
+          <div className="bd-description">
+            <h3>Description</h3>
+            <p>{book.description || 'No description available.'}</p>
+          </div>
+          
+          <div className="bd-comments-placeholder">
+            <h3>Comments & Reviews</h3>
+            <p>Comments feature will be available soon.</p>
+          </div>
+        </div>
       </div>
-    </div>
+
+      {showPdfViewer && (
+        <PdfViewer pdfUrl={book.ebookFileUrl} onClose={() => setShowPdfViewer(false)} />
+      )}
+    </>
   );
 }
 

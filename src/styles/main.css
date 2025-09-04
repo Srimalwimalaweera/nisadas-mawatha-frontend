@@ -36,11 +36,7 @@
   box-sizing: border-box;
 }
 
-/* --- අලුතෙන් එකතු කරන කොටස --- */
-html, body, #root, .app-layout {
-  height: 100%;
-  width: 100%;
-}
+
 
 html {
   overflow-x: hidden; /* අනවශ්‍ය horizontal scrollbars වළක්වාගන්න */

@@ -14,7 +14,7 @@
   border: 1px solid var(--border-color);
   background-color: var(--card-bg);
   box-shadow: 0 1px 3px 0 var(--card-shadow);
-  
+  width: 200px;
   /* --- 1. සම්පූර්ණ card එකට ස්ථිර උසක් ලබා දීම --- */
   height: 370px; /* ඔබට අවශ්‍ය සම්පූර්ණ උස මෙතන දෙන්න */
 }
@@ -92,7 +92,7 @@
 .book-card-badges {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.rem;
 }
 
 .book-card-badge-secondary {

@@ -3,113 +3,85 @@ const admin = require("firebase-admin");
 
 admin.initializeApp();
 
-// === Function 1 (NEW): Register User with Role ===
+const db = admin.firestore();
+
+/**
+ * Handles user registration via Email/Password.
+ * Creates an Auth user and a corresponding document in Firestore.
+ */
 exports.registerUser = functions.https.onCall(async (data, context) => {
   const {email, password, role} = data;
 
+  // Security: Ensure a valid role is provided and not 'admin'.
   const allowedRoles = ["reader", "writer", "photographer", "student"];
   if (!allowedRoles.includes(role)) {
     throw new functions.https.HttpsError(
-        "invalid-argument", "An invalid role was specified.",
+        "invalid-argument",
+        "Invalid role specified.",
     );
   }
 
   try {
+    // Create the user in Firebase Authentication
     const userRecord = await admin.auth().createUser({
       email: email,
       password: password,
-      displayName: email.split("@")[0],
+      displayName: email.split("@")[0], // Default display name
     });
 
-    const profileData = {
+    // Set custom claim for the role (useful for security rules)
+    await admin.auth().setCustomUserClaims(userRecord.uid, {role: role});
+
+    // Create a document in the 'users' collection in Firestore
+    await db.collection("users").doc(userRecord.uid).set({
       email: userRecord.email,
-      displayName: userRecord.displayName,
-      photoURL: userRecord.photoURL || null,
+      displayName: userRecord.email.split("@")[0],
       role: role,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      notebook_slots_total: 5,
-      ebook_slots_total: 0,
-      pdf_slots_total: 0,
-      withdrawable_balance: 0,
-    };
+    });
 
-    await admin.firestore().collection("users").doc(userRecord.uid).set(profileData);
-
-    functions.logger.info(`New user created: ${userRecord.uid} with role: ${role}`);
     return {success: true, uid: userRecord.uid};
   } catch (error) {
-    functions.logger.error("Error creating new user:", error);
     throw new functions.https.HttpsError("internal", error.message);
   }
 });
-// ... submitPurchaseRequest, getSlipUrl, processPurchaseRequest functions ...
 
-
-// === Function 2: Submit Purchase Request (Firebase Storage සමග) ===
-exports.submitPurchaseRequest = functions.runWith({
-  memory: "512MB",
-  timeoutSeconds: 120,
-}).https.onCall(async (data, context) => {
-  // ... (this function's code is correct and unchanged)
+/**
+ * Sets the role for a user who signed up with Google.
+ */
+exports.setGoogleUserRole = functions.https.onCall(async (data, context) => {
+  // Check if the user is authenticated.
   if (!context.auth) {
     throw new functions.https.HttpsError(
-        "unauthenticated", "You must be logged in to make a purchase.",
+        "unauthenticated",
+        "The function must be called while authenticated.",
     );
   }
-  const {bookId, fileData, fileName, fileType} = data;
-  const userId = context.auth.uid;
-  const bucket = admin.storage().bucket();
-  const filePath = `payment_slips/${userId}_${bookId}_${fileName}`;
-  const file = bucket.file(filePath);
-  const buffer = Buffer.from(fileData, "base64");
-  try {
-    await file.save(buffer, {metadata: {contentType: fileType}});
-    functions.logger.info(`File uploaded to Storage at: ${filePath}`);
-    const purchaseData = {
-      userId: userId,
-      bookId: bookId,
-      status: "pending",
-      submittedAt: admin.firestore.FieldValue.serverTimestamp(),
-      slipStoragePath: filePath,
-    };
-    const docRef = await admin.firestore().collection("purchases").add(purchaseData);
-    functions.logger.info(`Purchase record created: ${docRef.id}`);
-    return {success: true, message: "Purchase request submitted!"};
-  } catch (error) {
-    functions.logger.error("Error in purchase flow:", error);
+
+  const {role} = data;
+  const uid = context.auth.uid;
+  const user = await admin.auth().getUser(uid);
+
+  // Security: Ensure a valid role is provided and not 'admin'.
+  const allowedRoles = ["reader", "writer", "photographer", "student"];
+  if (!allowedRoles.includes(role)) {
     throw new functions.https.HttpsError(
-        "internal", "An error occurred while submitting your request.",
+        "invalid-argument",
+        "Invalid role specified.",
     );
   }
-});
 
-// === Function 3: Get Secure Download URL for a Slip (v1 Syntax) ===
-exports.getSlipUrl = functions.https.onCall(async (data, context) => {
-  // ... (this function's code is correct and unchanged)
-  if (!context.auth) {/* ... */}
-  const userDoc = await admin.firestore().collection("users").doc(context.auth.uid).get();
-  if (userDoc.data().role !== "admin") {/* ... */}
-  const {slipStoragePath} = data;
-  if (!slipStoragePath) {/* ... */}
-  const options = {
-    version: "v4",
-    action: "read",
-    expires: Date.now() + 15 * 60 * 1000,
-  };
-  try {
-    const [url] = await admin.storage().bucket().file(slipStoragePath).getSignedUrl(options);
-    return {url: url};
-  } catch (error) {
-    functions.logger.error("Error generating signed URL:", error);
-    throw new functions.https.HttpsError("internal", "Could not get the slip URL.");
-  }
-});
+  // Set custom claim for the role
+  await admin.auth().setCustomUserClaims(uid, {role: role});
 
-// === Function 4 & 5 Combined: Process Purchase Request (Approve/Reject) ===
-exports.processPurchaseRequest = functions.https.onCall(async (data, context) => {
-  // ... (this function's code is correct and unchanged)
-  if (!context.auth) {/* ... */}
-  const adminUserDoc = await admin.firestore().collection("users").doc(context.auth.uid).get();
-  if (adminUserDoc.data().role !== "admin") {/* ... */}
-  // ... rest of the function ...
+  // Create or update the user document in Firestore
+  await db.collection("users").doc(uid).set({
+    email: user.email,
+    displayName: user.displayName,
+    photoURL: user.photoURL,
+    role: role,
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+  }, {merge: true}); // Use merge to not overwrite existing data if any
+
+  return {success: true};
 });

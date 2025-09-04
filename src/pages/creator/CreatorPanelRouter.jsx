@@ -1,44 +1,46 @@
+// src/pages/creator/CreatorPanelRouter.jsx
+
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import LoadingScreen from '../../components/common/LoadingScreen';
 
+// This component's only job is to redirect from the generic '/creator' path
+// to the user's specific panel.
 function CreatorPanelRouter() {
-  const { currentUser } = useAuth();
+  const { currentUser, loading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (loading) {
+      return; // Wait until user data is loaded
+    }
+
     if (!currentUser) {
-      // User login වෙලා නැත්නම්, login page එකට යවනවා
-      navigate('/auth');
+      navigate('/auth'); // If not logged in, go to auth page
       return;
     }
 
-    // Userගේ role එක අනුව අදාළ page එකට යවනවා
-    switch (currentUser.role) {
-      case 'admin':
-        navigate('/admin');
-        break;
-      case 'writer':
-        navigate('/creator/writer');
-        break;
-      case 'photographer':
-        navigate('/creator/photographer');
-        break;
-      case 'student':
-        navigate('/creator/student');
-        break;
-      case 'reader':
-        navigate('/creator/reader');
-        break;
-      default:
-        // Role එකක් නැති user කෙනෙක් නම්, homepage එකට යවනවා
-        navigate('/');
-        break;
-    }
-  }, [currentUser, navigate]);
+    // Redirect based on the user's role
+    const { role } = currentUser;
 
-  // Redirect වෙනකම් loading පණිවිඩයක් පෙන්වීම
-  return <div style={{ padding: '2rem' }}>Redirecting to your panel...</div>;
+    if (role === 'admin') {
+      navigate('/admin'); // Admins can go to their main panel
+    } else if (role === 'writer') {
+      navigate('/creator/writer');
+    } else if (role === 'photographer') {
+      navigate('/creator/photographer');
+    } else if (role === 'student') {
+      navigate('/creator/student');
+    } else if (role === 'reader') {
+      navigate('/creator/reader');
+    } else {
+      navigate('/'); // If role is undefined or something else, go home
+    }
+  }, [currentUser, loading, navigate]);
+
+  // Show a loading screen while the redirect logic runs
+  return <LoadingScreen />;
 }
 
 export default CreatorPanelRouter;
