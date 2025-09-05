@@ -7,6 +7,7 @@ import { db } from '../firebase';
 import './BookDetailsPage.css'; // New CSS file will be used
 import PdfViewer from '../components/common/PdfViewer'; // Import our new PDF viewer
 import { FaStar } from 'react-icons/fa';
+import ReactionPanel from '../components/common/ReactionPanel';
 
 function BookDetailsPage() {
   const { bookId } = useParams();
@@ -74,6 +75,9 @@ function BookDetailsPage() {
     Read Now
   </Link>
 )}
+<div className="bd-reactions-section">
+  <ReactionPanel bookId={bookId} />
+</div>
               </div>
             </div>
           </div>

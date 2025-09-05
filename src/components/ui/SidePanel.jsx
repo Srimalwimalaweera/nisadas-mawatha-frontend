@@ -30,7 +30,7 @@ const SidePanel = ({ isOpen, isDarkMode, toggleTheme, navLinks, onClose }) => {
   };
   
   const backgroundClass = isDarkMode ? 'dark-side-panel' : 'light-side-panel';
-  const navLinkClass = 'side-panel-link';
+  
 
   return (
     <div

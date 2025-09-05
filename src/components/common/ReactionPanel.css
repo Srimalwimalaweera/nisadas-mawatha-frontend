@@ -1,0 +1,121 @@
+.reaction-container {
+  position: relative;
+  display: inline-flex;
+}
+
+.main-reaction-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.main-reaction-button:hover {
+  background-color: var(--header-hover-bg);
+}
+
+.main-icon {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.2s ease;
+}
+
+.main-icon.default {
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+.main-text {
+  font-weight: 600;
+  color: var(--text-color);
+  opacity: 0.7;
+}
+
+.main-reaction-button:hover .main-icon.default,
+.main-reaction-button:hover .main-text {
+    opacity: 1;
+}
+
+/* --- Reaction Popup Panel --- */
+.reaction-popup {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 0.75rem;
+  display: flex;
+  background-color: var(--card-bg);
+  padding: 0.5rem;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px var(--card-shadow);
+  border: 1px solid var(--border-color);
+  
+  /* Animation */
+  animation: slide-up 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.reaction-button {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.reaction-button:hover {
+  transform: translateY(-8px) scale(1.1);
+}
+
+.reaction-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.reaction-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 0.5rem;
+  background-color: #333;
+  color: #fff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  
+  /* Initially hidden */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.reaction-button:hover .reaction-tooltip {
+  opacity: 1;
+}
+
+/* Helper classes for colors (from Tailwind) */
+.text-red-500 { color: #ef4444; }
+.text-blue-500 { color: #3b82f6; }
+.text-orange-500 { color: #f97316; }
+.text-yellow-500 { color: #eab308; }
+.text-yellow-600 { color: #ca8a04; }
+.text-red-700 { color: #b91c1c; }
