@@ -23,7 +23,7 @@
 }
 
 .side-panel.light-side-panel {
-  background-color: rgba(117, 117, 117, 0.1);
+  background-color: rgba(19, 26, 19, 0.6);
 }
 
 .side-panel-content {
@@ -53,3 +53,98 @@
 .side-panel-link:hover {
   color: #d1d5db; /* text-gray-300 */
 }
+
+.side-panel-footer {
+  display: flex;
+  justify-content: flex-end; /* අයිතම දකුණට ස්ථානගත කිරීම */
+  padding-top: 1rem; /* ඉහළින් කුඩා ඉඩක් තැබීම */
+}
+
+
+
+
+/* --- New Styles for Highlight Animation --- */
+
+/* Make the list a positioning container for the highlight */
+.side-panel-nav-list {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  margin-top: 4rem;
+}
+
+/* Adjust link padding and ensure it's on top */
+.side-panel-link {
+  display: block;
+  padding: 1rem 2.5rem;
+  position: relative;
+  z-index: 2; /* Place link text ABOVE the highlight */
+  color: rgb(255, 255, 255);
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 1.1rem;
+}
+
+/* Style for the text inside the link to animate it */
+.side-panel-link span {
+    transition: transform 0.3s ease-in-out;
+    display: inline-block;
+}
+
+/* Style for the ACTIVE link's text */
+/* Active link text color will be black in light mode */
+.light-side-panel .side-panel-link.active {
+  color: #ffffff;
+  
+}
+
+/* Active link text color will be white in dark mode */
+.dark-side-panel .side-panel-link.active {
+  color: #FFFFFF;
+}
+
+/* Move the text a bit to the right when active */
+.side-panel-link.active span {
+    transform: translateX(10px);
+    
+}
+
+/* This is the moving highlight element */
+.nav-highlight {
+    position: absolute;
+  left: 0; /* වම්පස කෙළවරටම ගැනීම */
+  width: 115.2%; /* සම්පූර්ණ පළල ලබා දීම */
+  background-color: var(--card-bg-glass-color); /* Cutout effect එකට page background color එක භාවිතා කිරීම */
+  backdrop-filter: white(5px); 
+  border-radius: 50px 10px 10px 50px; /* දකුණුපස කොන් පමණක් වක්‍ර කිරීම */
+  z-index: 1; 
+  opacity: 0;
+  transition: top 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.2s;
+
+  
+ 
+}
+
+.light-side-panel .nav-highlight {
+  /* rgba(..., 0.4) හි අවසාන අගය වෙනස් කරන්න */
+  background-color: rgba(28, 155, 6, 0.623); 
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.dark-side-panel .nav-highlight {
+  /* rgba(..., 0.4) හි අවසාන අගය වෙනස් කරන්න */
+  background-color: rgba(25, 196, 48, 0.37); 
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Add a separator line for the footer */
+.side-panel-footer {
+  border-top: 1px solid rgba(128, 128, 128, 0.2);
+  margin: 1rem 1rem 0 1rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+

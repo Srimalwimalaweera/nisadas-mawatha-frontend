@@ -45,3 +45,9 @@
 .auth-book-container {
   padding-top: 90px; /* Header එකේ උසට ඉඩ තැබීම */
 }
+
+.main-content.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

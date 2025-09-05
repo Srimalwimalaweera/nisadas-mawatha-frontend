@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import HTMLFlipBook from 'react-pageflip';
 import './AuthBook.css';
-
+import WoodenTexture from '../components/ui/WoodenTexture';
 import SignupPage from './SignupPage';
 import LoginPage from './LoginPage';
 import TermsPage from './TermsPage';
@@ -99,6 +99,8 @@ function AuthBook() {
 
     return (
         <div className="auth-book-container">
+            <WoodenTexture />
+            
             <div className="book-wrapper">
                 <HTMLFlipBook
                     width={500} height={700} size="stretch"

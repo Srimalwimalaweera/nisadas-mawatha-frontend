@@ -65,8 +65,8 @@
 .icon {
   z-index: 2;
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   cursor: pointer;
   transition: transform .25s ease-in-out;
   user-select: none;
@@ -74,17 +74,18 @@
   align-items: center;
   justify-content: center;
   border-radius: 100%;
+  flex-direction: column;
 }
 
 .icon-picture {
   width: 24px;
   height: 24px;
-  color: #e6e6e6;
+  color: #333333;
   transition: color 0.25s;
 }
 
 .dark .icon-picture {
-    color: #a0a0a0;
+    color: #FFFFFF;
 }
 
 .icon.active { /* 'selected' class එක NavLink එකෙන් එන 'active' එකට මාරු කළා */
@@ -94,5 +95,44 @@
 }
 
 .icon.active .icon-picture {
-  color: var(--primary-color);
+  color: #08A012;
 }
+
+
+
+
+
+
+/* --- Icon එක සහ Label එක සිරස් අතට සකස් කිරීම --- */
+.icon {
+    flex-direction: column; /* Icon එකට යටින් label එක තැබීමට */
+    justify-content: center;
+    height: 100%; /* සම්පූර්ණ උස ලබා ගැනීම */
+    gap: 3px; /* Icon එක සහ නම අතර පරතරය */
+    text-decoration: none;
+}
+
+.icon.active {
+    /* Active වන විට උඩට යන ප්‍රමාණය තරමක් අඩු කිරීම */
+    transform: translateY(-10px) scale(1.05);
+}
+
+
+/* --- Label එක සඳහා වන මෝස්තර --- */
+.icon-label {
+    font-size: 0.65rem; /* අකුරුවල ප්‍රමාණය */
+    font-weight: 500;
+    color: #333333; /* සාමාන්‍ය වර්ණය */
+    transition: color 0.25s;
+}
+
+.dark .icon-label {
+    color: #FFFFFF;
+}
+
+/* --- Active වූ විට Label එකේ වර්ණය වෙනස් කිරීම --- */
+.icon.active .icon-label {
+    color: #08A012;
+}
+
+

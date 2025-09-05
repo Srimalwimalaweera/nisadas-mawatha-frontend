@@ -5,7 +5,7 @@ import Header from './Header.jsx';
 import Footer from './Footer.jsx';
 import './Layout.css';
 import { useTheme } from '../../context/ThemeContext.jsx';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.jsx';
 import LoadingScreen from '../common/LoadingScreen.jsx';
 import BottomNav from '../common/BottomNav.jsx';
@@ -38,13 +38,7 @@ function Layout({ children }) {
   const isAuthPage = authPaths.includes(location.pathname);
   const isReaderPage = location.pathname.startsWith('/read/');
 
-  const AuthHeader = () => (
-    <header className="auth-special-header">
-      <Link to="/" className="logo-link">
-        <img src="https://firebasestorage.googleapis.com/v0/b/nisadas-mawatha.firebasestorage.app/o/webapp%2FNisadas%20Mawatha%20Logo.png?alt=media&token=bba44519-77de-48fb-a048-941625ac3e93" alt="Nisadas Mawatha Logo" className="header-logo" />
-      </Link>
-    </header>
-  );
+  
 
   // --- Logic to handle special layouts ---
 
@@ -57,7 +51,7 @@ function Layout({ children }) {
   if (isAuthPage) {
     return (
       <div className={`app-layout ${theme} auth-page-layout`}>
-        <AuthHeader />
+        <Header isAuthPage={true} />
         <main className="main-content">{children}</main>
       </div>
     );
@@ -69,9 +63,9 @@ function Layout({ children }) {
   return (
     <div className={`app-layout ${theme}`}>
       <Header showSearchBox={!showLoadingScreen} />
-      <main className="main-content">
-        {showLoadingScreen ? <LoadingScreen /> : children}
-      </main>
+      <main className={`main-content ${showLoadingScreen ? 'loading' : ''}`}>
+  {showLoadingScreen ? <LoadingScreen /> : children}
+</main>
       <Footer />
       <BottomNav />
       <FloatingActionButton />

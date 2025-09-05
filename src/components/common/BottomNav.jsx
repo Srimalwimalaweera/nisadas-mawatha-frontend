@@ -7,13 +7,15 @@ import IconWriters from '../ui/IconWriters';
 import IconCreator from '../ui/IconCreator';
 import IconLibrary from '../ui/IconLibrary';
 import IconProfile from '../ui/IconProfile';
+import IconTrending from '../ui/IconTrending';
 
 const navItems = [
-  { path: '/', icon: IconHome },
-  { path: '/writers', icon: IconWriters },
-  { path: '/creator', icon: IconCreator },
-  { path: '/my-library', icon: IconLibrary },
-  { path: '/profile', icon: IconProfile }
+  { path: '/', icon: IconHome, name: 'Home' },
+   { path: '/trending', icon: IconTrending, name:'Trending' },
+  { path: '/writers', icon: IconWriters, name:'Writers' },
+  { path: '/creator', icon: IconCreator,name:'Upload'},
+  { path: '/my-library', icon: IconLibrary, name:'Library' },
+  { path: '/profile', icon: IconProfile, name:'Profile' }
 ];
 
 function BottomNav({ className }) {
@@ -30,6 +32,7 @@ function BottomNav({ className }) {
               className={({ isActive }) => (location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path)) ? 'icon active' : 'icon')}
             >
               <item.icon className="icon-picture" />
+              <span className="icon-label">{item.name}</span> 
             </NavLink>
           </li>
         ))}

@@ -15,7 +15,7 @@ import ThemeToggleButton from '../ui/ThemeToggleButton.jsx';
 // අලුත් CSS file එක import කරගන්න
 import './Header.css';
 
-function Header({ showSearchBox = true }) {
+function Header({ showSearchBox = true, isAuthPage = false }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { currentUser } = useAuth();
   const { theme, toggleTheme } = useTheme();
@@ -67,7 +67,8 @@ function Header({ showSearchBox = true }) {
             />
           </Link>
           <div className="desktop-only desktop-nav-container">
-            {showSearchBox && <SearchBox />}{/* SearchBox එක පසුවට එකතු කරගත හැක. දැනට Navigation එක දාමු. */}
+            {!isAuthPage && showSearchBox && <SearchBox />}{/* SearchBox එක පසුවට එකතු කරගත හැක. දැනට Navigation එක දාමු. */}
+           {!isAuthPage && (
             <nav>
               <ul className="desktop-nav-list">
                 {navLinks.map(link => (
@@ -79,19 +80,21 @@ function Header({ showSearchBox = true }) {
                 ))}
               </ul>
             </nav>
+            )}
           </div>
         </div>
 
         {/* Right Section */}
         <div className="header-right-section">
-          <div className="desktop-only">
-            {/* පැරණි toggle එක වෙනුවට අලුත් එක යෙදීම */}
+          
+            {/* Dark mode toggle */}
             <ThemeToggleButton isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-          </div>
+          
           
           {currentUser ? (
             <ProfileDropdown />
           ) : (
+            !isAuthPage && (
             <div className="auth-buttons">
               <Link to="/signup">
                 <button className="header-action-btn signup-btn">Signup</button>
@@ -100,10 +103,12 @@ function Header({ showSearchBox = true }) {
                 <button className="header-action-btn login-btn">Login</button>
               </Link>
             </div>
+            )
           )}
         </div>
       </header>
 
+ {isMenuOpen && <div className="side-panel-backdrop" onClick={() => setIsMenuOpen(false)}></div>}
       {/* Side Panel for Mobile */}
       <SidePanel 
         isOpen={isMenuOpen} 

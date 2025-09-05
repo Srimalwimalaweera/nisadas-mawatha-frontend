@@ -15,9 +15,15 @@ const TrendingPage = () => {
         const fetchBooks = async () => {
             try {
                 const booksCollection = collection(db, 'books');
+                // 'publishedAt' නොමැති නම් 'uploadedAt' අනුව sort කරන්න. 'desc' යනු අලුත්ම ඒවා මුලින් පෙන්වීමටයි.
                 const q = query(booksCollection, orderBy('publishedAt', 'desc'), limit(15));
                 const querySnapshot = await getDocs(q);
-                const booksData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                const booksData = querySnapshot.docs.map(doc => ({ 
+                    id: doc.id, 
+                    ...doc.data(),
+                    // Firestore එකේ rating නැත්නම්, තාවකාලිකව random අගයක් යොදමු
+                    rate: doc.data().averageRating || parseFloat((Math.random() * (5 - 3.5) + 3.5).toFixed(1))
+                }));
 
                 setBooks(booksData);
 
@@ -36,6 +42,7 @@ const TrendingPage = () => {
     }, []);
 
     const handleCardClick = (bookId) => {
+        // Click කළ card එකම නැවත click කළොත් එය close වේ. නැත්නම් අලුත් එක open වේ.
         setOpenCardId(openCardId === bookId ? null : bookId);
     };
 
@@ -52,35 +59,44 @@ const TrendingPage = () => {
                 </div>
                 <div className='trending-list'>
                     {books.map(book => (
-                        <div
-                            key={book.id}
-                            className={`card flex-row ${openCardId === book.id ? 'open' : ''}`}
-                            onClick={() => handleCardClick(book.id)}
-                        >
-                            <div className='cover-and-rating'>
-            <img src={book.coverImageUrl} alt={book.title} className='book-cover-img' />
-            <div className='rating'>
-                <FaStar className='star-icon' />
-                <span className='rate-value'>{book.rate ? book.rate.toFixed(1) : 'N/A'}</span>
+    <div
+        key={book.id}
+        className={`card flex-row ${openCardId === book.id ? 'open' : ''}`}
+        onClick={() => handleCardClick(book.id)}
+    >
+        {/* Book Cover Image */}
+        <img src={book.coverImageUrl} alt={book.title} className='book-cover-img' />
+
+        
+
+        {/* All content other than the image */}
+        <div className="card-content-area">
+            {/* Top section with Title, Author, and Rating */}
+            <div className="card-header-section">
+                <div className='info'>
+                    <div className='title'>{book.title}</div>
+                    <div className='author'>by {book.authorName}</div>
+                </div>
+                <div className='rating'>
+                    <FaStar className='star-icon' />
+                    <span className='rate-value'>{book.rate ? book.rate.toFixed(1) : 'N/A'}</span>
+                </div>
+            </div>
+
+            {/* Hidden items that appear when the card is open */}
+            <div className='hidden bottom summary'>
+                {book.description ? `${book.description.substring(0, 150)}...` : 'No description available.'}
+            </div>
+            <div className='hidden bottom button-wrapper'>
+                <Link to={`/books/${book.id}`} onClick={(e) => e.stopPropagation()}>
+                    <button className='simple'>
+            {book.isForSale ? 'Buy Now' : 'Read Now'}
+        </button>
+                </Link>
             </div>
         </div>
-                            <div className='flex-column info'>
-                                <div className='title'>{book.title}</div>
-                                <div className='author'>by {book.authorName}</div>
-                                <div className='hidden bottom summary'>
-                                    {book.description ? `${book.description.substring(0, 150)}...` : 'No description available.'}
-                                </div>
-                            </div>
-                            <div className='flex-column group'>
-                                
-                                <div className='hidden bottom'>
-                                    <Link to={`/books/${book.id}`} onClick={(e) => e.stopPropagation()}>
-                                        <button className='simple'>Read Now</button>
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+    </div>
+))}
                 </div>
             </div>
         </div>

@@ -5,3 +5,10 @@
   color: #fff;
   margin-top: auto; /* This helps push the footer to the bottom */
 }
+
+@media (max-width: 768px) {
+
+  .main-footer {
+    display: none;
+  }
+}

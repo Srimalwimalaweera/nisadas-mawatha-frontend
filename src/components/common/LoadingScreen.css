@@ -12,7 +12,7 @@
   transition: opacity 0.5s ease;
 
   /* Glass Effect */
-  background-color: rgba(255, 255, 255, 0.5); /* Light mode background */
+  background-color: #2a3b39; /* Light mode background */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -30,10 +30,10 @@
 
 .loading-text {
   font-size: 1.1rem;
-  color: var(--text-color);
+  color: white;
   font-weight: 500;
-  opacity: 0.9;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  opacity: 1;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0);
 }
 
 .dark .loading-text {
@@ -95,7 +95,7 @@
   position: absolute;
   top: 3rem;
   left: 50%;
-  height: 65px;
+  height: 90px;  /*loading screen එකේ logo size වෙනස් කරන තැන.*/
   width: auto;
   
   /* Animation එක සඳහා මූලික settings */
@@ -110,5 +110,43 @@
   transform: translateX(-50%) scale(1); /* Zoom-in වීම */
 }
 
+/* --- Mobile View Adjustments --- */
+@media (max-width: 768px) {
+  .loading-overlay {
+    /* Full-screen overlay එක අක්‍රීය කිරීම */
+    position: relative;
+    top: auto;
+    left: auto;
+    width: auto;
+    height: auto;
+    z-index: auto;
+    background-color: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    /* --- ගැටලුව විසඳීමට එක් කළ අලුත් මෝස්තර --- */
+    flex-direction: column; /* Logo එක සහ Animation එක සිරස් අතට සකස් කිරීම */
+    gap: 5rem;              /* ඒ දෙක අතර පරතරයක් තැබීම */
+    padding-bottom: 5vh;    /* සිරස් අතට තවත් මැදට ගැනීමට */
+  }
+
+  .loading-top-logo {
+    /* Logo එකේ absolute position එක ඉවත් කර සාමාන්‍ය මූලද්‍රව්‍යයක් බවට පත් කිරීම */
+    position: relative; 
+    top: auto;
+    left: auto;
+    transform: none; /* පරණ transform එක ඉවත් කිරීම */
+    
+    /* Fade-in/scale animation එක එලෙසම තැබීම */
+    opacity: 0;
+    transform: scale(.95);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  }
+  
+  .loading-top-logo.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 
 

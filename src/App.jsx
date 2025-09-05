@@ -42,7 +42,8 @@ function App() {
         {/* --- ඉතිරි routes පෙර පරිදිම --- */}
         <Route path="/" element={<Homepage />} />
         <Route path="/books/:bookId" element={<BookDetailsPage />} />
-        <Route path="/trending" element={<Layout><TrendingPage /></Layout>} />
+        <Route path="/book/:bookId" element={<BookDetailsPage />} />
+        <Route path="/trending" element={<TrendingPage />} />
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         <Route path="/purchase/:bookId" element={<PurchasePage />} />
         <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
