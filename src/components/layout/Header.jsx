@@ -29,9 +29,10 @@ function Header({ showSearchBox = true }) {
 
   // Reusable navigation links
   const navLinks = [
-    { to: "/", text: "මුල් පිටුව" },
-    { to: "/books", text: "පොත්" },
-    { to: "/writers", text: "ලේඛකයින්" },
+    { to: "/", text: "Home" },
+    {to: "/trending", text: "Trending"},
+    { to: "/books", text: "Books" },
+    { to: "/writers", text: "Writers" },
     ...(currentUser ? [{ to: "/my-library", text: "My Library" }] : []),
     ...(currentUser && currentUser.role === 'admin' 
         ? [{ to: "/admin", text: "Admin Panel", className: "admin-link" }] 

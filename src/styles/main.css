@@ -12,6 +12,8 @@
   --card-bg: #ffffff;
   --card-shadow: rgba(0, 0, 0, 0.1);
   --border-color: rgba(128, 128, 128, 0.2);
+   --card-bg-glass-color: rgba(255, 255, 255, 0.6);
+  --border-glass-color: rgba(255, 255, 255, 0.4);
 }
 
 .dark {
@@ -28,6 +30,8 @@
   --card-bg: #2a3a38;
   --card-shadow: rgba(0, 0, 0, 0.4);
   --border-color: rgba(128, 128, 128, 0.4);
+  --card-bg-glass-color: rgba(30, 30, 50, 0.6);
+  --border-glass-color: rgba(255, 255, 255, 0.1);
 }
 
 * {

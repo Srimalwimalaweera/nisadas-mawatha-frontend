@@ -1,0 +1,291 @@
+.trending-container {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    min-height: calc(100vh - 80px); /* Adjust based on your header/footer height */
+    font-family: 'Montserrat', sans-serif;
+}
+
+.trending-list-wrapper {
+    width: 100%;
+    max-width: 800px;
+}
+
+.trending-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.trending-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.trending-header p {
+    font-size: 1rem;
+    color: var(--secondary-text-color);
+}
+
+.trending-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-row {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+}
+
+.flex-column {
+    display: flex;
+    flex-flow: column;
+}
+
+.card {
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 15px;
+    perspective: 800px;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 120px;
+    transition: all 0.3s ease-in-out;
+
+    /* 1. Glassmorphism Effect: වීදුරු වැනි පෙනුම */
+    background: var(--card-bg-glass-color); /* Updated background for transparency */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* For Safari browser compatibility */
+    border: 1px solid var(--border-glass-color);
+
+    /* 2. Modern Shadow: නවීන පෙනුමක් සඳහා Shadow */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+}
+
+.card .hidden.bottom {
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out, margin-top 0.3s ease-in-out;
+}
+
+/* --- State when card is open --- */
+.card.open {
+    height: auto;
+    padding: 25px;
+    border-color: var(--primary-color);
+    box-shadow: 0 15px 40px -5px rgba(0, 0, 0, 0.2);
+}
+
+.card.open .hidden.bottom {
+    margin-top: 15px;
+    height: auto;
+    overflow: visible;
+    opacity: 1;
+}
+
+.card.open .book-cover-img {
+    transform: rotateY(25deg);
+    box-shadow: -15px 15px 20px -5px rgba(0, 0, 0, 0.2);
+}
+
+.card.open .info {
+    transform: translateX(-5px);
+}
+
+/* --- Card elements styling --- */
+
+.card .book-cover-img {
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    width: 80px;
+    height: 110px;
+    margin-left: 20px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0; /* Prevents image from shrinking */
+}
+
+.card .info {
+    transition: all 0.3s ease-in-out;
+    flex-grow: 1;
+    padding: 0px 25px;
+}
+
+.card .info .title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.card .info .author {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--secondary-text-color);
+}
+
+.card .info .summary {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--secondary-text-color);
+    line-height: 1.6;
+    text-align: justify;
+}
+
+.card .group {
+    margin-left: auto;
+    padding-right: 20px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.card .rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    padding: 20px;
+    min-width: 80px;
+    text-align: center;
+    background-color: transparent;
+    border-radius: 8px;
+    color: var(--text-color);
+    
+}
+.card.open .rating {
+    align-self: flex-start;
+}
+
+
+.card .rating .star-icon {
+    color: #ffc107; /* Gold color for star */
+    margin-right: 8px;
+    font-size: 1.2rem;
+}
+
+.card .rating .rate-value {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.card button.simple {
+    cursor: pointer;
+    color: #fff;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    background: var(--primary-gradient); /* Using gradient for better look */
+    padding: 12px 24px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.card button.simple:hover {
+    box-shadow: 0px 10px 20px -8px var(--primary-color-shadow);
+    transform: translateY(-3px);
+    filter: brightness(1.1);
+}
+
+/* --- Mobile View (Responsive Design) --- */
+@media (max-width: 768px) {
+    .card {
+        height: auto;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
+    }
+
+ .cover-and-rating {
+        display: flex;
+        flex-direction: column; /* image එකට පහළින් rating එක තැබීම */
+        align-items: center;
+        margin-right: 15px;
+        flex-shrink: 0;
+    }
+
+.book-cover-img {
+        width: 70px;  /* ටිකක් ලොකු කළා */
+        height: 100px; /* ටිකක් ලොකු කළා */
+        margin-left: 0;
+    }
+
+    .card .rating {
+        margin-top: 8px; /* image එක සහ rating එක අතර ඉඩක් */
+        padding: 4px 8px; /* padding අඩු කළා */
+        min-width: auto;
+        border-radius: 6px; /* border radius වෙනස් කළා */
+        display: flex; /* Always visible */
+    }
+
+ .card .rating .star-icon {
+        font-size: 0.8rem; /* icon size අඩු කළා */
+        margin-right: 4px;
+    }
+
+     .card .rating .rate-value {
+        font-size: 0.8rem; /* font size අඩු කළා */
+    }
+
+    .card > .flex-row, .card {
+        /* On mobile, stack elements vertically */
+        flex-direction: row !important; 
+    }
+
+    .card .book-cover-img {
+        width: 60px;
+        height: 85px;
+        margin-left: 0;
+        margin-right: 15px;
+    }
+
+    .card .info {
+        padding: 0;
+        align-self: center;
+    }
+
+    .card .info .title {
+        font-size: 1rem;
+    }
+
+    .card .info .author {
+        font-size: 0.8rem;
+    }
+
+    .card .info .summary {
+  display: none;
+}
+
+    .card .group {
+        display: none; /* Hide rating and button on closed mobile card to save space */
+    }
+
+    .card.open {
+        height: auto;
+        padding: 20px;
+    }
+    
+    .card.open .group {
+        display: flex; /* Show group when open */
+        width: 100%;
+        margin-top: 15px;
+        padding-right: 0;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    .card.open .rating {
+        padding: 10px 15px;
+    }
+
+    .card.open .book-cover-img {
+        transform: none; /* Disable 3D effect on mobile for better performance */
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    }
+}

@@ -17,6 +17,7 @@ import PhotographerPanelPage from './pages/creator/PhotographerPanelPage.jsx';
 import StudentPanelPage from './pages/creator/StudentPanelPage.jsx';
 import CreatorRoute from './components/common/CreatorRoute';
 import PdfReaderPage from './pages/PdfReaderPage';
+import TrendingPage from './pages/TrendingPage';
 // LoginPage, SignupPage වැනි pages මෙතනට import කිරීම අවශ්‍ය නැහැ.
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
         {/* --- ඉතිරි routes පෙර පරිදිම --- */}
         <Route path="/" element={<Homepage />} />
         <Route path="/books/:bookId" element={<BookDetailsPage />} />
+        <Route path="/trending" element={<Layout><TrendingPage /></Layout>} />
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         <Route path="/purchase/:bookId" element={<PurchasePage />} />
         <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
@@ -54,6 +56,7 @@ function App() {
         <Route path="/creator/student" element={<CreatorRoute><StudentPanelPage /></CreatorRoute>} />
         <Route path="/creator/reader" element={<CreatorRoute><ReaderPanelPage /></CreatorRoute>} />
         <Route path="/read/:bookId" element={<PdfReaderPage />} />
+
       </Routes>
     </Layout>
   );
