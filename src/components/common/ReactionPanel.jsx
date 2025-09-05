@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { db } from '../../firebase';
-import { doc, runTransaction, serverTimestamp } from 'firebase/firestore';
+import { doc, runTransaction } from 'firebase/firestore';
 import { useAuth } from '../../context/AuthContext';
 
 // Import all the icons we created
@@ -51,7 +51,7 @@ const ReactionPanel = ({ bookId }) => {
                 const reactionDoc = await transaction.get(reactionRef);
 
                 if (!bookDoc.exists()) {
-                    throw "Book does not exist!";
+                    throw new Error ("Book does not exist!");
                 }
 
                 let currentCounts = reactionDoc.exists() ? reactionDoc.data() : { love: 0, like: 0, fire: 0, haha: 0, sad: 0, angry: 0 };
