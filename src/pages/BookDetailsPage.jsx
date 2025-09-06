@@ -6,8 +6,9 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import './BookDetailsPage.css'; // New CSS file will be used
 import PdfViewer from '../components/common/PdfViewer'; // Import our new PDF viewer
-import { FaStar } from 'react-icons/fa';
+import { FaStar, FaCommentDots, FaShareAlt } from 'react-icons/fa';
 import ReactionPanel from '../components/common/ReactionPanel';
+
 
 function BookDetailsPage() {
   const { bookId } = useParams();
@@ -84,6 +85,25 @@ function BookDetailsPage() {
         </div>
 
         <div className="bd-details-section">
+<div className="bd-mobile-actions-bar"  onContextMenu={(e) => e.preventDefault()}>
+  <div className="bd-action-icon"> {/* ReactionPanel එක div එකක් තුළට දැමීම */}
+    <ReactionPanel bookId={bookId} />
+    <span>Reaction</span> {/* ඊට යටින් නම එක් කිරීම */}
+  </div>
+            <div className="bd-action-icon">
+              <FaStar />
+              <span>Rate</span>
+            </div>
+            <div className="bd-action-icon">
+              <FaCommentDots />
+              <span>Comment</span>
+            </div>
+            <div className="bd-action-icon">
+              <FaShareAlt />
+              <span>Share</span>
+            </div>
+          </div>
+
           <div className="bd-description">
             <h3>Description</h3>
             <p>{book.description || 'No description available.'}</p>

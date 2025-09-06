@@ -174,3 +174,89 @@
   text-align: center;
   border-radius: 8px;
 }
+
+/* --- New Styles for Mobile Actions Bar --- */
+
+.bd-mobile-actions-bar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1.5rem;
+  position: relative;
+  user-select: none; /* Text/Icon select වීම නැවැත්වීම */
+  -webkit-user-select: none; /* Safari සඳහා */
+   -webkit-tap-highlight-color: transparent;
+}
+
+.bd-action-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  color: #888;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+.dark .bd-action-icon {
+    color: #a0a0a0;
+}
+
+.bd-action-icon svg {
+    font-size: 1.25rem;
+} /* change action bar icon sizes */
+
+/* --- Adjustments for Reaction Panel inside the bar --- */
+.bd-mobile-actions-bar .reaction-container .main-reaction-button-wrapper {
+    gap: 0.5rem;
+}
+
+.bd-mobile-actions-bar .reaction-container .main-text {
+    display: none; /* Mobile bar එකේදී "All Reactions" text එක සඟවමු */
+}
+
+@media (max-width: 768px) {
+  .bd-main-info .bd-reactions-section {
+    display: none;
+  }
+}
+
+/* --- Final Adjustments for Mobile Action Bar --- */
+
+/* 1. Reaction icon එක සහ text එක අතර spacing එක අනෙක්වා මෙන් සකස් කිරීම */
+.bd-mobile-actions-bar .reaction-container .main-reaction-button {
+  padding: 0; /* Reaction icon එක වටා ඇති අනවශ්‍ය ඉඩ ඉවත් කිරීම */
+}
+
+/* 2. "Reaction" text එකේ style එක අනෙක්වා මෙන් සකස් කිරීම */
+.bd-mobile-actions-bar .bd-action-icon {
+    gap: 0.25rem; /* Icon සහ text අතර පරතරය සමාන කිරීම */
+}
+.bd-mobile-actions-bar .bd-action-icon span {
+    font-size: 0.75rem; /* Text size එක සමාන කිරීම */
+}
+
+/* 3. Mobile view එකේදී reaction panel එක action bar එකට ඉහළින් ස්ථානගත කිරීම *
+
+/* Mobile view එකේදී පමණක් reaction popup එකේ පිහිටීම වෙනස් කිරීම */
+@media (max-width: 768px) {
+  .bd-mobile-actions-bar .reaction-popup {
+    bottom: 100%; /* Action bar එකට ඉහළින් */
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 1rem; /* Action bar එක සහ panel එක අතර ඉඩක් තැබීම */
+  }
+}
+
+/* --- Hide Mobile Action Bar on Desktop View --- */
+@media (min-width: 768px) {
+  .bd-mobile-actions-bar {
+    display: none;
+  }
+}
+
+.bd-reactions-section {
+  margin-top: 2rem; /* Buy/Read button එක සහ reaction section එක අතර ඉඩක් තැබීම */
+}

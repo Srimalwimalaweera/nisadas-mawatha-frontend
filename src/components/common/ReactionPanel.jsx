@@ -115,24 +115,41 @@ const reactionRef = doc(db, 'reactions', bookId);
 
     // Function to handle reaction selection
     const handleReactionSelect = async (newReactionId) => {
-        if (!currentUser) { openLoginPrompt(); return; }
-        if (isLoading) return;
+    if (!currentUser) {
+        openLoginPrompt();
+        return;
+    }
+    if (isLoading) return;
+    
+    const currentReactionId = userReaction;
+    
+    // --- Optimistic UI Update ---
+    // Backend එකට යැවීමට පෙර, UI එක ක්ෂණිකව යාවත්කාලීන කිරීම
+    setUserReaction(newReactionId === currentReactionId ? null : newReactionId);
+    setIsPanelVisible(false);
+    
+    // Backend call එක වෙනම ක්‍රියාත්මක වීමට ඉඩ හැරීම
+    setIsLoading(true);
+    clearTimeout(animationTimerRef.current);
+    
+    try {
+        const functions = getFunctions();
+        const updateReaction = httpsCallable(functions, 'updateReaction');
+        await updateReaction({
+            bookId: bookId,
+            newReactionId: newReactionId,
+        });
         
-        setIsLoading(true);
-        setIsPanelVisible(false);
-        clearTimeout(animationTimerRef.current);
-        
-        try {
-            const functions = getFunctions();
-            const updateReaction = httpsCallable(functions, 'updateReaction');
-            await updateReaction({ bookId, newReactionId });
-            
-            setIsAnimating(true);
-            animationTimerRef.current = setTimeout(() => setIsAnimating(false), 2000);
+        setIsAnimating(true);
+        animationTimerRef.current = setTimeout(() => setIsAnimating(false), 2000);
 
-        } catch (e) { console.error("Error calling cloud function: ", e); } 
-        finally { setIsLoading(false); }
-    };
+    } catch (e) {
+        console.error("Error calling cloud function: ", e);
+        setUserReaction(currentReactionId); // දෝෂයක් ඇති වුවහොත්, පැරණි reaction එකටම UI එක නැවත සකස් කිරීම
+    } finally {
+        setIsLoading(false);
+    }
+};
 
     // --- UPDATED LOGIC ---
     const handleMainIconClick = () => {
@@ -205,8 +222,12 @@ const reactionRef = doc(db, 'reactions', bookId);
                         disabled={isLoading}
                     >
                         <MainIcon isAnimating={isAnimating} className={`main-icon ${selectedReactionObj ? 'reacted' : 'default'}`} />
-                        {selectedReactionObj && <span className="main-text reacted">{selectedReactionObj.name}</span>}
-                    </button>
+                        {selectedReactionObj ? (
+        <span className="main-text reacted">{selectedReactionObj.name}</span>
+    ) : (
+        <span className="main-text add-reaction-prompt">Add Reaction</span>
+    )}
+</button>
                     
                     {/* --- UPDATED TO ALWAYS SHOW "ALL REACTIONS" --- */}
                     <button 

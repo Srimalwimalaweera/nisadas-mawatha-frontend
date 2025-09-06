@@ -58,6 +58,8 @@
   font-size: 0.9rem;
   color: #888;
   transition: color 0.2s ease;
+  user-select: none; /* Text select වීම නැවැත්වීම */
+  -webkit-user-select: none; /* Safari සඳහා */
 }
 
 .dark .main-text {
@@ -174,3 +176,11 @@
 .text-yellow-500 { color: #eab308; }
 .text-yellow-600 { color: #ca8a04; }
 .text-red-700 { color: #b91c1c; }
+
+
+@media (max-width: 768px) {
+  .bd-mobile-actions-bar .reaction-container {
+    /* Mobile action bar එකේදී, reaction container එක static කිරීම */
+    position: static;
+  }
+}
