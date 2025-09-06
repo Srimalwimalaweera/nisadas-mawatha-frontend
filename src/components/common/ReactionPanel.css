@@ -184,3 +184,15 @@
     position: static;
   }
 }
+
+.add-reaction-prompt {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #888;
+  user-select: none; /* Text select වීම නැවැත්වීම */
+  -webkit-user-select: none; /* Safari සඳහා */
+}
+
+.dark .add-reaction-prompt {
+  color: #a0a0a0;
+}
