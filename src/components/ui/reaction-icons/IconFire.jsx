@@ -1,11 +1,13 @@
 import React from 'react';
+import Lottie from "lottie-react";
+import fireAnimationData from "../../../assets/icons/fire.json";
 
-const IconFire = ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M17.63 7.84C17.63 7.84 16.29 11.23 14.08 13.82C12.53 15.76 11.5 18.33 11.5 19.5C11.5 20.88 12.62 22 14 22C15.38 22 16.5 20.88 16.5 19.5C16.5 18.33 18.06 15.06 19.5 13.3C21.47 10.9 20.12 7.15 17.63 7.84Z"/>
-        <path d="M11.5 19.5C11.5 18.33 12.53 15.76 14.08 13.82C16.29 11.23 17.63 7.84 17.63 7.84C20.12 7.15 21.47 10.9 19.5 13.3C18.06 15.06 16.5 18.33 16.5 19.5C16.5 20.88 15.38 22 14 22C12.62 22 11.5 20.88 11.5 19.5Z" fillOpacity="0.7"/>
-        <path d="M9.5 15.5C9.5 14.53 10.21 12.44 11.5 10.82C12.79 9.2 13.5 6.5 13.5 6.5C15 5.5 16 8 14.5 9.5C13.5 11 11.5 14.5 11.5 15.5C11.5 16.33 10.83 17 10 17C9.17 17 9.5 16.33 9.5 15.5Z"/>
-    </svg>
-);
+const IconFire = ({ className,isAnimating }) => {
+  return (
+    <div className={className}>
+      <Lottie animationData={fireAnimationData} loop={isAnimating} />
+    </div>
+  );
+};
 
 export default IconFire;

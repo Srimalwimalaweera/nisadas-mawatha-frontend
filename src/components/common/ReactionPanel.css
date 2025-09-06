@@ -3,11 +3,20 @@
   display: inline-flex;
 }
 
-.main-reaction-button {
+/* --- Main Buttons Wrapper --- */
+.main-reaction-button-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* <-- 1. Button දෙක අතර පරතරය වැඩි කිරීම */
+}
+
+/* --- General Button Styles --- */
+.main-reaction-button,
+.main-text {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   border: none;
   background-color: transparent;
   cursor: pointer;
@@ -15,33 +24,90 @@
   transition: background-color 0.2s ease;
 }
 
-.main-reaction-button:hover {
-  background-color: var(--header-hover-bg);
+/* --- 2. Click/Press Highlight එක සහ Hover Effect එක ඉවත් කිරීම --- */
+.main-reaction-button:hover,
+.main-text:hover {
+  background-color: transparent; /* Hover BG එක සම්පූර්ණයෙන්ම ඉවත් කිරීම */
+}
+
+.reaction-container button {
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+.reaction-container button:focus-visible {
+    outline: 2px solid var(--primary-color);
+}
+
+
+/* --- Icon-Only Button Styles --- */
+.main-reaction-button.icon-only {
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .main-icon {
   width: 24px;
   height: 24px;
+  color: #888;
   transition: transform 0.2s ease;
 }
 
-.main-icon.default {
-    color: var(--text-color);
-    opacity: 0.7;
-}
-
+/* --- Text Styles (Total & "All Reactions") --- */
 .main-text {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #888;
+  transition: color 0.2s ease;
+}
+
+.dark .main-text {
+  color: #a0a0a0;
+}
+
+.main-text:hover {
+  color: var(--primary-color);
+}
+
+.reaction-count {
+    margin-left: 0.25rem;
+}
+
+/* --- Reacted State Text (e.g., "Love") --- */
+.main-text.reacted {
   font-weight: 600;
-  color: var(--text-color);
-  opacity: 0.7;
+  font-size: 0.75rem;
+  margin-top: 2px;
+  opacity: 1;
 }
 
-.main-reaction-button:hover .main-icon.default,
-.main-reaction-button:hover .main-text {
-    opacity: 1;
+/* --- Top 3 Reactions Summary --- */
+.top-reactions-summary {
+  display: flex;
+  align-items: center;
+  margin-right: 0.5rem;
 }
 
-/* --- Reaction Popup Panel --- */
+.top-reaction-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+}
+
+.top-reaction-icon:not(:first-child) {
+  margin-left: -8px;
+}
+
+.top-reaction-icon svg, 
+.top-reaction-icon .lottie-animation-container {
+  width: 12px;
+  height: 12px;
+}
+
+/* --- Reaction Popup Panel Styles --- */
 .reaction-popup {
   position: absolute;
   bottom: 100%;
@@ -49,26 +115,24 @@
   transform: translateX(-50%);
   margin-bottom: 0.75rem;
   display: flex;
-  background-color: var(--card-bg);
+  background-color: var(--card-bg-glass-color);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-glass-color);
   padding: 0.5rem;
   border-radius: 50px;
   box-shadow: 0 4px 12px var(--card-shadow);
-  border: 1px solid var(--border-color);
-  
-  /* Animation */
   animation: slide-up 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
 }
-
 @keyframes slide-up {
-  from {
-    opacity: 0;
-    transform: translate(-50%, 10px);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
+  from { opacity: 0; transform: translate(-50%, 10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
 }
+
+/* Theme specific popup background */
+.light .reaction-popup { background-color: rgba(255, 255, 255, 0.6); }
+.dark .reaction-popup { background-color: rgba(30, 30, 50, 0.6); }
+
 
 .reaction-button {
   position: relative;
@@ -78,16 +142,10 @@
   padding: 0.5rem;
   transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
+.reaction-button:hover { transform: translateY(-8px) scale(1.1); }
+.reaction-icon { width: 32px; height: 32px; }
 
-.reaction-button:hover {
-  transform: translateY(-8px) scale(1.1);
-}
-
-.reaction-icon {
-  width: 32px;
-  height: 32px;
-}
-
+/* ... Tooltip styles ... */
 .reaction-tooltip {
   position: absolute;
   bottom: 100%;
@@ -101,16 +159,13 @@
   font-size: 0.75rem;
   font-weight: 600;
   white-space: nowrap;
-  
-  /* Initially hidden */
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease;
 }
+.reaction-button:hover .reaction-tooltip { opacity: 1; }
 
-.reaction-button:hover .reaction-tooltip {
-  opacity: 1;
-}
+/* ... Color helper classes ... */
 
 /* Helper classes for colors (from Tailwind) */
 .text-red-500 { color: #ef4444; }

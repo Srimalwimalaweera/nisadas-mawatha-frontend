@@ -1,0 +1,105 @@
+/* LoginPromptPopup.css එකේ ඇති මූලික popup මෝස්තර උරුම කරගනී */
+@import url('./LoginPromptPopup.css');
+
+.rlp-content {
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.reactors-list {
+    overflow-y: auto;
+    padding-right: 0.5rem; 
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.rlp-status {
+    text-align: center;
+    padding: 2rem;
+    opacity: 0.7;
+}
+
+.reactor-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.reactor-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark .reactor-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.reactor-avatar-wrapper {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.reactor-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+}
+.default-avatar {
+    color: var(--text-color);
+    opacity: 0.5;
+}
+
+.reactor-reaction-badge {
+    position: absolute;
+    bottom: -2px;
+    left: -2px;
+    background-color: var(--card-bg);
+    border-radius: 50%;
+    padding: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.reactor-reaction-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--primary-color);
+}
+
+.reactor-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.reactor-name {
+    font-weight: 600;
+}
+
+.reactor-role {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    text-transform: capitalize;
+}
+
+/* Scrollbar styles */
+.reactors-list::-webkit-scrollbar {
+  width: 6px;
+}
+.reactors-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.reactors-list::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border-radius: 10px;
+}

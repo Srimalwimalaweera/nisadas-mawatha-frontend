@@ -10,6 +10,7 @@ import { useAuth } from '../../context/AuthContext.jsx';
 import LoadingScreen from '../common/LoadingScreen.jsx';
 import BottomNav from '../common/BottomNav.jsx';
 import FloatingActionButton from '../ui/FloatingActionButton.jsx';
+import LoginPromptPopup from '../common/LoginPromptPopup.jsx';
 
 function Layout({ children }) {
   const { theme } = useTheme();
@@ -63,6 +64,7 @@ function Layout({ children }) {
   return (
     <div className={`app-layout ${theme}`}>
       <Header showSearchBox={!showLoadingScreen} />
+      <LoginPromptPopup />
       <main className={`main-content ${showLoadingScreen ? 'loading' : ''}`}>
   {showLoadingScreen ? <LoadingScreen /> : children}
 </main>

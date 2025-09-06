@@ -1,10 +1,13 @@
 import React from 'react';
+import Lottie from "lottie-react";
+import sadAnimationData from "../../../assets/icons/sad.json";
 
-const IconSad = ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM8.5 10c.83 0 1.5-.67 1.5-1.5S9.33 7 8.5 7 7 7.67 7 8.5 7.67 10 8.5 10zm7 0c.83 0 1.5-.67 1.5-1.5S16.33 7 15.5 7 14 7.67 14 8.5s.67 1.5 1.5 1.5zm-3.89 4.39c-.31 1.28-1.42 2.11-2.61 2.11-1.55 0-2.8-1.25-2.8-2.8 0-1.12.66-2.08 1.57-2.52.17-.08.35-.13.53-.13.63 0 1.2.33 1.54.88l.01.01c.21.32.35.68.35 1.06 0 .39-.14.75-.36 1.07l.01.01c-.13.2-.28.38-.45.54z"/>
-        <path d="M15.5 14.39c-.31 1.28-1.42 2.11-2.61 2.11-1.55 0-2.8-1.25-2.8-2.8 0-1.12.66-2.08 1.57-2.52.17-.08.35-.13.53-.13.63 0 1.2.33 1.54.88l.01.01c.21.32.35.68.35 1.06 0 .39-.14.75-.36 1.07l.01.01c-.13.2-.28.38-.45.54z" opacity="0.5"/>
-    </svg>
-);
+const IconSad = ({ className, isAnimating }) => {
+  return (
+    <div className={className}>
+      <Lottie animationData={sadAnimationData} loop={isAnimating} />
+    </div>
+  );
+};
 
 export default IconSad;
