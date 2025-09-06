@@ -5,10 +5,8 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import './PdfViewer.css';
 
 // --- VVVV PDF.js worker configure කරන පේළිය මෙසේ වෙනස් කරන්න VVVV ---
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url,
-).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = `/pdf.worker.min.mjs`;
+
 
 function PdfViewer({ pdfUrl, onClose }) {
   const [numPages, setNumPages] = useState(null);
