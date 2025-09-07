@@ -1,0 +1,84 @@
+/* --- Base Header Styling for Desktop --- */
+.new-main-header.desktop-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+  padding: 0.5rem 1.5rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto; /* Left, Center, Right */
+  align-items: center;
+  gap: 1.5rem;
+
+  /* --- Unified "Glass" Background for Both Themes --- */
+  background-color: rgba(42, 59, 57, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Sections */
+.header-left-section, .header-center-section, .header-right-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-center-section {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-right-section {
+  justify-content: flex-end;
+}
+
+/* Logo */
+.header-logo {
+  /* Screen size එක අනුව logo height එක වෙනස් වීම */
+  height: clamp(40px, 4vw, 50px);
+  width: auto;
+  transition: height 0.2s ease-in-out;
+}
+
+/* Navigation */
+.desktop-nav-list {
+  display: flex;
+  align-items: center;
+   gap: clamp(1rem, 2vw, 2rem);
+  list-style: none;
+  padding-top: 0.5rem;
+}
+.desktop-nav-link {
+  color: #f1f1f1; /* Changed to light color for better contrast */
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s;
+  padding-bottom: 4px;
+}
+.desktop-nav-link:hover { color: #ffffff; }
+.desktop-nav-link.active {
+  color: #ffffff;
+  font-weight: bold;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+/* Auth Buttons */
+.auth-buttons { display: flex; }
+.header-action-btn {
+  border: none;
+   padding: clamp(0.5rem, 1vw, 0.6rem) clamp(1rem, 2vw, 1.2rem);
+  border-radius: 0.5rem;
+  font-weight: bold;
+  font-size: clamp(0.8rem, 1.5vw, 0.875rem);
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+.register-btn {
+  background-color: var(--accent-color);
+  color: white;
+}
+.header-action-btn:hover { opacity: 0.9; }

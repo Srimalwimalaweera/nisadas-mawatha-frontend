@@ -1,0 +1,32 @@
+.search-panel-container {
+  position: fixed;
+  top: 60px; /* Header එකේ උසට සමාන විය යුතුය */
+  left: 0;
+  width: 100%;
+  z-index: 45; /* Header එකට (50) යටින් */
+  
+  background-color: rgba(42, 59, 57, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  
+  padding: 1rem 0; /* උඩ සහ යට padding */
+  
+  /* Animation */
+  transform: translateY(-150%);
+  opacity: 0;
+  transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  pointer-events: none;
+}
+
+.search-panel-container.open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.search-panel-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

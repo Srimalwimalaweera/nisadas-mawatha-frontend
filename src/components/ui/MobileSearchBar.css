@@ -1,0 +1,48 @@
+.searchBox {
+    position: relative;
+    background: var(--card-bg); /* 1. Background එක theme color එකට මාරු කිරීම */
+    border: 1px solid var(--border-color); /* Border එකක් එක් කිරීම */
+    height: 40px;
+    border-radius: 40px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    transition: all 0.4s ease-in-out;
+}
+
+.searchInput {
+    border: none;
+    background: none;
+    outline: none;
+    float: left;
+    padding: 0 6px;
+    color: var(--text-color); /* 2. Text වර්ණය theme color එකට මාරු කිරීම */
+    font-size: 16px;
+    transition: 0.4s;
+    line-height: 40px;
+    width: 0px; /* Initially hidden */
+}
+
+.searchBox:hover > .searchInput {
+    width: 180px;
+}
+
+.searchButton {
+    color: var(--text-color); /* 3. Icon වර්ණය theme color එකට මාරු කිරීම */
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.searchBox:hover > .searchButton {
+  background: var(--text-color); /* 4. Hover background එක theme text color එකට මාරු කිරීම */
+  color: var(--page-bg);         /* 4. Hover icon වර්ණය theme page background color එකට මාරු කිරීම */
+}

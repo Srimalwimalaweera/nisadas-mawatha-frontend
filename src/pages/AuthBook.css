@@ -18,7 +18,7 @@
 /* AuthBook Container එක Responsive කිරීම */
 .auth-book-container {
     width: 100%;
-   min-height: 100vh;
+   height: 100svh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,23 +27,26 @@
     background-size: cover;
     background-position: center;
     overflow: hidden;
-    position: relative;
+    position: fixed;
     padding-top: 60px;
     padding-bottom: 20px;
     box-sizing: border-box;
+    
 }
 
 .book-wrapper {
-    width: 90%;
-    max-width: 500px;
-    height: auto;
+    /* --- පොතේ ප්‍රමාණය සහ පිහිටීම responsive කිරීම --- */
+    width: 90vw; /* Viewport පළලෙන් 90%ක් ලබා දීම */
+    height: calc(90vw * 1.4); /* 5:7 aspect ratio එකක් පවත්වා ගැනීම (උස = පළල * 1.4) */
+
+    max-width: 500px; /* උපරිම පළල 500px */
+    max-height: 700px; /* උපරිම උස 700px */
+
     perspective: 2500px;
     filter: drop-shadow(5px 15px 15px rgba(0,0,0,0.3));
-    position: relative; /* z-index ක්‍රියාත්මක වීමට position එකක් අවශ්‍යයි */
+    position: relative;
     z-index: 2; 
 }
-@media (max-width: 768px) { .book-wrapper { max-width: 400px; } }
-@media (max-width: 480px) { .book-wrapper { width: 95%; max-width: 320px; } .auth-header-logo-only { padding: 0.5rem 1rem; } }
 
 /* Page Scrolling Logic */
 .page-content-wrapper { padding: 1rem 1.5rem; height: 100%; width: 100%; box-sizing: border-box; overflow-y: hidden; }
