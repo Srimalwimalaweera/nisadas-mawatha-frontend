@@ -3,7 +3,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  right: 0;
   z-index: 50;
   transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
   padding: 0.5rem 1.5rem;
@@ -11,6 +11,7 @@
   grid-template-columns: auto 1fr auto; /* Left, Center, Right */
   align-items: center;
   gap: 1.5rem;
+  height: 120px;
 
   /* --- Unified "Glass" Background for Both Themes --- */
   background-color: rgba(42, 59, 57, 0.8);
@@ -27,7 +28,7 @@
 }
 
 .header-center-section {
-  flex-direction: column;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
@@ -39,7 +40,7 @@
 /* Logo */
 .header-logo {
   /* Screen size එක අනුව logo height එක වෙනස් වීම */
-  height: clamp(40px, 4vw, 50px);
+  height: 50px;
   width: auto;
   transition: height 0.2s ease-in-out;
 }
@@ -48,9 +49,9 @@
 .desktop-nav-list {
   display: flex;
   align-items: center;
-   gap: clamp(1rem, 2vw, 2rem);
+  gap: 25px;
   list-style: none;
-  padding-top: 0.5rem;
+  padding-top: 0rem;
 }
 .desktop-nav-link {
   color: #f1f1f1; /* Changed to light color for better contrast */
@@ -59,18 +60,24 @@
   transition: color 0.3s;
   padding-bottom: 4px;
 }
-.desktop-nav-link:hover { color: #ffffff; }
+.new-main-header.desktop-header nav {
+  position: absolute;
+  bottom: 9px; /* header එකේ පහළ දාරයේ සිට ඇති පරතරය */
+  left: 50%;
+  transform: translateX(-50%); /* හරියටම මැදට ගැනීම සඳහා */
+}
+.desktop-nav-link:hover { color: #00ff4c; }
 .desktop-nav-link.active {
-  color: #ffffff;
+  color: #00ff4c;
   font-weight: bold;
-  border-bottom: 2px solid var(--primary-color);
+  border-bottom: 2px solid #ffffff;
 }
 
 /* Auth Buttons */
 .auth-buttons { display: flex; }
 .header-action-btn {
   border: none;
-   padding: clamp(0.5rem, 1vw, 0.6rem) clamp(1rem, 2vw, 1.2rem);
+   padding: 3px;
   border-radius: 0.5rem;
   font-weight: bold;
   font-size: clamp(0.8rem, 1.5vw, 0.875rem);

@@ -59,7 +59,7 @@ useEffect(() => {
   };
 
   return (
-    <div ref={panelRef} className={`search-panel-container ${isOpen ? 'open' : ''}`}>
+    <div ref={panelRef} className={`search-panel-container ${isOpen ? 'open' : ''}`} onContextMenu={(e) => e.preventDefault()}>
       <div className="search-panel-content">
         <MobileSearchBar 
             isActive={isOpen && !isClosing} // Panel එක close වන විට, search bar එකද close වීම

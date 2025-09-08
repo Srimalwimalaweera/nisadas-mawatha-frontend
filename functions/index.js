@@ -195,3 +195,132 @@ exports.updateReaction = functions.https.onCall(async (data, context) => {
       );
     }
 });
+
+// Add this helper function at the top with your other requires
+const { FieldValue } = require("firebase-admin/firestore");
+
+// NEW addComment (initializes reactionCounts)
+exports.addComment = functions.region("us-central1").https.onCall(async (data, context) => {
+    // ... (validation code is the same)
+    if (!context.auth) { throw new functions.https.HttpsError("unauthenticated", "Auth required."); }
+    const { bookId, content } = data;
+    const userId = context.auth.uid;
+    if (!bookId || !content || content.trim() === "") { throw new functions.https.HttpsError("invalid-argument", "Required fields missing."); }
+
+    const commentRef = db.collection("comments").doc(bookId);
+    const newComment = {
+        id: `comment_${Date.now()}`,
+        userId: userId,
+        content: content,
+        replies: [],
+        timestamp: new Date(),
+        reactionCounts: { love: 0, like: 0, fire: 0, haha: 0, sad: 0, angry: 0 } // <-- Initialize counts
+    };
+    // ... (rest of the transaction logic is the same)
+    try {
+        await db.runTransaction(async (transaction) => {
+          const doc = await transaction.get(commentRef);
+          if (!doc.exists) {
+            transaction.set(commentRef, { threads: [newComment] });
+          } else {
+            transaction.update(commentRef, {
+              threads: FieldValue.arrayUnion(newComment),
+            });
+          }
+        });
+        return { success: true, comment: newComment };
+      } catch (error) {
+        console.error("Error adding comment in transaction:", error);
+        throw new functions.https.HttpsError("internal", "Failed to add comment.");
+      }
+});
+
+// NEW addReply (initializes reactionCounts)
+exports.addReply = functions.region("us-central1").https.onCall(async (data, context) => {
+    // ... (validation code is the same)
+    if (!context.auth) { throw new functions.https.HttpsError("unauthenticated", "Auth required."); }
+    const { bookId, commentId, content } = data;
+    const userId = context.auth.uid;
+    if (!bookId || !commentId || !content || content.trim() === "") { throw new functions.https.HttpsError("invalid-argument", "Required fields missing."); }
+
+    const commentRef = db.collection("comments").doc(bookId);
+    const newReply = {
+        id: `reply_${Date.now()}`,
+        userId: userId,
+        content: content,
+        timestamp: new Date(),
+        reactionCounts: { love: 0, like: 0, fire: 0, haha: 0, sad: 0, angry: 0 } // <-- Initialize counts
+    };
+    // ... (rest of the transaction logic is the same)
+    return db.runTransaction(async (transaction) => {
+        const doc = await transaction.get(commentRef);
+        if (!doc.exists) { throw new functions.https.HttpsError("not-found", "Comment thread not found."); }
+        const threads = doc.data().threads || [];
+        const commentIndex = threads.findIndex((c) => c.id === commentId);
+        if (commentIndex === -1) { throw new functions.https.HttpsError("not-found", "Comment to reply to not found."); }
+        threads[commentIndex].replies.push(newReply);
+        transaction.update(commentRef, { threads: threads });
+        return { success: true, reply: newReply };
+    });
+});
+
+
+// NEW toggleCommentReaction (replaces toggleCommentLike)
+exports.toggleCommentReaction = functions.region("us-central1").https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError("unauthenticated", "Authentication required.");
+    }
+
+    const { bookId, commentId, replyId, reactionType } = data;
+    const userId = context.auth.uid;
+
+    if (!bookId || !commentId || !reactionType) {
+        throw new functions.https.HttpsError("invalid-argument", "Missing required fields.");
+    }
+    
+    const validReactions = ["love", "like", "fire", "haha", "sad", "angry"];
+    if (!validReactions.includes(reactionType)) {
+        throw new functions.https.HttpsError("invalid-argument", "Invalid reaction type.");
+    }
+
+    const commentRef = db.collection("comments").doc(bookId);
+    const reactionDocId = replyId ? `${bookId}_${commentId}_${replyId}` : `${bookId}_${commentId}`;
+    const reactionRef = db.collection("commentReactions").doc(reactionDocId);
+
+    return db.runTransaction(async (transaction) => {
+        const commentDoc = await transaction.get(commentRef);
+        const reactionDoc = await transaction.get(reactionRef);
+
+        if (!commentDoc.exists) { throw new functions.https.HttpsError("not-found", "Comment thread not found."); }
+
+        const threads = commentDoc.data().threads || [];
+        const cIndex = threads.findIndex((c) => c.id === commentId);
+        if (cIndex === -1) { throw new functions.https.HttpsError("not-found", "Comment not found."); }
+
+        const oldReaction = reactionDoc.exists ? reactionDoc.data()[userId] : null;
+        let targetItem; // This will be the comment or reply object we are modifying
+
+        if(replyId) {
+            const rIndex = threads[cIndex].replies.findIndex((r) => r.id === replyId);
+            if (rIndex === -1) { throw new functions.https.HttpsError("not-found", "Reply not found."); }
+            targetItem = threads[cIndex].replies[rIndex];
+        } else {
+            targetItem = threads[cIndex];
+        }
+
+        // --- Reaction Logic ---
+        if (oldReaction === reactionType) { // User is removing their reaction
+            transaction.update(reactionRef, { [userId]: FieldValue.delete() });
+            targetItem.reactionCounts[reactionType] = Math.max(0, (targetItem.reactionCounts[reactionType] || 0) - 1);
+        } else {
+            if (oldReaction) { // User is changing reaction
+                targetItem.reactionCounts[oldReaction] = Math.max(0, (targetItem.reactionCounts[oldReaction] || 0) - 1);
+            }
+            targetItem.reactionCounts[reactionType] = (targetItem.reactionCounts[reactionType] || 0) + 1;
+            transaction.set(reactionRef, { [userId]: reactionType }, { merge: true });
+        }
+        
+        transaction.update(commentRef, { threads: threads });
+        return { success: true };
+    });
+});

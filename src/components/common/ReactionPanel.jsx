@@ -194,8 +194,7 @@ const reactionRef = doc(db, 'reactions', bookId);
             <div 
                 ref={containerRef} // Add ref to the main container
                 className="reaction-container"
-                onMouseEnter={showPanel}
-                onMouseLeave={hidePanelWithDelay}
+                
             >
                 {isPanelVisible && (
                     <div 
@@ -220,6 +219,8 @@ const reactionRef = doc(db, 'reactions', bookId);
                         onTouchStart={handleMouseDown} onTouchEnd={handleMouseUp}
                         onContextMenu={(e) => e.preventDefault()}
                         disabled={isLoading}
+                        onMouseEnter={showPanel}      
+                        onMouseLeave={hidePanelWithDelay} 
                     >
                         <MainIcon isAnimating={isAnimating} className={`main-icon ${selectedReactionObj ? 'reacted' : 'default'}`} />
                         {selectedReactionObj ? (
@@ -233,8 +234,7 @@ const reactionRef = doc(db, 'reactions', bookId);
                     <button 
                         className="main-text" 
                         onClick={handleAllReactionsClick}
-                        onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}
-                        onTouchStart={handleMouseDown} onTouchEnd={handleMouseUp}
+                        
                         onContextMenu={(e) => e.preventDefault()}
                     >
                         <div className="top-reactions-summary">

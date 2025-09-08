@@ -28,7 +28,7 @@
     background-position: center;
     overflow: hidden;
     position: fixed;
-    padding-top: 60px;
+    padding-top: 10px;
     padding-bottom: 20px;
     box-sizing: border-box;
     
@@ -36,7 +36,7 @@
 
 .book-wrapper {
     /* --- පොතේ ප්‍රමාණය සහ පිහිටීම responsive කිරීම --- */
-    width: 90vw; /* Viewport පළලෙන් 90%ක් ලබා දීම */
+    width: 85vw; /* Viewport පළලෙන් 90%ක් ලබා දීම */
     height: calc(90vw * 1.4); /* 5:7 aspect ratio එකක් පවත්වා ගැනීම (උස = පළල * 1.4) */
 
     max-width: 500px; /* උපරිම පළල 500px */

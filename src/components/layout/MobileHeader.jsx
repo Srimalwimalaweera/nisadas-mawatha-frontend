@@ -15,7 +15,7 @@ const MobileHeader = ({ isAuthPage, isMenuOpen, setIsMenuOpen, isSearchPanelOpen
   const isDarkMode = theme === 'dark';
 
   return (
-    <header className={'new-main-header mobile-header'}>
+    <header className={'new-main-header mobile-header'} onContextMenu={(e) => e.preventDefault()}>
       <div className="header-left-section">
         <div className="header-menu-icon" onClick={() => setIsMenuOpen(!isMenuOpen)}>
           <AnimatedMenuIcon isOpen={isMenuOpen} />

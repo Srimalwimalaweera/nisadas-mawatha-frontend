@@ -51,18 +51,19 @@ const DesktopHeader = ({ navLinks, isAuthPage, showSearchBox, isMenuOpen, setIsM
 
       {/* Right Section */}
       <div className="header-right-section">
+        <ThemeToggleButton isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
         {currentUser ? (
           <ProfileDropdown />
         ) : (
           !isAuthPage && (
             <div className="auth-buttons">
               <Link to="/auth">
-                <button className="header-action-btn register-btn">Register</button>
+                <button className="header-action-btn register-btn">Signup</button>
               </Link>
             </div>
           )
         )}
-        <ThemeToggleButton isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+        
       </div>
     </header>
   );

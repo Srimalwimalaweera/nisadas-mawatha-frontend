@@ -1,13 +1,18 @@
 .searchBox {
     position: relative;
-    background: var(--card-bg); /* 1. Background එක theme color එකට මාරු කිරීම */
-    border: 1px solid var(--border-color); /* Border එකක් එක් කිරීම */
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
     height: 40px;
     border-radius: 40px;
     padding: 5px;
     display: flex;
     align-items: center;
     transition: all 0.4s ease-in-out;
+
+    /* සම්පූර්ණ search box එක select වීම නැවැත්වීම */
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .searchInput {
@@ -16,19 +21,28 @@
     outline: none;
     float: left;
     padding: 0 6px;
-    color: var(--text-color); /* 2. Text වර්ණය theme color එකට මාරු කිරීම */
+    color: var(--text-color);
     font-size: 16px;
     transition: 0.4s;
     line-height: 40px;
     width: 0px; /* Initially hidden */
+
+     /* Input field එකට text select කිරීම නැවත enable කිරීම */
+    user-select: text;
+    -webkit-user-select: text;
 }
 
-.searchBox:hover > .searchInput {
+/* වැදගත්ම වෙනස:
+  මෙහි `:hover` වෙනුවට `.active` class එකක් භාවිතා කර ඇත.
+  දැන් search bar එක expand වෙන්නේ mouse එක උඩට ගෙනාවම නෙවෙයි,
+  `.active` class එක ලැබුණාමයි.
+*/
+.searchBox.active > .searchInput {
     width: 180px;
 }
 
 .searchButton {
-    color: var(--text-color); /* 3. Icon වර්ණය theme color එකට මාරු කිරීම */
+    color: var(--text-color);
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -42,7 +56,8 @@
     font-size: 1.1rem;
 }
 
-.searchBox:hover > .searchButton {
-  background: var(--text-color); /* 4. Hover background එක theme text color එකට මාරු කිරීම */
-  color: var(--page-bg);         /* 4. Hover icon වර්ණය theme page background color එකට මාරු කිරීම */
+/* මෙතනත් `:hover` වෙනුවට `.active` class එක යොදන ලදී */
+.searchBox.active > .searchButton {
+  background: var(--text-color);
+  color: var(--page-bg);
 }

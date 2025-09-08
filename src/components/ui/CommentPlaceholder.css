@@ -1,0 +1,61 @@
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.placeholder-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.comment-placeholder {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: rgba(42, 58, 56, 0.4); /* var(--card-bg) with opacity */
+  border-radius: 16px;
+  border: 1px solid rgba(128, 128, 128, 0.2); /* var(--border-color) */
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.placeholder-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--card-bg);
+  flex-shrink: 0;
+}
+
+.placeholder-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.placeholder-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.placeholder-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.placeholder-line {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  height: 16px;
+  width: 100%;
+}
+
+.placeholder-actions {
+  display: flex;
+  gap: 1.5rem;
+  padding-top: 0.5rem;
+}

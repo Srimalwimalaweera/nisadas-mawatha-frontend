@@ -9,9 +9,10 @@
 .searchContainer {
 	position: relative;
 	display: grid;
-	grid-template: "search" 50px / 420px;
+	grid-template: "search" 35px / 420px;
 	justify-content: center;
 	align-content: center;
+	transform: translateX(-15px);
 }
 
 .searchInput {

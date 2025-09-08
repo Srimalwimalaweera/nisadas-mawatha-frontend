@@ -1,25 +1,38 @@
-/* --- Glass Effect, Blur, and Theme Colors --- */
+/* නවීකරණය කරන ලද Loading Screen Styles.
+  මෙය දැන් header/footer වලට උඩින් පාවෙන overlay එකක් නොවේ.
+  එය ප්‍රධාන content එක ලෙස පිටුවේ කොටසක් ලෙස ක්‍රියාත්මක වේ.
+*/
 .loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  /* Layout එක සකස් කිරීම */
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
-  transition: opacity 0.5s ease;
+  width: 100%;
+  
+  /* පිටුවේ උස අනුව loader එකට අවම උසක් ලබා දීම.
+     මෙය content අඩු පිටු වලදී footer එක උඩට ඒම වළක්වයි. */
+  min-height: calc(100vh - 200px); /* 100vh = සම්පූර්ණ උස, 200px = header/footer වලට ඉඩක් */
+  padding: 2rem;
+  box-sizing: border-box;
+  
+  /* Logo සහ animation එක අතර ඉඩක් තැබීම. 
+     clamp() මගින් screen size එකට අනුව ඉඩ වෙනස් වේ. */
+  gap: clamp(2rem, 8vw, 5rem);
+  
+  /* Text selection සහ tap highlight ඉවත් කිරීම */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 
-  /* Glass Effect */
-  background-color: #2a3b39; /* Light mode background */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  padding-bottom: 15vh;
 }
 
-.dark .loading-overlay {
-  background-color: rgba(18, 28, 27, 0.5); /* Dark mode background (#121c1b) */
-}
+/* පෙර තිබූ Glass effect එක සහ fixed position එක ඉවත් කර ඇත.
+  Dark mode සඳහා වූ අනවශ්‍ය background නීති ද ඉවත් කර ඇත.
+*/
 
 .loading-content {
   display: flex;
@@ -29,25 +42,47 @@
 }
 
 .loading-text {
-  font-size: 1.1rem;
-  color: white;
+  /* Screen size එකට අනුව font size එක වෙනස් වීම */
+  font-size: clamp(1rem, 3vw, 1.1rem);
+  /* Theme එකට ගැලපෙන ලෙස text වර්ණය ලබා ගැනීම */
+  color: var(--text-color);
   font-weight: 500;
-  opacity: 1;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0);
+  opacity: 0.8; /* තරමක් විනිවිද පෙනෙන ලෙස සකස් කිරීම */
 }
 
-.dark .loading-text {
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-}
-
-/* --- Auto-Looping SVG Animation --- */
+/* --- Responsive SVG Animation --- */
 .book-shelf-loader {
-  width: 100px; /* SVG එකේ ප්‍රමාණය සකස් කිරීම */
+  /* Screen size එකට අනුව animation එකේ ප්‍රමාණය වෙනස් වීම */
+  width: clamp(80px, 18vw, 110px);
   height: auto;
-  /* Animation එක කෙලින්ම SVG එකට යෙදීම */
   animation: start-loader-animation 2s infinite ease-in-out;
 }
 
+/* --- Responsive Logo --- */
+.loading-top-logo {
+  position: relative; /* Absolute ඉවත් කර ඇත */
+  top: auto;
+  left: auto;
+  /* Screen size එකට අනුව logo එකේ ප්‍රමාණය වෙනස් වීම */
+  height: clamp(60px, 15vw, 90px);
+  width: auto;
+  
+  /* Animation එක සඳහා මූලික settings */
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.loading-top-logo.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Mobile view media query එක ඉවත් කර ඇත.
+  දැන් ඉහත styles සියල්ලම mobile සහ desktop දෙකටම responsive ලෙස ක්‍රියා කරයි.
+*/
+
+/* --- Animations (වෙනසක් සිදු කර නැත) --- */
 @keyframes book-bounce {
   0% { transform: translateY(0); }
   40% { transform: translateY(-10px); }
@@ -64,89 +99,21 @@
   100% { transform: translateY(0); }
 }
 
-/* Main animation trigger */
 @keyframes start-loader-animation {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.9;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.9; }
 }
 
 .book-shelf-loader .book-shelf__book {
   animation: book-bounce 1.2s ease infinite;
 }
-
 .book-shelf-loader .book-shelf__book--two {
   animation-delay: 0.1s;
 }
-
 .book-shelf-loader .book-shelf__book--three {
   animation-delay: 0.2s;
 }
-
 .book-shelf-loader .book-shelf__shelf {
   animation: shelf-lift 1.2s ease infinite;
   transform-origin: 50% 50%;
 }
-
-.loading-top-logo {
-  position: absolute;
-  top: 3rem;
-  left: 50%;
-  height: 90px;  /*loading screen එකේ logo size වෙනස් කරන තැන.*/
-  width: auto;
-  
-  /* Animation එක සඳහා මූලික settings */
-  opacity: 0; /* මුලින්ම hide කර තැබීම */
-  transform: translateX(-50%) scale(0.95); /* තරමක් කුඩාවට තැබීම */
-  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; /* Smooth effect එක */
-}
-
-/* --- 2. Logo එක load වුණාම 'visible' class එකෙන් animation එක ක්‍රියාත්මක කිරීම --- */
-.loading-top-logo.visible {
-  opacity: 1; /* Fade-in වීම */
-  transform: translateX(-50%) scale(1); /* Zoom-in වීම */
-}
-
-/* --- Mobile View Adjustments --- */
-@media (max-width: 768px) {
-  .loading-overlay {
-    /* Full-screen overlay එක අක්‍රීය කිරීම */
-    position: relative;
-    top: auto;
-    left: auto;
-    width: auto;
-    height: auto;
-    z-index: auto;
-    background-color: transparent;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-
-    /* --- ගැටලුව විසඳීමට එක් කළ අලුත් මෝස්තර --- */
-    flex-direction: column; /* Logo එක සහ Animation එක සිරස් අතට සකස් කිරීම */
-    gap: 5rem;              /* ඒ දෙක අතර පරතරයක් තැබීම */
-    padding-bottom: 5vh;    /* සිරස් අතට තවත් මැදට ගැනීමට */
-  }
-
-  .loading-top-logo {
-    /* Logo එකේ absolute position එක ඉවත් කර සාමාන්‍ය මූලද්‍රව්‍යයක් බවට පත් කිරීම */
-    position: relative; 
-    top: auto;
-    left: auto;
-    transform: none; /* පරණ transform එක ඉවත් කිරීම */
-    
-    /* Fade-in/scale animation එක එලෙසම තැබීම */
-    opacity: 0;
-    transform: scale(.95);
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-  }
-  
-  .loading-top-logo.visible {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-

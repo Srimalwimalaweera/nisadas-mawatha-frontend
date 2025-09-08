@@ -6,14 +6,14 @@ const MobileSearchBar = ({ isActive, query, setQuery, onSearch }) => {
   const inputRef = useRef(null);
 
   useEffect(() => {
-    // `isActive` prop එක true වූ විට, එනම් panel එක open වූ විට...
+    // `isActive` prop එක true නම් (එනම් panel එක open නම්)
     if (isActive && inputRef.current) {
-      // Animation එකට ඉඩ දීමට, සුළු delay එකකින් පසුව input එක focus කිරීම
+      // CSS animation එකට සුළු වේලාවක් දී, input field එක focus කිරීම
       const timer = setTimeout(() => {
         inputRef.current.focus();
-      }, 400); // CSS transition එකේ කාලයට සමාන අගයක් (0.4s)
+      }, 400); 
 
-      return () => clearTimeout(timer); // Cleanup
+      return () => clearTimeout(timer);
     }
   }, [isActive]);
   
@@ -25,7 +25,9 @@ const MobileSearchBar = ({ isActive, query, setQuery, onSearch }) => {
   };
 
   return (
-    <form className={`searchBox ${isActive ? 'active' : ''}`} onSubmit={handleSearch}>
+    // `isActive` prop එක true නම්, `active` class එක මෙතනින් එක් වේ.
+    // එමගින් CSS animation එක auto-trigger වී search bar එක expand වේ.
+    <form className={`searchBox ${isActive ? 'active' : ''}`} onSubmit={handleSearch} onContextMenu={(e) => e.preventDefault()}>
       <input 
         ref={inputRef}
         className="searchInput"

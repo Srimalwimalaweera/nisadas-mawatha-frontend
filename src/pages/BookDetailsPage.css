@@ -260,3 +260,9 @@
 .bd-reactions-section {
   margin-top: 2rem; /* Buy/Read button එක සහ reaction section එක අතර ඉඩක් තැබීම */
 }
+
+/* --- New Style for Mobile Comment Input --- */
+.mobile-comment-input-wrapper {
+  margin-bottom: 1.5rem;
+  animation: slideInUp 0.3s ease-out; /* Uses animation from Comment.css */
+}

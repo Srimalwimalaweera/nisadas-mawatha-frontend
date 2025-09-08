@@ -17,6 +17,12 @@
   opacity: 0;
   transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
   pointer-events: none;
+
+   user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .search-panel-container.open {

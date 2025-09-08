@@ -18,6 +18,7 @@ import StudentPanelPage from './pages/creator/StudentPanelPage.jsx';
 import CreatorRoute from './components/common/CreatorRoute';
 import PdfReaderPage from './pages/PdfReaderPage';
 import TrendingPage from './pages/TrendingPage';
+import { CommentProvider } from './context/CommentContext';
 // LoginPage, SignupPage වැනි pages මෙතනට import කිරීම අවශ්‍ය නැහැ.
 
 function App() {
@@ -41,8 +42,8 @@ function App() {
 
         {/* --- ඉතිරි routes පෙර පරිදිම --- */}
         <Route path="/" element={<Homepage />} />
-        <Route path="/books/:bookId" element={<BookDetailsPage />} />
-        <Route path="/book/:bookId" element={<BookDetailsPage />} />
+        <Route path="/books/:bookId" element={<CommentProvider><BookDetailsPage /></CommentProvider>} />
+        <Route path="/book/:bookId" element={<CommentProvider><BookDetailsPage /></CommentProvider>} />
         <Route path="/trending" element={<TrendingPage />} />
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         <Route path="/purchase/:bookId" element={<PurchasePage />} />
