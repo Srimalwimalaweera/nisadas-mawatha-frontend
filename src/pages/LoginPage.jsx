@@ -79,10 +79,9 @@ function LoginPage({ onNavigateToSignup }) {
           <FcGoogle size={22} /> Sign In with Google
         </button>
         <div className="form-link">
-          Don't have an account? 
-          {/* react-router Link එක වෙනුවට <a> tag එකක් යොදා onClick එකට function එක දෙන්න */}
-          <href onClick={onNavigateToSignup} style={{cursor: 'pointer'}}> Sign Up</href>
-        </div>
+        Don't have an account? 
+        <button type="button" onClick={onNavigateToSignup} className="link-button"> Sign Up</button>
+      </div>
       </div>
     </div>
   );

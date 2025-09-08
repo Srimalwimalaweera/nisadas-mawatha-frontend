@@ -111,7 +111,7 @@ function SignupPage({ onNavigateToLogin }) {
       </button>
       <div className="form-link">
         Already registered? 
-        <href onClick={onNavigateToLogin} style={{cursor: 'pointer'}}> Login now.</href>
+        <button type="button" onClick={onNavigateToLogin} className="link-button"> Login now.</button>
       </div>
     </div>
   );

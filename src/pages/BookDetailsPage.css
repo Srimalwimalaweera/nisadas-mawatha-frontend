@@ -146,7 +146,7 @@
 .bd-details-section {
   background-color: var(--page-bg);
   color: var(--text-color);
-  padding: 2rem;
+  padding: 0.5rem;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -265,4 +265,10 @@
 .mobile-comment-input-wrapper {
   margin-bottom: 1.5rem;
   animation: slideInUp 0.3s ease-out; /* Uses animation from Comment.css */
+}
+
+@media (min-width: 768px) {
+  .bd-details-section {
+    padding: 2rem;
+  }
 }

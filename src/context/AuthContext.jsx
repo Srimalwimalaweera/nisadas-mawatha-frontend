@@ -15,9 +15,29 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isRoleSelectionRequired, setIsRoleSelectionRequired] = useState(false);
+  const [appConfig, setAppConfig] = useState({ commentLength: 500 });
+
+
+ useEffect(() => {
+    // Fetch app-wide settings
+    const fetchAppConfig = async () => {
+      try {
+        const configRef = doc(db, "admin-control", "settings");
+        const docSnap = await getDoc(configRef);
+        if (docSnap.exists()) {
+          setAppConfig(docSnap.data());
+        }
+      } catch (error) {
+        console.error("Could not fetch app config:", error);
+      }
+    };
+    fetchAppConfig();
+  }, []); // Empty array ensures this runs only once when the app loads
+
   const auth = getAuth();
   
   useEffect(() => {
+    
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         const userDocRef = doc(db, 'users', user.uid);
@@ -69,6 +89,7 @@ export function AuthProvider({ children }) {
   const value = {
     currentUser,
     loading,
+    appConfig,
     logout: () => signOut(auth),
     signInWithGoogle,
     login: (email, password) => signInWithEmailAndPassword(auth, email, password),

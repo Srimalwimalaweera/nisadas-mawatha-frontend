@@ -77,3 +77,28 @@
 .comment-submit-btn:active {
   transform: scale(0.95);
 }
+
+/* --- New Styles for Character Counter --- */
+.comment-input-container-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.char-counter {
+  font-size: 0.75rem;
+  color: #888;
+  text-align: right;
+  padding-right: 0.5rem;
+  margin-top: 0.25rem;
+  transition: color 0.3s ease;
+}
+
+.char-counter.warn {
+  color: #f59e0b; /* Amber/Yellow color */
+  font-weight: 500;
+}
+
+.char-counter.limit {
+  color: #ef4444; /* Red color */
+  font-weight: 700;
+}

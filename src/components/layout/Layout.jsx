@@ -108,7 +108,7 @@ function Layout({ children }) {
         {showLoadingScreen ? <LoadingScreen /> : children}
       </main>
       <Footer />
-      <BottomNav />
+      <BottomNav className={isAuthPage ? 'hide' : ''} />
       <FloatingActionButton />
     </div>
   );

@@ -46,8 +46,8 @@
 }
 
 .main-icon {
-  width: 24px;
-  height: 24px;
+   width: clamp(20px, 6vw, 24px); /* Responsive icon size */
+  height: clamp(20px, 6vw, 24px);
   color: #888;
   transition: transform 0.2s ease;
 }
@@ -55,7 +55,7 @@
 /* --- Text Styles (Total & "All Reactions") --- */
 .main-text {
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
   color: #888;
   transition: color 0.2s ease;
   user-select: none; /* Text select වීම නැවැත්වීම */
@@ -72,6 +72,7 @@
 
 .reaction-count {
     margin-left: 0.25rem;
+    font-size: clamp(0.8rem, 2.5vw, 0.9rem);
 }
 
 /* --- Reacted State Text (e.g., "Love") --- */

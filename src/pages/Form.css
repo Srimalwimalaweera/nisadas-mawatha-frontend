@@ -15,27 +15,26 @@
 .page-form-wrapper {
   display: flex;
   flex-direction: column;
-  /* --- 1. justify-content: center වෙනුවට flex-start යෙදීම --- */
-  justify-content: flex-start; /* Content එක උඩ ඉඳන් පටන් ගන්නවා */
-  /* --- 2. height: 100% ඉවත් කිරීම --- */
-  padding: 1rem 0.5rem; /* උඩින් සහ යටින් ඉඩක් තැබීම */
+  justify-content: flex-start;
+  padding: 1rem clamp(0.5rem, 4vw, 1.5rem); /* Responsive horizontal padding */
 }
+
 .page-form-wrapper h2 {
   text-align: center;
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
+  margin-bottom: clamp(0.5rem, 3vw, 1rem); /* Responsive margin */
+  font-size: clamp(1.2rem, 5vw, 1.5rem);  /* Responsive font size */
   color: var(--text-color);
 }
 
 .form-group {
-  margin-bottom: 0.8rem;
+  margin-bottom: clamp(0.6rem, 2vw, 0.8rem); /* Responsive margin */
 }
 
 .form-group label {
   display: block;
   margin-bottom: 0.4rem;
   color: var(--text-color);
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem); /* Responsive font size */
 }
 
 .form-group input, .form-group select {
@@ -43,17 +42,17 @@
   padding: 0.6rem;
   border: 1px solid #ddd;
   border-radius: 5px;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 3vw, 1rem); /* Responsive font size */
 }
 
 .form-button {
   width: 100%;
-  padding: 0.65rem;
+  padding: clamp(0.6rem, 2.5vw, 0.65rem); /* Responsive padding */
   background-color: #5A2D82;
   color: white;
   border: none;
   border-radius: 5px;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 3.5vw, 1rem); /* Responsive font size */
   cursor: pointer;
   margin-top: 0.8rem;
   font-weight: bold;
@@ -64,20 +63,23 @@
 }
 
 .error-message {
+  padding: 0.6rem;
+  margin-bottom: 0.8rem;
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+  /* Other styles remain */
   background-color: #f8d7da;
   color: #721c24;
-  padding: 0.6rem;
   border: 1px solid #f5c6cb;
   border-radius: 5px;
-  margin-bottom: 0.8rem;
   text-align: center;
 }
 
 .form-divider {
+  margin: clamp(0.8rem, 3vw, 1rem) 0;
+  /* Other styles remain */
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 1rem 0;
   color: #888;
 }
 .form-divider::before,
@@ -86,21 +88,18 @@
   flex: 1;
   border-bottom: 1px solid #ddd;
 }
-.form-divider:not(:empty)::before {
-  margin-right: .25em;
-}
-.form-divider:not(:empty)::after {
-  margin-left: .25em;
-}
+.form-divider:not(:empty)::before { margin-right: .25em; }
+.form-divider:not(:empty)::after { margin-left: .25em; }
 
 .google-signin-button {
   width: 100%;
-  padding: 0.65rem;
+  padding: clamp(0.6rem, 2.5vw, 0.65rem);
+  font-size: clamp(0.9rem, 3.5vw, 1rem);
+  /* Other styles remain */
   background-color: #4285F4;
   color: white;
   border: none;
   border-radius: 5px;
-  font-size: 1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -115,6 +114,7 @@
 .form-link {
   text-align: center;
   margin-top: 1rem;
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
 }
 
 .form-link a {
@@ -124,67 +124,80 @@
 }
 
 .success-message {
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+  /* Other styles remain */
   background-color: #d4edda;
   color: #155724;
-  padding: 0.75rem;
   border: 1px solid #c3e6cb;
   border-radius: 5px;
-  margin-bottom: 1rem;
   text-align: center;
 }
 
-/* ... form-container සහ අනිත් styles උඩින් තියෙනවා ... */
-.form-info-text { font-size: 0.8rem; color: #666; margin-top: -0.2rem; margin-bottom: 0.8rem; }
-.form-group select { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; }
-.form-group-checkbox { display: flex; align-items: center; margin-bottom: 1rem; font-size: 0.9rem; }
+.form-group-checkbox { 
+  display: flex; 
+  align-items: center; 
+  margin-bottom: 1rem; 
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+}
 .form-group-checkbox input { margin-right: 0.5rem; }
 .form-group-checkbox label { margin-bottom: 0; }
 
 .form-info-text {
-  font-size: 0.8rem;
-  color: #ffffff; /* Dark green text */
-  background-color: rgba(42, 139, 13, 0.705); /* Light green transparent bg */
+  font-size: clamp(0.75rem, 2vw, 0.8rem);
+  /* Other styles remain */
+  color: #ffffff;
+  background-color: rgba(42, 139, 13, 0.705);
   padding: 8px;
   border-radius: 5px;
   margin-top: -0.2rem;
   margin-bottom: 0.8rem;
-  border-left: 3px solid #28a745; /* Green left border */
+  border-left: 3px solid #28a745;
   text-align: center;
 }
 
-/* ... আগের styles ... */
 .password-wrapper {
   position: relative;
   display: flex;
   align-items: center;
 }
-
-.password-wrapper input {
-  width: 100%;
-}
-
+.password-wrapper input { width: 100%; }
 .eye-icon {
   position: absolute;
   right: 10px;
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 4vw, 1.2rem);
   color: #888;
 }
 
-.google-signin-button span {
-  font-weight: bold;
-}
-
-/* --- Special Layout for Login Page --- */
+/* Special Layout for Login Page */
 .login-layout {
-  justify-content: flex-start; /* මැදට එන එක නවත්තලා, උඩ ඉඳන් පටන් ගන්නවා */
-  padding-top: 0.50rem; /* Title එකට උඩින් පොඩි ඉඩක් */
+  justify-content: flex-start;
+  padding-top: 0.50rem;
 }
 
 .login-layout .form-content-bottom {
-  margin-top: 10%; /* <-- මැජික් එක මෙතන! මේකෙන් මේ කොටස පහළටම තල්ලු කරනවා */
-  padding-bottom: 2rem; /* Form එකට යටින් පොඩි ඉඩක් */
-  width: 100%; /* සම්පූර්ණ පළල ගන්නවා */
+  margin-top: 10%;
+  padding-bottom: 2rem;
+  width: 100%;
+}
+
+/* --- Link-like Button Style --- */
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit; /* Inherit font from parent */
+  font-size: inherit; /* Inherit font size from parent */
+  color: var(--primary-color);
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.link-button:hover {
+  text-decoration: underline;
 }

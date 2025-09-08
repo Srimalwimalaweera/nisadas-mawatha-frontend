@@ -18,7 +18,7 @@
 /* AuthBook Container එක Responsive කිරීම */
 .auth-book-container {
     width: 100%;
-   height: 100svh;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,17 +28,16 @@
     background-position: center;
     overflow: hidden;
     position: fixed;
-    padding-top: 10px;
-    padding-bottom: 20px;
+    padding-top: 1px;
+    padding-bottom: 60px; 
     box-sizing: border-box;
     
 }
 
 .book-wrapper {
-    /* --- පොතේ ප්‍රමාණය සහ පිහිටීම responsive කිරීම --- */
-    width: 85vw; /* Viewport පළලෙන් 90%ක් ලබා දීම */
-    height: calc(90vw * 1.4); /* 5:7 aspect ratio එකක් පවත්වා ගැනීම (උස = පළල * 1.4) */
-
+    /* clamp(min, preferred, max) මගින් screen size එකට අනුව පළල වෙනස් කිරීම */
+    width: clamp(300px, 90vw, 500px);  /* Viewport පළලෙන් 90%ක් ලබා දීම */
+    
     max-width: 500px; /* උපරිම පළල 500px */
     max-height: 700px; /* උපරිම උස 700px */
 
@@ -47,6 +46,7 @@
     position: relative;
     z-index: 2; 
 }
+
 
 /* Page Scrolling Logic */
 .page-content-wrapper { padding: 1rem 1.5rem; height: 100%; width: 100%; box-sizing: border-box; overflow-y: hidden; }
@@ -110,28 +110,6 @@
 .cover-subtitle { font-size: 1.5rem; position: absolute; bottom: 80px; animation: shimmer 2s linear infinite; }
 .cover-open-prompt { position: absolute; bottom: 60px; font-size: 1rem; animation: shimmer 3s linear infinite; }
 
-/* Navigation Buttons (Prev/Next) */
-.book-navigation {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    z-index: 100;
-    opacity: 0;
-    transform: translate(-50%, 20px);
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    background-color: rgba(0, 0, 0, 0.4);
-    padding: 8px 20px;
-    border-radius: 50px;
-    color: rgba(255, 255, 255, 0.9);
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-}
-.book-navigation.visible { opacity: 1; transform: translate(-50%, 0); }
-.book-navigation button { background: none; border: none; font-size: 2rem; color: rgba(255, 255, 255, 0.8); cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
-.book-navigation button:hover { transform: scale(1.1); }
-.book-navigation button:disabled { color: rgba(255, 255, 255, 0.3); cursor: not-allowed; transform: scale(1); }
 
 @keyframes shimmer { to { background-position: -200% center; } }
 
@@ -145,4 +123,97 @@
   z-index: 1; /* Place it behind all other content */
   overflow: hidden;
   background: #8B4513; /* The base color from your component */
+}
+
+/* --- New AuthBook Navigation Styles --- */
+.authbook-nav-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px; /* Safe area for buttons */
+    pointer-events: none; /* Allows clicks to go through the container */
+    z-index: 100;
+}
+
+.nav-button-wrapper {
+    position: absolute;
+    bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    pointer-events: all; /* Re-enable clicks on the buttons themselves */
+    
+    /* Hide/show animation */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+
+    /* Highlight/Selection prevention */
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.nav-button-wrapper.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.nav-button-wrapper.left {
+    left: 25px;
+}
+
+.nav-button-wrapper.right {
+    right: 25px;
+}
+
+.nav-button-wrapper button {
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 35px; /* black round size */
+    height: 35px; /* black round size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;       /* arrow size*/
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.nav-button-wrapper button:hover {
+    transform: scale(1.1);
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.nav-button-wrapper button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: scale(1);
+}
+
+.nav-label {
+    color: white;
+    font-size: 0.65rem; /*txt size under the arrow icon*/
+    font-weight: 500;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    animation: bounce 2.5s infinite ease-in-out;
+}
+
+/* Bouncing animation for the text label */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-8px);
+    }
+    60% {
+        transform: translateY(-4px);
+    }
 }

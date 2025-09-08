@@ -13,7 +13,7 @@ import './CommentSection.css';
 
 const CommentSection = ({ bookId }) => {
   const [newComment, setNewComment] = useState('');
-  const { currentUser } = useAuth();
+  const { currentUser, appConfig } = useAuth();
   const { openLoginPrompt } = usePopup();
 
   // 1. useComments hook එක එක වරක් පමණක් call කර, අවශ්‍ය සියල්ල ලබා ගැනීම
@@ -108,6 +108,7 @@ await callFunction('addComment', { bookId, content: commentText });
             onChange={(e) => setNewComment(e.target.value)}
             onSubmit={handleAddComment}
             currentUser={currentUser}
+            charLimit={appConfig.commentLength}
           />
         </div>
       )}

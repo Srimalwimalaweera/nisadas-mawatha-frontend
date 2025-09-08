@@ -47,6 +47,7 @@ function AuthBook() {
     const location = useLocation();
     const initialFlipDone = useRef(false);
     
+    const pageLabels = ['Cover','Signup', 'Login', 'Terms', 'Privacy', 'About', 'Finish'];
 
     // --- 1. දෝෂ සහිත function එක ඉවත් කර, නව, වඩාත් නිවැරදි function එකක් යෙදීම ---
     const flipToPage = (targetPage) => {
@@ -108,7 +109,7 @@ function AuthBook() {
                     maxShadowOpacity={0.5} showCover={true} onFlip={onPage}
                     ref={bookRef} className="auth-book"
                     useMouseEvents={false} swipeEvents={false}
-                    disableFlipByClick={false} 
+                    disableFlipByClick={true} // disable page flip on book click
                 >
                     <Cover onCoverClick={goNextPage}>
                         <div className="cover-design-new">
@@ -130,14 +131,33 @@ function AuthBook() {
                 </HTMLFlipBook>
             </div>
             
-            <div className={`book-navigation ${currentPage > 0 ? 'visible' : ''}`}>
-                <button onClick={goPrevPage} disabled={currentPage === 0}>
-                    <BsArrowLeftCircleFill />
-                </button>
-                <span>Page {currentPage} of {totalPages - 1}</span>
-                <button onClick={goNextPage} disabled={currentPage >= totalPages - 1}>
-                    <BsArrowRightCircleFill />
-                </button>
+            {/* VVVV පැරණි navigation div එක වෙනුවට මෙම නව ව්‍යුහය යොදන්න VVVV */}
+            <div className="authbook-nav-container">
+                {/* Previous Button */}
+                <div 
+                    className={`nav-button-wrapper left ${currentPage > 0 ? 'visible' : ''}`}
+                    onContextMenu={(e) => e.preventDefault()}
+                >
+                    <button onClick={goPrevPage} disabled={currentPage === 0}>
+                        <BsArrowLeftCircleFill />
+                    </button>
+                    {currentPage > 0 && (
+                       <span className="nav-label">Go to {pageLabels[currentPage - 1]}</span> 
+                    )}
+                </div>
+
+                {/* Next Button */}
+                <div 
+                    className={`nav-button-wrapper right ${currentPage < totalPages - 1 ? 'visible' : ''}`}
+                    onContextMenu={(e) => e.preventDefault()}
+                >
+                    <button onClick={goNextPage} disabled={currentPage >= totalPages - 1}>
+                        <BsArrowRightCircleFill />
+                    </button>
+                    {currentPage < totalPages - 1 && (
+                        <span className="nav-label">Go to {pageLabels[currentPage + 1]}</span>
+                    )}
+                </div>
             </div>
         </div>
     );
