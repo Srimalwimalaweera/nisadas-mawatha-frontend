@@ -75,6 +75,19 @@ export const CommentProvider = ({ children }) => {
         return unsubscribe; // Cleanup function එක return කිරීම
     }, []);
 
+        const addReplyOptimistically = useCallback((commentId, newReply) => {
+        setComments(prevComments => 
+            prevComments.map(comment => {
+                if (comment.id === commentId) {
+                    const updatedReplies = [...comment.replies, newReply];
+                    return { ...comment, replies: updatedReplies };
+                }
+                return comment;
+            })
+        );
+    }, []);
+
+
     const clearComments = useCallback(() => {
         setComments([]);
         userCache.clear();
@@ -91,6 +104,7 @@ export const CommentProvider = ({ children }) => {
         listenToComments,
         clearComments,
         addCommentOptimistically,
+        addReplyOptimistically,
     };
 
     return (

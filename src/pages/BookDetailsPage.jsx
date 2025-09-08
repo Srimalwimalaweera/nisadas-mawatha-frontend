@@ -3,27 +3,25 @@ import { useParams, Link } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useComments } from '../context/CommentContext';
-import { useAuth } from '../context/AuthContext';
-import { getFunctions, httpsCallable } from 'firebase/functions';
-import { getApp } from 'firebase/app';
+
+
 
 import './BookDetailsPage.css';
 import { FaStar, FaCommentDots, FaShareAlt } from 'react-icons/fa';
 import ReactionPanel from '../components/common/ReactionPanel';
 import CommentSection from '../components/common/CommentSection';
-import CommentInput from '../components/ui/CommentInput';
+
 
 function BookDetailsPage() {
   const { bookId } = useParams();
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
   
-  const { currentUser } = useAuth();
+  
   const { listenToComments, clearComments } = useComments();
   
   const commentsRef = useRef(null);
-  const [showMobileCommentInput, setShowMobileCommentInput] = useState(false);
-  const [mobileCommentText, setMobileCommentText] = useState('');
+  
 
   useEffect(() => {
     let unsubscribeFromComments = () => {};
@@ -57,28 +55,17 @@ function BookDetailsPage() {
   }, [bookId, listenToComments, clearComments]);
 
   const handleMobileCommentClick = () => {
-    const newShowState = !showMobileCommentInput;
-    setShowMobileCommentInput(newShowState);
-    if (newShowState) {
-      setTimeout(() => {
-        commentsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
-    }
+    // 1. Comment section එකට scroll වීම
+    commentsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // 2. Scroll animation එකෙන් පසුව, ප්‍රධාන input box එක focus කිරීම
+    setTimeout(() => {
+        const mainInput = document.getElementById('main-comment-input');
+        mainInput?.focus();
+    }, 500); // scroll animation එකට තත්පර 0.5ක් ලබා දීම
   };
 
-  const handleMobileCommentSubmit = async () => {
-    if (!mobileCommentText.trim() || !currentUser) return;
-    try {
-      const functions = getFunctions(getApp(), "us-central1");
-      const addComment = httpsCallable(functions, 'addComment');
-      await addComment({ bookId, content: mobileCommentText });
-      setMobileCommentText('');
-      setShowMobileCommentInput(false);
-    } catch (error) {
-      console.error("Error submitting comment from mobile:", error);
-      alert("Failed to submit comment.");
-    }
-  };
+  
 
   if (loading) {
     return <div className="bd-loading">Loading book details...</div>;
@@ -148,18 +135,7 @@ function BookDetailsPage() {
             </div>
           </div>
           
-          {showMobileCommentInput && (
-            <div className="mobile-comment-input-wrapper">
-              <CommentInput
-                onSubmit={handleMobileCommentSubmit}
-                placeholder="Write a comment..."
-                value={mobileCommentText}
-                onChange={(e) => setMobileCommentText(e.target.value)}
-                isReply={false}
-                currentUser={currentUser}
-              />
-            </div>
-          )}
+          
 
           <div className="bd-description">
             <h3>Description</h3>

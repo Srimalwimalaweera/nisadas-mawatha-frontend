@@ -18,11 +18,18 @@ import StudentPanelPage from './pages/creator/StudentPanelPage.jsx';
 import CreatorRoute from './components/common/CreatorRoute';
 import PdfReaderPage from './pages/PdfReaderPage';
 import TrendingPage from './pages/TrendingPage';
+import { PopupProvider } from './context/PopupContext.jsx';
+import { PopupManagerProvider } from './context/PopupManagerContext.jsx';
 import { CommentProvider } from './context/CommentContext';
+import { FilterProvider } from './context/FilterContext.jsx';
 // LoginPage, SignupPage වැනි pages මෙතනට import කිරීම අවශ්‍ය නැහැ.
 
 function App() {
   return (
+    <FilterProvider>
+        <PopupProvider> 
+            
+            <PopupManagerProvider>
     <Layout>
       <Routes>
         {/* --- 1. AuthBook එකට සම්බන්ධ සියලුම paths, AuthBook component එකට යොමු කිරීම --- */}
@@ -61,6 +68,9 @@ function App() {
 
       </Routes>
     </Layout>
+    </PopupManagerProvider>
+        </PopupProvider>
+    </FilterProvider>
   );
 }
 

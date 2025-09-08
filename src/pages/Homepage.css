@@ -30,9 +30,10 @@
 200px කියන කොටස තමයි card එකක අවම පළල තීරණය කරන්නේ.*/
 .books-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill,170px);
+  /* පැහැදිලි කිරීම: auto-fill මගින් හැකි තරම් columns සාදයි. 
+     එක් එක් column එක අවම 170px පළල විය යුතු අතර, ඉඩ ඇති විට 1fr (available space) දක්වා විශාල වේ. */
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
   gap: 2.6rem;
-  justify-content: left;
 }
 
 .no-books-message {

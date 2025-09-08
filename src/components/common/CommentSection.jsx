@@ -104,6 +104,7 @@ await callFunction('addComment', { bookId, content: commentText });
       {currentUser && (
         <div className="main-comment-input-area">
           <CommentInput
+            id="main-comment-input"
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             onSubmit={handleAddComment}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef,useMemo } from 'react';
 import { db } from '../../firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { getFunctions, httpsCallable } from 'firebase/functions';
@@ -14,7 +14,7 @@ import IconHaha from './reaction-icons/IconHaha';
 import IconAngry from './reaction-icons/IconAngry';
 import IconSad from './reaction-icons/IconSad';
 import { Heart } from 'lucide-react'; // Default icon
-
+import { usePopupManager } from '../../context/PopupManagerContext';
 // Reuse the same CSS file from the book reaction panel
 import '../common/ReactionPanel.css';
 
@@ -30,14 +30,18 @@ const reactions = [
 const CommentReactionPanel = ({ bookId, commentId, replyId, initialCounts }) => {
     const { currentUser } = useAuth();
     const { openLoginPrompt } = usePopup();
+    const { activePanelId, openPanel, closeAllPanels } = usePopupManager();
 
-    const [isPanelVisible, setIsPanelVisible] = useState(false);
+    const [isPanelPinned, setIsPanelPinned] = useState(false); 
     const [userReaction, setUserReaction] = useState(null);
     const [totalReactions, setTotalReactions] = useState(0);
     const [topReactions, setTopReactions] = useState([]);
-    
+    const [isClosing, setIsClosing] = useState(false)
+    const panelId = useMemo(() => `comment-reaction-panel-${commentId}-${replyId}-${Math.random()}`, [commentId, replyId]);
+    const isPanelVisible = activePanelId === panelId;
+
     const panelTimerRef = useRef(null);
-    const longPressTimerRef = useRef(null);
+    
     const containerRef = useRef(null);
 
     // Update totals and top reactions from the prop
@@ -54,8 +58,8 @@ const CommentReactionPanel = ({ bookId, commentId, replyId, initialCounts }) => 
         setTopReactions(sorted);
     }, [initialCounts]);
 
-    // Listen for the current user's reaction
-    useEffect(() => {
+     // Listen for the current user's reaction
+     useEffect(() => {
         if (!currentUser) {
             setUserReaction(null);
             return;
@@ -73,13 +77,49 @@ const CommentReactionPanel = ({ bookId, commentId, replyId, initialCounts }) => 
         return () => unsubscribe();
     }, [bookId, commentId, replyId, currentUser]);
 
+     useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (containerRef.current && !containerRef.current.contains(event.target)) {
+                setIsClosing(true);
+                setTimeout(() => {
+                    closeAllPanels();
+                    setIsClosing(false);
+                    setIsPanelPinned(false);
+                }, 300);
+            }
+        };
+        if (isPanelVisible) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isPanelVisible, closeAllPanels]);
+
+
+    useEffect(() => {
+        if (isPanelPinned && isPanelVisible) {
+            const timer = setTimeout(() => {
+                setIsClosing(true);
+                setTimeout(() => {
+                    closeAllPanels();
+                    setIsClosing(false);
+                    setIsPanelPinned(false);
+                }, 300);
+            }, 15000); // තත්පර 15
+
+            return () => clearTimeout(timer); // Cleanup timer
+        }
+    }, [isPanelPinned, isPanelVisible, closeAllPanels]);
+
 
     const handleReactionSelect = async (reactionType) => {
         if (!currentUser) {
             openLoginPrompt();
             return;
         }
-        setIsPanelVisible(false);
+        setIsPanelPinned(false);
+        closeAllPanels();
 
         // Call cloud function to handle the logic
         try {
@@ -93,22 +133,50 @@ const CommentReactionPanel = ({ bookId, commentId, replyId, initialCounts }) => 
     };
 
     // UI helper functions
-    const showPanel = () => { clearTimeout(panelTimerRef.current); setIsPanelVisible(true); };
-    const hidePanel = () => { panelTimerRef.current = setTimeout(() => setIsPanelVisible(false), 500); };
-    const handleMouseDown = () => { longPressTimerRef.current = setTimeout(showPanel, 400); };
-    const handleMouseUp = () => clearTimeout(longPressTimerRef.current);
+      const showPanel = (pin = false) => {
+        clearTimeout(panelTimerRef.current);
+        if (pin) {
+            setIsPanelPinned(true);
+        }
+        openPanel(panelId);
+    };
+
+    const hidePanel = () => {
+        panelTimerRef.current = setTimeout(() => {
+            // Pin කර නොමැතිනම් පමණක් auto-close වීම
+            if (!isPanelPinned) {
+                setIsClosing(true);
+                setTimeout(() => {
+                    closeAllPanels();
+                    setIsClosing(false);
+                }, 300);
+            }
+        }, 500);
+    };
+
+    const handleMouseDown = () => {
+        // Long press එකක් සඳහා timer එකක් තබා, showPanel(true) ලෙස call කිරීම
+        const longPressTimer = setTimeout(() => {
+            showPanel(true); // Pin the panel
+        }, 400); // 400ms for long press
+
+        // Mouse up කළ විට timer එක clear කිරීම
+        containerRef.current.addEventListener('mouseup', () => clearTimeout(longPressTimer), { once: true });
+        containerRef.current.addEventListener('mouseleave', () => clearTimeout(longPressTimer), { once: true });
+    };
 
     const ReactionIcon = userReaction ? reactions.find(r => r.id === userReaction)?.Icon : Heart;
     
+
     return (
         <div 
             ref={containerRef} 
             className="reaction-container"
-            onMouseEnter={showPanel}
+            onMouseEnter={() => showPanel(false)} // Hover is not a pin
             onMouseLeave={hidePanel}
         >
             {isPanelVisible && (
-                <div className="reaction-popup">
+                <div className={`reaction-popup ${isClosing ? 'closing' : ''}`}>
                     {reactions.map(r => (
                         <button key={r.id} className="reaction-button" onClick={() => handleReactionSelect(r.id)}>
                             <r.Icon className="reaction-icon" isAnimating={true} />
@@ -121,12 +189,13 @@ const CommentReactionPanel = ({ bookId, commentId, replyId, initialCounts }) => 
                 <button 
                     className={`main-reaction-button icon-only ${userReaction ? 'reacted' : ''}`}
                     onClick={() => handleReactionSelect(userReaction || 'love')}
-                    onMouseDown={handleMouseDown}
-                    onMouseUp={handleMouseUp}
+                    onMouseDown={handleMouseDown} // Long press සඳහා
                     onContextMenu={(e) => e.preventDefault()}
+                    onTouchStart={handleMouseDown} // Mobile long press සඳහා
                 >
                     {ReactionIcon && <ReactionIcon className={`main-icon ${userReaction || ''}`} />}
                 </button>
+                
                 <div className="top-reactions-summary">
                     {topReactions.map((reactionId, index) => {
                         const reaction = reactions.find(r => r.id === reactionId);

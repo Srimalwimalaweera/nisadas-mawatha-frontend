@@ -38,8 +38,7 @@
     /* clamp(min, preferred, max) මගින් screen size එකට අනුව පළල වෙනස් කිරීම */
     width: clamp(300px, 90vw, 500px);  /* Viewport පළලෙන් 90%ක් ලබා දීම */
     
-    max-width: 500px; /* උපරිම පළල 500px */
-    max-height: 700px; /* උපරිම උස 700px */
+    aspect-ratio: 500 / 700; /* පළලට සාපේක්ෂව උස (5:7) ස්වයංක්‍රීයව සකස් කිරීම */
 
     perspective: 2500px;
     filter: drop-shadow(5px 15px 15px rgba(0,0,0,0.3));

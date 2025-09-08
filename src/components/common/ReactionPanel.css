@@ -113,23 +113,37 @@
 /* --- Reaction Popup Panel Styles --- */
 .reaction-popup {
   position: absolute;
-  bottom: 100%;
+  bottom: 100%; /* Button එකට ඉහළින් position වීම */
+  
+  /* VVVV Positioning Fix VVVV */
+  /* Panel එකේ වම් කෙළවර, button එකේ වම් කෙළවරට සකස් කිරීම.
+     මෙමගින් එය screen එකෙන් පිට පැනීම බොහෝ දුරට නතර වේ. */
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%); 
+  
   margin-bottom: 0.75rem;
   display: flex;
   background-color: var(--card-bg-glass-color);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--border-glass-color);
-  padding: 0.5rem;
+   padding: clamp(0.25rem, 1.5vw, 0.5rem);
   border-radius: 50px;
   box-shadow: 0 4px 12px var(--card-shadow);
-  animation: slide-up 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+
+  /* VVVV Animation VVVV */
+  /* Panel එක open වන විට slide-up සහ fade-in animation එකක් යෙදීම */
+  animation: slide-up-fade-in 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
 }
-@keyframes slide-up {
-  from { opacity: 0; transform: translate(-50%, 10px); }
-  to { opacity: 1; transform: translate(-50%, 0); }
+@keyframes slide-up-fade-in {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); /* ආරම්භයේදී තරමක් පහළින් position වීම */
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); /* අවසානයේදී නියමිත ස්ථානයට පැමිණීම */
+  }
 }
 
 /* Theme specific popup background */
@@ -142,11 +156,15 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: clamp(0.25rem, 1.5vw, 0.5rem);
   transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .reaction-button:hover { transform: translateY(-8px) scale(1.1); }
-.reaction-icon { width: 32px; height: 32px; }
+.reaction-icon { 
+  /* VVVV Responsive icon size VVVV */
+  width: clamp(28px, 8vw, 32px); 
+  height: clamp(28px, 8vw, 32px);
+}
 
 /* ... Tooltip styles ... */
 .reaction-tooltip {
@@ -196,4 +214,23 @@
 
 .dark .add-reaction-prompt {
   color: #a0a0a0;
+}
+
+/* ... (පැරණි @keyframes slide-up-fade-in එකට පහළින්) ... */
+
+/* VVVV Close Animation එක නිර්වචනය කිරීම VVVV */
+@keyframes slide-down-fade-out {
+  from { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+  to { 
+    opacity: 0; 
+    transform: translateY(10px); /* Close වන විට තරමක් පහළට යැවීම */
+  }
+}
+
+/* VVVV Closing state එකට අදාළ class එක VVVV */
+.reaction-popup.closing {
+  animation: slide-down-fade-out 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
 }

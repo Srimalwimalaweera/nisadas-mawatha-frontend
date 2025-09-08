@@ -43,6 +43,11 @@
   color: var(--text-color);
   font-size: 1rem;
   transition: all 0.3s ease;
+  /* VVVV අලුතින් එක් කළ styles VVVV */
+  resize: none; /* Userට resize කිරීමට ඇති හැකියාව නැවැත්වීම */
+  overflow-y: hidden; /* අනවශ්‍ය scrollbar ඉවත් කිරීම */
+  font-family: inherit; /* Page එකේ font එකම ලබා දීම */
+  line-height: 1.5; /* පේළි අතර පරතරය සකස් කිරීම */
 }
 
 .comment-input-field::placeholder {
@@ -56,7 +61,11 @@
 }
 
 .comment-submit-btn {
-  padding: 0.75rem 1.25rem;
+  padding: 0;
+width: 48px;  /* Button එකේ පළල */
+  height: 48px; /* Button එකේ උස */
+
+
   background: var(--primary-color);
   color: white;
   border: none;
@@ -67,6 +76,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1.25rem;
+  flex-shrink: 0;
 }
 
 .comment-submit-btn:hover {

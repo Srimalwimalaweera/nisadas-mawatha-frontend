@@ -47,13 +47,13 @@
 
 .bd-cover-container {
   flex-shrink: 0;
-  width: 200px;
+  width: clamp(150px, 50vw, 250px);
   margin: 0 auto;
 }
 
 @media (min-width: 768px) {
   .bd-cover-container {
-    width: 250px;
+    
     margin: 0;
   }
 }
@@ -271,4 +271,9 @@
   .bd-details-section {
     padding: 2rem;
   }
+}
+
+.bd-mobile-actions-bar .reaction-popup {
+  left: 10%;
+  transform: translateX(-50%);
 }

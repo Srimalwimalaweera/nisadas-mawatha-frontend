@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { IoSend } from 'react-icons/io5';
 import './CommentInput.css';
 
 const CommentInput = ({
+  id,
   value,
   onChange,
   onSubmit,
@@ -12,6 +13,16 @@ const CommentInput = ({
   currentUser,
   charLimit 
 }) => {
+
+   const textareaRef = useRef(null);
+
+  // value එක වෙනස් වන සෑම විටම textarea එකේ උස adjust කිරීම
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [value]);
   
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -41,14 +52,15 @@ return (
           referrerPolicy="no-referrer"
         />
         <div className="comment-input-wrapper">
-          <input
-            type="text"
+          <textarea
+            ref={textareaRef}
+            rows={1} // ආරම්භක උස පේළි 1ක් ලෙස සකස් කිරීම
             placeholder={placeholder}
             value={value}
             onChange={onChange}
             className="comment-input-field"
             onKeyPress={handleKeyPress}
-            maxLength={charLimit} // <-- HTML attribute එක මගින් සීමාව යෙදීම
+            maxLength={charLimit}
           />
           <button onClick={onSubmit} className="comment-submit-btn">
             {buttonText}

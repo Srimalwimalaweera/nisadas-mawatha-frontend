@@ -3,10 +3,14 @@
   top: 0;
   left: 0;
   height: 95%;
-  width: 288px; /* w-72 */
+  width: clamp(150px, 70vw, 288px);
   z-index: 40;
   transform: translateX(-100%);
-  transition: transform 0.3s ease-in-out;
+  opacity: 0; /* මුලින්ම hide කර තැබීම */
+  pointer-events: none; /* Hide කර ඇති විට click වළක්වාගැනීම */
+  visibility: hidden; /* Panel එක hide වූ විට එය සම්පූර්ණයෙන්ම නොසලකා හරින්න */
+ transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), visibility 0.4s;
+
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-right: 1px solid rgba(255, 255, 255, 0.2);
@@ -16,6 +20,9 @@
 
 .side-panel.open {
   transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto; /* Open වූ විට නැවත click enable කිරීම */
+  visibility: visible;
 }
 
 .side-panel.dark-side-panel {
@@ -31,16 +38,17 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 2rem;
+  padding: 1.5rem;
 }
 
 .side-panel-nav-list {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1.5rem; /* gap-6 */
+  gap: 1rem; /* gap-6 */
   list-style: none;
   padding-top: 4rem; /* pt-16 */
+
 }
 
 .side-panel-link {
@@ -113,7 +121,7 @@
 .nav-highlight {
     position: absolute;
   left: 0; /* වම්පස කෙළවරටම ගැනීම */
-  width: 115.2%; /* සම්පූර්ණ පළල ලබා දීම */
+  width: 110.2%; /* සම්පූර්ණ පළල ලබා දීම */
   background-color: var(--card-bg-glass-color); /* Cutout effect එකට page background color එක භාවිතා කිරීම */
   backdrop-filter: white(5px); 
   border-radius: 50px 10px 10px 50px; /* දකුණුපස කොන් පමණක් වක්‍ර කිරීම */

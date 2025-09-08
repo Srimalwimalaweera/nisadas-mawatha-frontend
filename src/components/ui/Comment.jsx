@@ -4,6 +4,7 @@ import { getFunctions, httpsCallable } from 'firebase/functions';
 import { getApp } from 'firebase/app';
 import { useAuth } from '../../context/AuthContext';
 import { usePopup } from '../../context/PopupContext';
+import { useComments } from '../../context/CommentContext';
 
 import CommentInput from './CommentInput';
 import CommentReactionPanel from './CommentReactionPanel';
@@ -27,12 +28,10 @@ const timeSince = (date) => {
 };
 
 // Reply Item Component
-// ----- ReplyItem Component -----
-const ReplyItem = ({ bookId, commentId, reply }) => {
+const ReplyItem = ({ bookId, commentId, reply, onDoubleClick }) => {
     const { author } = reply;
     return (
         <div className="reply-item-container">
-            {/* VVVV මෙතන වෙනස බලන්න VVVV */}
             <img 
                 src={author?.photoURL || "https://firebasestorage.googleapis.com/v0/b/nisadas-mawatha.firebasestorage.app/o/webapp%2Fdefault-user.png?alt=media&token=a037895e-a611-4959-871d-c0f5f78c1874"} 
                 alt={author?.displayName} 
@@ -41,11 +40,12 @@ const ReplyItem = ({ bookId, commentId, reply }) => {
             />
             <div className="reply-content-wrapper">
                 <div className="comment-author-info">
-                    {/* VVVV මෙතනත් වෙනස බලන්න VVVV */}
-                    <h5 className="comment-author-name">{author?.displayName}</h5>
+                    <h5 className="comment-author-name">{author?.displayName || 'User'}</h5>
                     <span className="comment-timestamp">{timeSince(reply.timestamp)}</span>
                 </div>
-                <p className="comment-content-text">{reply.content}</p>
+                <p className="comment-content-text" onDoubleClick={() => onDoubleClick(reply.id)}>
+                    {reply.content}
+                </p>
                 <div className="comment-actions">
                     <CommentReactionPanel
                         bookId={bookId}
@@ -64,38 +64,52 @@ const Comment = ({ comment, onReplySubmit, bookId }) => {
     const [isReplying, setIsReplying] = useState(false);
     const [replyText, setReplyText] = useState('');
     const [showHeart, setShowHeart] = useState(false);
+    const { addReplyOptimistically } = useComments();
     const { currentUser } = useAuth();
     const { openLoginPrompt } = usePopup();
     
     const { author } = comment;
 
-    const handleDoubleClick = async () => {
+    const callReactionFunction = async (replyId = null) => {
         if (!currentUser) {
             openLoginPrompt();
             return;
         }
         setShowHeart(true);
         setTimeout(() => setShowHeart(false), 1000);
-        // Directly call the cloud function for an instant 'love' reaction
         try {
             const functions = getFunctions(getApp(), "us-central1");
             const toggleCommentReaction = httpsCallable(functions, 'toggleCommentReaction');
-            await toggleCommentReaction({ bookId, commentId: comment.id, reactionType: 'love' });
+            await toggleCommentReaction({ bookId, commentId: comment.id, replyId: replyId, reactionType: 'love' });
         } catch (error) {
             console.error("Error on double-click reaction:", error);
         }
     };
 
     const handleReply = () => {
-        if (replyText.trim()) {
-            onReplySubmit(comment.id, replyText);
+        if (replyText.trim() && currentUser) {
+            const replyContent = replyText;
+            const optimisticReply = {
+                id: `temp_${Date.now()}`,
+                userId: currentUser.uid,
+                author: {
+                    displayName: currentUser.displayName,
+                    photoURL: currentUser.photoURL,
+                },
+                content: replyContent,
+                reactionCounts: {},
+                timestamp: { toDate: () => new Date() },
+                status: 'sending'
+            };
+            addReplyOptimistically(comment.id, optimisticReply);
+            onReplySubmit(comment.id, replyContent);
             setReplyText('');
             setIsReplying(false);
         }
     };
     
     return (
-        <div className="comment-item-container group">
+        <div className="comment-item-container group" onContextMenu={(e) => e.preventDefault()}>
             <div className="ambient-glow"></div>
             {showHeart && (
                 <div className="heart-animation-container">
@@ -104,7 +118,7 @@ const Comment = ({ comment, onReplySubmit, bookId }) => {
                 </div>
             )}
             <div className="comment-main-content">
-               <img 
+                <img 
                     src={author?.photoURL || "https://firebasestorage.googleapis.com/v0/b/nisadas-mawatha.firebasestorage.app/o/webapp%2Fdefault-user.png?alt=media&token=a037895e-a611-4959-871d-c0f5f78c1874"} 
                     alt={author?.displayName} 
                     className="comment-avatar" 
@@ -112,12 +126,11 @@ const Comment = ({ comment, onReplySubmit, bookId }) => {
                 />
                 <div className="comment-body">
                     <div className="comment-author-info">
-                        {/* VVVV මෙතනත් වෙනස බලන්න VVVV */}
-                        <h4 className="comment-author-name">{author?.displayName}</h4>
+                        <h4 className="comment-author-name">{author?.displayName || 'User'}</h4>
                         <span className="comment-timestamp">{timeSince(comment.timestamp)}</span>
                         <MoreHorizontal className="comment-options-icon" size={16} />
                     </div>
-                    <div className="comment-content-text" onDoubleClick={handleDoubleClick}>
+                    <div className="comment-content-text" onDoubleClick={() => callReactionFunction(null)}>
                         {comment.content}
                     </div>
 
@@ -160,6 +173,7 @@ const Comment = ({ comment, onReplySubmit, bookId }) => {
                                     reply={reply} 
                                     bookId={bookId} 
                                     commentId={comment.id}
+                                    onDoubleClick={callReactionFunction}
                                 />
                             ))}
                         </div>
